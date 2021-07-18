@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace TopLearn.DataLayer.Entities.Order
+namespace MyCvProject.Domain.Entities.Order
 {
     public class Order
     {

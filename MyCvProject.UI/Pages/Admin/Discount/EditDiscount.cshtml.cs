@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TopLearn.Core.Services.Interfaces;
+using MyCvProject.Core.Services.Interfaces;
 
-namespace TopLearn.Web.Pages.Admin.Discount
+namespace MyCvProject.Web.Pages.Admin.Discount
 {
     public class EditDiscountModel : PageModel
     {
@@ -18,7 +18,7 @@ namespace TopLearn.Web.Pages.Admin.Discount
             _orderService = orderService;
         }
         [BindProperty]
-        public DataLayer.Entities.Order.Discount Discount { get; set; }
+        public Domain.Entities.Order.Discount Discount { get; set; }
 
         public void OnGet(int id)
         {

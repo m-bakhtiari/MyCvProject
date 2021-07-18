@@ -4,22 +4,22 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using TopLearn.Core.Convertors;
-using TopLearn.Core.DTOs;
-using TopLearn.Core.Generator;
-using TopLearn.Core.Security;
-using TopLearn.Core.Services.Interfaces;
-using TopLearn.DataLayer.Context;
-using TopLearn.DataLayer.Entities.User;
-using TopLearn.DataLayer.Entities.Wallet;
+using MyCvProject.Core.Convertors;
+using MyCvProject.Core.ViewModels;
+using MyCvProject.Core.Generator;
+using MyCvProject.Core.Security;
+using MyCvProject.Core.Services.Interfaces;
+using MyCvProject.Domain.Context;
+using MyCvProject.Domain.Entities.User;
+using MyCvProject.Domain.Entities.Wallet;
 
-namespace TopLearn.Core.Services
+namespace MyCvProject.Core.Services
 {
     public class UserService:IUserService
     {
-        private TopLearnContext _context;
+        private MyCvProjectContext _context;
 
-        public UserService(TopLearnContext context)
+        public UserService(MyCvProjectContext context)
         {
             _context = context;
         }

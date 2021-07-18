@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TopLearn.Core.DTOs;
-using TopLearn.Core.Services.Interfaces;
+using MyCvProject.Core.Interfaces;
+using MyCvProject.Core.ViewModels;
 
-namespace TopLearn.Web.Areas.UserPanel.Controllers
+namespace MyCvProject.UI.Areas.UserPanel.Controllers
 {
     [Area("UserPanel")]
     [Authorize]
@@ -45,7 +41,7 @@ namespace TopLearn.Web.Areas.UserPanel.Controllers
 
             var payment = new ZarinpalSandbox.Payment(charge.Amount);
 
-            var res =  payment.PaymentRequest("شارژ کیف پول", "https://localhost:44349/OnlinePayment/" + walletId,"Info@topLearn.Com","09197070750");
+            var res =  payment.PaymentRequest("شارژ کیف پول", "https://localhost:44349/OnlinePayment/" + walletId,"Info@MyCvProject.Com","09197070750");
 
             if (res.Result.Status == 100)
             {

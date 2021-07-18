@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TopLearn.Core.DTOs.Order;
-using TopLearn.Core.Services.Interfaces;
+using MyCvProject.Core.Interfaces;
+using MyCvProject.Core.ViewModels.Order;
 
-namespace TopLearn.Web.Areas.UserPanel.Controllers
+namespace MyCvProject.UI.Areas.UserPanel.Controllers
 {
     [Area("UserPanel")]
     [Authorize]

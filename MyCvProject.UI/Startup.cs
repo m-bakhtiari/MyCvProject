@@ -10,12 +10,12 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TopLearn.Core.Convertors;
-using TopLearn.Core.Services;
-using TopLearn.Core.Services.Interfaces;
-using TopLearn.DataLayer.Context;
+using MyCvProject.Core.Convertors;
+using MyCvProject.Core.Services;
+using MyCvProject.Core.Services.Interfaces;
+using MyCvProject.Domain.Context;
 
-namespace TopLearn.Web
+namespace MyCvProject.Web
 {
     public class Startup
     {
@@ -56,9 +56,9 @@ namespace TopLearn.Web
 
             #region DataBase Context
 
-            services.AddDbContext<TopLearnContext>(options =>
+            services.AddDbContext<MyCvProjectContext>(options =>
                 {
-                    options.UseSqlServer(Configuration.GetConnectionString("TopLearnConnection"));
+                    options.UseSqlServer(Configuration.GetConnectionString("MyCvProjectConnection"));
                 }
             );
 

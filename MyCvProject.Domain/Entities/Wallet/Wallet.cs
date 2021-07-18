@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace TopLearn.DataLayer.Entities.Wallet
+namespace MyCvProject.Domain.Entities.Wallet
 {
     public class Wallet
     {

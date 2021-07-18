@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TopLearn.Core.Security;
+using MyCvProject.Core.Security;
 
-namespace TopLearn.Web.Pages.Admin
+namespace MyCvProject.Web.Pages.Admin
 {
     [PermissionChecker(1)]
     public class IndexModel : PageModel

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace TopLearn.DataLayer.Entities.Course
+namespace MyCvProject.Domain.Entities.Course
 {
     public class CourseEpisode
     {

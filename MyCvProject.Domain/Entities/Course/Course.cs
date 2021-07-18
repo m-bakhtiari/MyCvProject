@@ -1,12 +1,10 @@
-﻿using System;
+﻿using MyCvProject.Domain.Entities.Order;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using TopLearn.DataLayer.Entities.Order;
 
-namespace TopLearn.DataLayer.Entities.Course
+namespace MyCvProject.Domain.Entities.Course
 {
     public class Course
     {

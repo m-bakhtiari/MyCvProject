@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TopLearn.Core.DTOs.Course;
-using TopLearn.Core.Services.Interfaces;
+using MyCvProject.Core.ViewModels.Course;
+using MyCvProject.Core.Services.Interfaces;
 
-namespace TopLearn.Web.Pages.Admin.Courses
+namespace MyCvProject.Web.Pages.Admin.Courses
 {
     public class IndexModel : PageModel
     {

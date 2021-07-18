@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TopLearn.Core.DTOs;
-using TopLearn.Core.Security;
-using TopLearn.Core.Services.Interfaces;
+using MyCvProject.Core.ViewModels;
+using MyCvProject.Core.Security;
+using MyCvProject.Core.Services.Interfaces;
 
-namespace TopLearn.Web.Pages.Admin.Users
+namespace MyCvProject.Web.Pages.Admin.Users
 {
     [PermissionChecker(5)]
     public class DeleteUserModel : PageModel

@@ -1,10 +1,8 @@
-﻿using System;
+﻿using MyCvProject.Domain.Entities.Permissions;
+using MyCvProject.Domain.Entities.User;
 using System.Collections.Generic;
-using System.Text;
-using TopLearn.DataLayer.Entities.Permissions;
-using TopLearn.DataLayer.Entities.User;
 
-namespace TopLearn.Core.Services.Interfaces
+namespace MyCvProject.Core.Interfaces
 {
     public interface IPermissionService
     {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TopLearn.Core.Services.Interfaces;
+using MyCvProject.Core.Services.Interfaces;
 
-namespace TopLearn.Web.Pages.Admin.Discount
+namespace MyCvProject.Web.Pages.Admin.Discount
 {
     public class IndexModel : PageModel
     {
@@ -17,7 +17,7 @@ namespace TopLearn.Web.Pages.Admin.Discount
             _orderService = orderService;
         }
 
-        public List<DataLayer.Entities.Order.Discount> Discounts { get; set; }
+        public List<Domain.Entities.Order.Discount> Discounts { get; set; }
         public void OnGet()
         {
             Discounts = _orderService.GetAllDiscounts();

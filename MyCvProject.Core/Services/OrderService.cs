@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using TopLearn.Core.DTOs.Order;
-using TopLearn.Core.Services.Interfaces;
-using TopLearn.DataLayer.Context;
-using TopLearn.DataLayer.Entities.Course;
-using TopLearn.DataLayer.Entities.Order;
-using TopLearn.DataLayer.Entities.User;
-using TopLearn.DataLayer.Entities.Wallet;
+using MyCvProject.Core.ViewModels.Order;
+using MyCvProject.Core.Services.Interfaces;
+using MyCvProject.Domain.Context;
+using MyCvProject.Domain.Entities.Course;
+using MyCvProject.Domain.Entities.Order;
+using MyCvProject.Domain.Entities.User;
+using MyCvProject.Domain.Entities.Wallet;
 
-namespace TopLearn.Core.Services
+namespace MyCvProject.Core.Services
 {
     public class OrderService : IOrderService
     {
-        private TopLearnContext _context;
+        private MyCvProjectContext _context;
         private IUserService _userService;
 
-        public OrderService(TopLearnContext context, IUserService userService)
+        public OrderService(MyCvProjectContext context, IUserService userService)
         {
             _context = context;
             _userService = userService;

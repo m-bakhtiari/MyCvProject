@@ -1,14 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MyCvProject.Core.Interfaces;
+using MyCvProject.Domain.Entities.Course;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using TopLearn.Core.Services.Interfaces;
-using TopLearn.DataLayer.Entities.Course;
 
-namespace TopLearn.Web.Controllers
+namespace MyCvProject.Web.Controllers
 {
     public class CourseController : Controller
     {

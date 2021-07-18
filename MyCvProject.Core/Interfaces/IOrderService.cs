@@ -1,12 +1,10 @@
-﻿using System;
+﻿using MyCvProject.Core.ViewModels.Order;
+using MyCvProject.Domain.Entities.Order;
 using System.Collections.Generic;
-using System.Text;
-using TopLearn.Core.DTOs.Order;
-using TopLearn.DataLayer.Entities.Order;
 
-namespace TopLearn.Core.Services.Interfaces
+namespace MyCvProject.Core.Interfaces
 {
-   public interface IOrderService
+    public interface IOrderService
    {
        int AddOrder(string userName, int courseId);
 

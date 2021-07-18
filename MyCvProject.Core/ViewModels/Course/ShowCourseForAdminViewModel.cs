@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TopLearn.Core.DTOs.Course
+﻿namespace MyCvProject.Core.ViewModels.Course
 {
     public class ShowCourseForAdminViewModel
     {

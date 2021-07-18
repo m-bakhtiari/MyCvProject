@@ -1,13 +1,11 @@
-﻿using System;
+﻿using MyCvProject.Core.ViewModels;
+using MyCvProject.Domain.Entities.User;
+using MyCvProject.Domain.Entities.Wallet;
 using System.Collections.Generic;
-using System.Text;
-using TopLearn.Core.DTOs;
-using TopLearn.DataLayer.Entities.User;
-using TopLearn.DataLayer.Entities.Wallet;
 
-namespace TopLearn.Core.Services.Interfaces
+namespace MyCvProject.Core.Interfaces
 {
-   public interface IUserService
+    public interface IUserService
    {
        bool IsExistUserName(string userName);
        bool IsExistEmail(string email);

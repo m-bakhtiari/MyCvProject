@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity.UI.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
-using TopLearn.Core.Convertors;
-using TopLearn.Core.DTOs;
-using TopLearn.Core.Generator;
-using TopLearn.Core.Security;
-using TopLearn.Core.Senders;
-using TopLearn.Core.Services.Interfaces;
-using TopLearn.DataLayer.Entities.User;
+using MyCvProject.Core.Convertors;
+using MyCvProject.Core.Generator;
+using MyCvProject.Core.Interfaces;
+using MyCvProject.Core.Security;
+using MyCvProject.Core.Senders;
+using MyCvProject.Core.ViewModels;
+using MyCvProject.Domain.Entities.User;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 
-namespace TopLearn.Web.Controllers
+namespace MyCvProject.UI.Controllers
 {
     public class AccountController : Controller
     {
@@ -63,7 +60,7 @@ namespace TopLearn.Web.Controllers
             }
 
 
-            DataLayer.Entities.User.User user=new User()
+            Domain.Entities.User.User user=new User()
             {
                 ActiveCode = NameGenerator.GenerateUniqCode(),
                 Email = FixedText.FixEmail(register.Email),
@@ -178,7 +175,7 @@ namespace TopLearn.Web.Controllers
                 return View(forgot);
 
             string fixedEmail = FixedText.FixEmail(forgot.Email);
-            DataLayer.Entities.User.User user = _userService.GetUserByEmail(fixedEmail);
+            Domain.Entities.User.User user = _userService.GetUserByEmail(fixedEmail);
 
             if (user == null)
             {
@@ -211,7 +208,7 @@ namespace TopLearn.Web.Controllers
             if (!ModelState.IsValid)
                 return View(reset);
 
-            DataLayer.Entities.User.User user = _userService.GetUserByActiveCode(reset.ActiveCode);
+            Domain.Entities.User.User user = _userService.GetUserByActiveCode(reset.ActiveCode);
 
             if (user == null)
                 return NotFound();

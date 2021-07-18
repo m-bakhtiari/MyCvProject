@@ -1,26 +1,23 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using MyCvProject.Core.Convertors;
+using MyCvProject.Core.Generator;
+using MyCvProject.Core.Interfaces;
+using MyCvProject.Core.Security;
+using MyCvProject.Core.ViewModels.Course;
+using MyCvProject.Domain.Entities.Course;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using TopLearn.Core.Convertors;
-using TopLearn.Core.DTOs.Course;
-using TopLearn.Core.Generator;
-using TopLearn.Core.Security;
-using TopLearn.Core.Services.Interfaces;
-using TopLearn.DataLayer.Context;
-using TopLearn.DataLayer.Entities.Course;
 
-namespace TopLearn.Core.Services
+namespace MyCvProject.Core.Services
 {
     public class CourseService:ICourseService
     {
-        private TopLearnContext _context;
+        private MyCvProjectContext _context;
 
-        public CourseService(TopLearnContext context)
+        public CourseService(MyCvProjectContext context)
         {
             _context = context;
         }

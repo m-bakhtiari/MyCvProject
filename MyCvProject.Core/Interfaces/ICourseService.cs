@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using TopLearn.Core.DTOs.Course;
-using TopLearn.DataLayer.Entities.Course;
+using MyCvProject.Core.ViewModels.Course;
+using MyCvProject.Domain.Entities.Course;
+using System;
+using System.Collections.Generic;
 
-namespace TopLearn.Core.Services.Interfaces
+namespace MyCvProject.Core.Interfaces
 {
     public interface ICourseService
     {
@@ -21,6 +20,7 @@ namespace TopLearn.Core.Services.Interfaces
         CourseGroup GetById(int groupId);
         void AddGroup(CourseGroup group);
         void UpdateGroup(CourseGroup group);
+
         #endregion
 
         #region Course

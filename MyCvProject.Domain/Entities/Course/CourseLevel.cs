@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace TopLearn.DataLayer.Entities.Course
+namespace MyCvProject.Domain.Entities.Course
 {
-   public class CourseLevel
+    public class CourseLevel
     {
         [Key]
         public int LevelId { get; set; }

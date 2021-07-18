@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using MyCvProject.Domain.Entities.User;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using Microsoft.AspNetCore.Http;
-using TopLearn.DataLayer.Entities.User;
 
-namespace TopLearn.Core.DTOs
+namespace MyCvProject.Core.ViewModels
 {
     public class UserForAdminViewModel
     {

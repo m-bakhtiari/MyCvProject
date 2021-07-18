@@ -1,6 +1,6 @@
-﻿@using TopLearn.Core.Convertors
-@using TopLearn.Core.Services.Interfaces
-@model TopLearn.DataLayer.Entities.Course.Course
+﻿@using MyCvProject.Core.Convertors
+@using MyCvProject.Core.Services.Interfaces
+@model MyCvProject.Domain.Entities.Course.Course
 
 @inject IOrderService _OrderService;
 
@@ -23,7 +23,7 @@
     
     <meta property=og:site_name value="خودآموزش تاپ لرن">
     <meta property=og:title content="@Model.CourseTitle">
-    <meta property=og:url content="https://toplearn.com/ShowCourse/@Model.CourseTitle"/>
+    <meta property=og:url content="https://MyCvProject.com/ShowCourse/@Model.CourseTitle"/>
     <meta property=og:image content="/course/image/@Model.CourseImageName"> 
     <meta property=og:image:url content="/course/image/@Model.CourseImageName"/>
     <meta property=og:image:width content="700">
@@ -188,9 +188,9 @@
 
                 <div class="share-layer">
                     <span> به اشتراک گذاری </span>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=https://toplearn.com/ShowCourse/@Model.CourseId"><i class="zmdi zmdi-facebook"></i></a>
-                    <a href="https://plus.google.com/share?url=https://toplearn.com/ShowCourse/@Model.CourseId"><i class="zmdi zmdi-google-old"></i></a>
-                    <a href="https://twitter.com/intent/tweet?url=https://toplearn.com/ShowCourse/@Model.CourseId"><i class="zmdi zmdi-twitter"></i></a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=https://MyCvProject.com/ShowCourse/@Model.CourseId"><i class="zmdi zmdi-facebook"></i></a>
+                    <a href="https://plus.google.com/share?url=https://MyCvProject.com/ShowCourse/@Model.CourseId"><i class="zmdi zmdi-google-old"></i></a>
+                    <a href="https://twitter.com/intent/tweet?url=https://MyCvProject.com/ShowCourse/@Model.CourseId"><i class="zmdi zmdi-twitter"></i></a>
                     <a href=""><i class="zmdi zmdi-linkedin"></i></a>
                 </div>
 

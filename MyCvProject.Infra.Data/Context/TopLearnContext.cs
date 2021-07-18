@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using MyCvProject.Domain.Entities.Course;
+using MyCvProject.Domain.Entities.Order;
+using MyCvProject.Domain.Entities.Permissions;
+using MyCvProject.Domain.Entities.User;
+using MyCvProject.Domain.Entities.Wallet;
 using System.Linq;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using TopLearn.DataLayer.Entities.Course;
-using TopLearn.DataLayer.Entities.Order;
-using TopLearn.DataLayer.Entities.Permissions;
-using TopLearn.DataLayer.Entities.User;
-using TopLearn.DataLayer.Entities.Wallet;
 
-namespace TopLearn.DataLayer.Context
+namespace MyCvProject.Infra.Data.Context
 {
-   public class TopLearnContext:DbContext
+    public class MyCvProjectContext:DbContext
     {
 
-        public TopLearnContext(DbContextOptions<TopLearnContext> options):base(options)
+        public MyCvProjectContext(DbContextOptions<MyCvProjectContext> options):base(options)
         {
             
         }

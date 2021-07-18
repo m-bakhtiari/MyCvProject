@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using TopLearn.Core.Services.Interfaces;
+using MyCvProject.Core.Services.Interfaces;
 
-namespace TopLearn.Web.ViewComponents
+namespace MyCvProject.Web.ViewComponents
 {
     public class CourseGroupComponent:ViewComponent
     {

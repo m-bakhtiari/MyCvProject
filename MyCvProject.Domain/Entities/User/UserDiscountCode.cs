@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MyCvProject.Domain.Entities.Order;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using TopLearn.DataLayer.Entities.Order;
 
-namespace TopLearn.DataLayer.Entities.User
+namespace MyCvProject.Domain.Entities.User
 {
     public class UserDiscountCode
     {

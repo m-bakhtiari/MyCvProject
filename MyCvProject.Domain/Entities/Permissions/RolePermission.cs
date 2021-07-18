@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MyCvProject.Domain.Entities.User;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using TopLearn.DataLayer.Entities.User;
 
-namespace TopLearn.DataLayer.Entities.Permissions
+namespace MyCvProject.Domain.Entities.Permissions
 {
-   public class RolePermission
+    public class RolePermission
     {
         [Key]
         public int RP_Id { get; set; }

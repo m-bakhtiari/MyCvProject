@@ -1,10 +1,9 @@
-﻿using System;
+﻿using MyCvProject.Domain.Entities.Course;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using TopLearn.DataLayer.Entities.Course;
 
-namespace TopLearn.DataLayer.Entities.User
+namespace MyCvProject.Domain.Entities.User
 {
     public class User
     {

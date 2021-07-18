@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TopLearn.Core.Services.Interfaces;
-using TopLearn.DataLayer.Entities.Course;
+using MyCvProject.Core.Services.Interfaces;
+using MyCvProject.Domain.Entities.Course;
 
-namespace TopLearn.Web.Pages.Admin.CourseGroups
+namespace MyCvProject.Web.Pages.Admin.CourseGroups
 {
     public class CreateGroupModel : PageModel
     {

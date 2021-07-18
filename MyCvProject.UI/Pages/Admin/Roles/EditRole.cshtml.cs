@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using TopLearn.Core.Security;
-using TopLearn.Core.Services.Interfaces;
-using TopLearn.DataLayer.Entities.User;
+using MyCvProject.Core.Security;
+using MyCvProject.Core.Services.Interfaces;
+using MyCvProject.Domain.Entities.User;
 
-namespace TopLearn.Web.Pages.Admin.Roles
+namespace MyCvProject.Web.Pages.Admin.Roles
 {
     [PermissionChecker(1004)]
     public class EditRoleModel : PageModel

@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using TopLearn.Core.Services.Interfaces;
-using TopLearn.DataLayer.Entities.Course;
+using MyCvProject.Core.Services.Interfaces;
+using MyCvProject.Domain.Entities.Course;
 
-namespace TopLearn.Web.Pages.Admin.Courses
+namespace MyCvProject.Web.Pages.Admin.Courses
 {
     public class CreateCourseModel : PageModel
     {

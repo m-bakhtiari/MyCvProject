@@ -1,19 +1,16 @@
-﻿using System;
+﻿using MyCvProject.Core.Interfaces;
+using MyCvProject.Domain.Entities.Permissions;
+using MyCvProject.Domain.Entities.User;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using TopLearn.Core.Services.Interfaces;
-using TopLearn.DataLayer.Context;
-using TopLearn.DataLayer.Entities.Permissions;
-using TopLearn.DataLayer.Entities.User;
 
-namespace TopLearn.Core.Services
+namespace MyCvProject.Core.Services
 {
     public class PermissionService : IPermissionService
     {
-        private TopLearnContext _context;
+        private MyCvProjectContext _context;
 
-        public PermissionService(TopLearnContext context)
+        public PermissionService(MyCvProjectContext context)
         {
             _context = context;
         }
