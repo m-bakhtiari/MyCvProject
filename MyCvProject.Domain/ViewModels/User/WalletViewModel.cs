@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace MyCvProject.Domain.ViewModels
+namespace MyCvProject.Core.ViewModels
 {
     public class ChargeWalletViewModel
     {

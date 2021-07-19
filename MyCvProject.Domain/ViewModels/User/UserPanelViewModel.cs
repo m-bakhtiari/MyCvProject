@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace MyCvProject.Domain.ViewModels
+namespace MyCvProject.Core.ViewModels
 {
     public class InformationUserViewModel
     {

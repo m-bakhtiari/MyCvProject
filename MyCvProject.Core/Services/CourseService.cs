@@ -10,110 +10,78 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MyCvProject.Domain.Interfaces;
 
 namespace MyCvProject.Core.Services
 {
-    public class CourseService:ICourseService
+    public class CourseService : ICourseService
     {
-        private MyCvProjectContext _context;
+        private readonly ICourseRepository _courseRepository;
 
-        public CourseService(MyCvProjectContext context)
+        public CourseService(ICourseRepository courseRepository)
         {
-            _context = context;
+            _courseRepository = courseRepository;
         }
 
         public List<CourseGroup> GetAllGroup()
         {
-            return _context.CourseGroups.Include(c=>c.CourseGroups).ToList();
+            return _courseRepository.GetAllGroup();
         }
 
         public List<SelectListItem> GetGroupForManageCourse()
         {
-            return _context.CourseGroups.Where(g => g.ParentId == null)
-                .Select(g => new SelectListItem()
-                {
-                    Text = g.GroupTitle,
-                    Value = g.GroupId.ToString()
-                }).ToList();
+            return _courseRepository.GetGroupForManageCourse();
         }
 
         public List<SelectListItem> GetSubGroupForManageCourse(int groupId)
         {
-            return _context.CourseGroups.Where(g => g.ParentId == groupId)
-                .Select(g => new SelectListItem()
-                {
-                    Text = g.GroupTitle,
-                    Value = g.GroupId.ToString()
-                }).ToList();
+            return _courseRepository.GetSubGroupForManageCourse(groupId);
         }
 
         public List<SelectListItem> GetTeachers()
         {
-            return _context.UserRoles.Where(r => r.RoleId == 2).Include(r => r.User)
-                .Select(u => new SelectListItem()
-                {
-                    Value = u.UserId.ToString(),
-                    Text = u.User.UserName
-                }).ToList();
+            return _courseRepository.GetTeachers();
         }
 
         public List<SelectListItem> GetLevels()
         {
-            return _context.CourseLevels.Select(l => new SelectListItem()
-            {
-                Value = l.LevelId.ToString(),
-                Text = l.LevelTitle
-            }).ToList();
-    
+            return _courseRepository.GetLevels();
         }
 
         public List<SelectListItem> GetStatues()
         {
-            return _context.CourseStatuses.Select(s => new SelectListItem()
-            {
-                Value = s.StatusId.ToString(),
-                Text = s.StatusTitle
-            }).ToList();
+            return _courseRepository.GetStatues();
         }
 
         public CourseGroup GetById(int groupId)
         {
-            return _context.CourseGroups.Find(groupId);
+            return _courseRepository.GetById(groupId);
         }
 
-        public void AddGroup(CourseGroup @group)
+        public void AddGroup(CourseGroup group)
         {
-            _context.CourseGroups.Add(group);
-            _context.SaveChanges();
+            _courseRepository.AddGroup(group);
         }
 
-        public void UpdateGroup(CourseGroup @group)
+        public void UpdateGroup(CourseGroup group)
         {
-            _context.CourseGroups.Update(group);
-            _context.SaveChanges();
+            _courseRepository.UpdateGroup(group);
         }
 
         public List<ShowCourseForAdminViewModel> GetCoursesForAdmin()
         {
-            return _context.Courses.Select(c => new ShowCourseForAdminViewModel()
-            {
-                CourseId = c.CourseId,
-                ImageName = c.CourseImageName,
-                Title = c.CourseTitle,
-                EpisodeCount = c.CourseEpisodes.Count
-            }).ToList();
+            return _courseRepository.GetCoursesForAdmin();
         }
 
         public int AddCourse(Course course, IFormFile imgCourse, IFormFile courseDemo)
         {
-            course.CreateDate=DateTime.Now;
+            course.CreateDate = DateTime.Now;
             course.CourseImageName = "no-photo.jpg";
-            //TODO Check Image
             if (imgCourse != null && imgCourse.IsImage())
             {
-                course.CourseImageName =NameGenerator.GenerateUniqCode() + Path.GetExtension(imgCourse.FileName);
-                string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/course/image",course.CourseImageName );
-                
+                course.CourseImageName = NameGenerator.GenerateUniqCode() + Path.GetExtension(imgCourse.FileName);
+                string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/course/image", course.CourseImageName);
+
                 using (var stream = new FileStream(imagePath, FileMode.Create))
                 {
                     imgCourse.CopyTo(stream);
@@ -122,33 +90,28 @@ namespace MyCvProject.Core.Services
                 ImageConvertor imgResizer = new ImageConvertor();
                 string thumbPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/course/thumb", course.CourseImageName);
 
-                imgResizer.Image_resize(imagePath, thumbPath,250);
+                imgResizer.Image_resize(imagePath, thumbPath, 250);
             }
 
             if (courseDemo != null)
             {
                 course.DemoFileName = NameGenerator.GenerateUniqCode() + Path.GetExtension(courseDemo.FileName);
-                string demoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/course/demoes", course.DemoFileName);
-                using (var stream = new FileStream(demoPath, FileMode.Create))
-                {
-                    courseDemo.CopyTo(stream);
-                }
+                var demoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/course/demoes", course.DemoFileName);
+                using var stream = new FileStream(demoPath, FileMode.Create);
+                courseDemo.CopyTo(stream);
             }
 
-            _context.Add(course);
-            _context.SaveChanges();
-
-            return course.CourseId;
+            return _courseRepository.AddCourse(course);
         }
 
         public Course GetCourseById(int courseId)
         {
-            return _context.Courses.Find(courseId);
+            return _courseRepository.GetCourseById(courseId);
         }
 
         public void UpdateCourse(Course course, IFormFile imgCourse, IFormFile courseDemo)
         {
-            course.UpdateDate=DateTime.Now;
+            course.UpdateDate = DateTime.Now;
 
             if (imgCourse != null && imgCourse.IsImage())
             {
@@ -184,7 +147,7 @@ namespace MyCvProject.Core.Services
             {
                 if (course.DemoFileName != null)
                 {
-                   string deleteDemoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/course/demoes",course.DemoFileName);
+                    string deleteDemoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/course/demoes", course.DemoFileName);
                     if (File.Exists(deleteDemoPath))
                     {
                         File.Delete(deleteDemoPath);
@@ -192,141 +155,43 @@ namespace MyCvProject.Core.Services
                 }
                 course.DemoFileName = NameGenerator.GenerateUniqCode() + Path.GetExtension(courseDemo.FileName);
                 string demoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/course/demoes", course.DemoFileName);
-                using (var stream = new FileStream(demoPath, FileMode.Create))
-                {
-                    courseDemo.CopyTo(stream);
-                }
+                using var stream = new FileStream(demoPath, FileMode.Create);
+                courseDemo.CopyTo(stream);
             }
-
-            _context.Courses.Update(course);
-            _context.SaveChanges();
+            _courseRepository.UpdateCourse(course);
         }
 
         public Tuple<List<ShowCourseListItemViewModel>, int> GetCourse(int pageId = 1, string filter = ""
             , string getType = "all", string orderByType = "date",
-            int startPrice = 0, int endPrice = 0, List<int> selectedGroups = null,int take= 0)
+            int startPrice = 0, int endPrice = 0, List<int> selectedGroups = null, int take = 0)
         {
-            if (take == 0)
-                take = 8;
 
-            IQueryable<Course> result = _context.Courses;
-
-            if (!string.IsNullOrEmpty(filter))
-            {
-                result = result.Where(c => c.CourseTitle.Contains(filter)||c.Tags.Contains(filter));
-            }
-
-            switch (getType)
-            {
-                case "all":
-                    break;
-                case "buy":
-                {
-                    result = result.Where(c => c.CoursePrice != 0);
-                    break;
-                }
-                case "free":
-                {
-                    result = result.Where(c => c.CoursePrice == 0);
-                    break;
-                }
-                        
-            }
-
-            switch (orderByType)
-            {
-                case "date":
-                {
-                    result = result.OrderByDescending(c => c.CreateDate);
-                    break;
-                }
-                case "updatedate":
-                {
-                    result = result.OrderByDescending(c => c.UpdateDate);
-                    break;
-                }
-            }
-
-            if (startPrice > 0)
-            {
-                result = result.Where(c => c.CoursePrice > startPrice);
-            }
-
-            if (endPrice > 0)
-            {
-                result = result.Where(c => c.CoursePrice < startPrice);
-            }
-
-
-            if (selectedGroups != null && selectedGroups.Any())
-            {
-                foreach (int groupId in selectedGroups)
-                {
-                    result = result.Where(c => c.GroupId == groupId || c.SubGroup == groupId);
-                }
-                
-            }
-
-            int skip = (pageId - 1) * take;
-
-            int pageCount = result.Include(c => c.CourseEpisodes).Select(c => new ShowCourseListItemViewModel()
-            {
-                CourseId = c.CourseId,
-                ImageName = c.CourseImageName,
-                Price = c.CoursePrice,
-                Title = c.CourseTitle,
-                TotalTime = new TimeSpan(c.CourseEpisodes.Sum(e => e.EpisodeTime.Ticks))
-            }).Count() / take;
-
-            var query= result.Include(c => c.CourseEpisodes).Select(c => new ShowCourseListItemViewModel()
-            {
-                CourseId = c.CourseId,
-                ImageName = c.CourseImageName,
-                Price = c.CoursePrice,
-                Title = c.CourseTitle,
-                TotalTime = new TimeSpan(c.CourseEpisodes.Sum(e => e.EpisodeTime.Ticks))
-            }).Skip(skip).Take(take).ToList();
-
-            return Tuple.Create(query, pageCount);
+            return _courseRepository.GetCourse(pageId, filter, getType, orderByType, startPrice, endPrice, selectedGroups,
+                 take);
         }
 
         public Course GetCourseForShow(int courseId)
         {
-            return _context.Courses.Include(c => c.CourseEpisodes)
-                .Include(c => c.CourseStatus).Include(c => c.CourseLevel)
-                .Include(c => c.User).Include(c=>c.UserCourses)
-                .FirstOrDefault(c => c.CourseId == courseId);
+            return _courseRepository.GetCourseForShow(courseId);
         }
 
         public List<ShowCourseListItemViewModel> GetPopularCourse()
         {
-            return _context.Courses.Include(c => c.OrderDetails)
-                .Where(c=>c.OrderDetails.Any())
-                .OrderByDescending(d => d.OrderDetails.Count)
-                .Take(8)
-                .Select(c=> new ShowCourseListItemViewModel()
-                {
-                    CourseId = c.CourseId,
-                    ImageName = c.CourseImageName,
-                    Price = c.CoursePrice,
-                    Title = c.CourseTitle,
-                    TotalTime = new TimeSpan(c.CourseEpisodes.Sum(e => e.EpisodeTime.Ticks))
-                })
-                .ToList();
+            return _courseRepository.GetPopularCourse();
         }
 
         public List<CourseEpisode> GetListEpisodeCorse(int courseId)
         {
-            return _context.CourseEpisodes.Where(e => e.CourseId == courseId).ToList();
+            return _courseRepository.GetListEpisodeCorse(courseId);
         }
 
         public bool CheckExistFile(string fileName)
         {
-            string path =  Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/courseFiles", fileName);
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/courseFiles", fileName);
             return File.Exists(path);
         }
 
-        public int AddEpisode(CourseEpisode episode,IFormFile episodeFile)
+        public int AddEpisode(CourseEpisode episode, IFormFile episodeFile)
         {
             episode.EpisodeFileName = episodeFile.FileName;
 
@@ -336,14 +201,12 @@ namespace MyCvProject.Core.Services
                 episodeFile.CopyTo(stream);
             }
 
-            _context.CourseEpisodes.Add(episode);
-            _context.SaveChanges();
-            return episode.EpisodeId;
+            return _courseRepository.AddEpisode(episode);
         }
 
         public CourseEpisode GetEpisodeById(int episodeId)
         {
-            return _context.CourseEpisodes.Find(episodeId);
+            return _courseRepository.GetEpisodeById(episodeId);
         }
 
         public void EditEpisode(CourseEpisode episode, IFormFile episodeFile)
@@ -361,30 +224,17 @@ namespace MyCvProject.Core.Services
                 }
             }
 
-            _context.CourseEpisodes.Update(episode);
-            _context.SaveChanges();
+            _courseRepository.EditEpisode(episode);
         }
 
         public void AddComment(CourseComment comment)
         {
-            _context.CourseComments.Add(comment);
-            _context.SaveChanges();
+            _courseRepository.AddComment(comment);
         }
 
         public Tuple<List<CourseComment>, int> GetCourseComment(int courseId, int pageId = 1)
         {
-            int take = 5;
-            int skip = (pageId - 1) * take;
-            int pageCount = _context.CourseComments.Where(c => !c.IsDelete && c.CourseId == courseId).Count() / take;
-
-            if ((pageCount % 2) != 0)
-            {
-                pageCount+=1;
-            }
-
-            return Tuple.Create(
-                _context.CourseComments.Include(c=>c.User).Where(c => !c.IsDelete && c.CourseId == courseId).Skip(skip).Take(take)
-                    .OrderByDescending(c=>c.CreateDate).ToList(), pageCount);
+            return _courseRepository.GetCourseComment(courseId, pageId);
         }
     }
 }

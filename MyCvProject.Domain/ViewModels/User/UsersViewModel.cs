@@ -3,7 +3,7 @@ using MyCvProject.Domain.Entities.User;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace MyCvProject.Domain.ViewModels
+namespace MyCvProject.Core.ViewModels
 {
     public class UserForAdminViewModel
     {

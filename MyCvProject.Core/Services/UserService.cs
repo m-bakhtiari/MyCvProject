@@ -1,96 +1,83 @@
-﻿using System;
+﻿using MyCvProject.Core.Convertors;
+using MyCvProject.Core.Generator;
+using MyCvProject.Core.Interfaces;
+using MyCvProject.Core.Security;
+using MyCvProject.Core.ViewModels;
+using MyCvProject.Domain.Entities.User;
+using MyCvProject.Domain.Entities.Wallet;
+using MyCvProject.Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using MyCvProject.Core.Convertors;
-using MyCvProject.Core.ViewModels;
-using MyCvProject.Core.Generator;
-using MyCvProject.Core.Security;
-using MyCvProject.Core.Services.Interfaces;
-using MyCvProject.Domain.Context;
-using MyCvProject.Domain.Entities.User;
-using MyCvProject.Domain.Entities.Wallet;
 
 namespace MyCvProject.Core.Services
 {
-    public class UserService:IUserService
+    public class UserService : IUserService
     {
-        private MyCvProjectContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public UserService(MyCvProjectContext context)
+        public UserService(IUserRepository userRepository)
         {
-            _context = context;
+            _userRepository = userRepository;
         }
 
 
         public bool IsExistUserName(string userName)
         {
-            return _context.Users.Any(u => u.UserName == userName);
+            return _userRepository.IsExistUserName(userName);
         }
 
         public bool IsExistEmail(string email)
         {
-            return _context.Users.Any(u => u.Email == email);
+            return _userRepository.IsExistEmail(email);
         }
 
         public int AddUser(User user)
         {
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            return user.UserId;
+            return _userRepository.AddUser(user);
         }
 
         public User LoginUser(LoginViewModel login)
         {
             string hashPassword = PasswordHelper.EncodePasswordMd5(login.Password);
             string email = FixedText.FixEmail(login.Email);
-            return _context.Users.SingleOrDefault(u => u.Email == email && u.Password == hashPassword);
+            return _userRepository.LoginUser(email, hashPassword);
         }
 
         public User GetUserByEmail(string email)
         {
-            return _context.Users.SingleOrDefault(u => u.Email == email);
+            return _userRepository.GetUserByEmail(email);
         }
 
         public User GetUserById(int userId)
         {
-            return _context.Users.Find(userId);
+            return _userRepository.GetUserById(userId);
         }
 
         public User GetUserByActiveCode(string activeCode)
         {
-            return _context.Users.SingleOrDefault(u => u.ActiveCode == activeCode);
+            return _userRepository.GetUserByActiveCode(activeCode);
         }
 
         public User GetUserByUserName(string username)
         {
-            return _context.Users.SingleOrDefault(u => u.UserName == username);
+            return _userRepository.GetUserByUserName(username);
         }
 
         public void UpdateUser(User user)
         {
-            _context.Update(user);
-            _context.SaveChanges();
+            _userRepository.UpdateUser(user);
         }
 
         public bool ActiveAccount(string activeCode)
         {
-            var user = _context.Users.SingleOrDefault(u => u.ActiveCode == activeCode);
-            if (user == null || user.IsActive)
-                return false;
-
-            user.IsActive = true;
-            user.ActiveCode = NameGenerator.GenerateUniqCode();
-            _context.SaveChanges();
-
-            return true;
+            return _userRepository.ActiveAccount(activeCode);
         }
 
         public int GetUserIdByUserName(string userName)
         {
-            return _context.Users.Single(u => u.UserName == userName).UserId;
+            return _userRepository.GetUserIdByUserName(userName);
         }
 
         public void DeleteUser(int userId)
@@ -103,7 +90,7 @@ namespace MyCvProject.Core.Services
         public InformationUserViewModel GetUserInformation(string username)
         {
             var user = GetUserByUserName(username);
-            InformationUserViewModel information=new InformationUserViewModel();
+            InformationUserViewModel information = new InformationUserViewModel();
             information.UserName = user.UserName;
             information.Email = user.Email;
             information.RegisterDate = user.RegisterDate;
@@ -127,23 +114,12 @@ namespace MyCvProject.Core.Services
 
         public SideBarUserPanelViewModel GetSideBarUserPanelData(string username)
         {
-            return _context.Users.Where(u => u.UserName == username).Select(u => new SideBarUserPanelViewModel()
-            {
-                UserName = u.UserName,
-                ImageName = u.UserAvatar,
-                RegisterDate = u.RegisterDate
-            }).Single();
+            return _userRepository.GetSideBarUserPanelData(username);
         }
 
         public EditProfileViewModel GetDataForEditProfileUser(string username)
         {
-            return _context.Users.Where(u => u.UserName == username).Select(u => new EditProfileViewModel()
-            {
-                AvatarName = u.UserAvatar,
-                Email = u.Email,
-                UserName = u.UserName
-
-            }).Single();
+            return _userRepository.GetDataForEditProfileUser(username);
         }
 
         public void EditProfile(string username, EditProfileViewModel profile)
@@ -162,9 +138,9 @@ namespace MyCvProject.Core.Services
 
                 profile.AvatarName = NameGenerator.GenerateUniqCode() + Path.GetExtension(profile.UserAvatar.FileName);
                 imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserAvatar", profile.AvatarName);
-                using (var stream = new FileStream(imagePath,FileMode.Create))
+                using (var stream = new FileStream(imagePath, FileMode.Create))
                 {
-                   profile.UserAvatar.CopyTo(stream);
+                    profile.UserAvatar.CopyTo(stream);
                 }
 
             }
@@ -181,7 +157,7 @@ namespace MyCvProject.Core.Services
         public bool CompareOldPassword(string oldPassword, string username)
         {
             string hashOldPassword = PasswordHelper.EncodePasswordMd5(oldPassword);
-            return _context.Users.Any(u => u.UserName == username && u.Password == hashOldPassword);
+            return _userRepository.CompareOldPassword(hashOldPassword, username);
         }
 
         public void ChangeUserPassword(string userName, string newPassword)
@@ -193,39 +169,17 @@ namespace MyCvProject.Core.Services
 
         public int BalanceUserWallet(string userName)
         {
-
-            int userId = GetUserIdByUserName(userName);
-
-            var enter = _context.Wallets
-                .Where(w => w.UserId == userId && w.TypeId == 1&&w.IsPay)
-                .Select(w => w.Amount).ToList();
-
-            var exit = _context.Wallets
-                .Where(w => w.UserId == userId && w.TypeId == 2)
-                .Select(w => w.Amount).ToList();
-
-            return (enter.Sum() - exit.Sum());
+            return _userRepository.BalanceUserWallet(userName);
         }
 
         public List<WalletViewModel> GetWalletUser(string userName)
         {
-            int userId = GetUserIdByUserName(userName);
-
-            return _context.Wallets
-                .Where(w => w.IsPay && w.UserId == userId)
-                .Select(w=> new WalletViewModel()
-                {
-                    Amount = w.Amount,
-                    DateTime = w.CreateDate,
-                    Description = w.Description,
-                    Type = w.TypeId
-                })
-                .ToList();
+            return _userRepository.GetWalletUser(userName);
         }
 
         public int ChargeWallet(string userName, int amount, string description, bool isPay = false)
         {
-            Wallet wallet=new Wallet()
+            Wallet wallet = new Wallet()
             {
                 Amount = amount,
                 CreateDate = DateTime.Now,
@@ -234,89 +188,42 @@ namespace MyCvProject.Core.Services
                 TypeId = 1,
                 UserId = GetUserIdByUserName(userName)
             };
-           return AddWallet(wallet);
+            return AddWallet(wallet);
         }
 
         public int AddWallet(Wallet wallet)
         {
-            _context.Wallets.Add(wallet);
-            _context.SaveChanges();
-            return wallet.WalletId;
+            return _userRepository.AddWallet(wallet);
         }
 
         public Wallet GetWalletByWalletId(int walletId)
         {
-            return _context.Wallets.Find(walletId);
+            return _userRepository.GetWalletByWalletId(walletId);
         }
 
         public void UpdateWallet(Wallet wallet)
         {
-            _context.Wallets.Update(wallet);
-            _context.SaveChanges();
+            _userRepository.UpdateWallet(wallet);
         }
 
         public UserForAdminViewModel GetUsers(int pageId = 1, string filterEmail = "", string filterUserName = "")
         {
-            IQueryable<User> result = _context.Users;
-
-            if (!string.IsNullOrEmpty(filterEmail))
-            {
-                result = result.Where(u => u.Email.Contains(filterEmail));
-            }
-
-            if (!string.IsNullOrEmpty(filterUserName))
-            {
-                result = result.Where(u => u.UserName.Contains(filterUserName));
-            }
-
-            // Show Item In Page
-            int take = 20;
-            int skip = (pageId - 1) * take;
-
-
-            UserForAdminViewModel list=new UserForAdminViewModel();
-            list.CurrentPage = pageId;
-            list.PageCount = result.Count() / take;
-            list.Users = result.OrderBy(u => u.RegisterDate).Skip(skip).Take(take).ToList();
-
-            return list;
+            return _userRepository.GetUsers(pageId, filterEmail, filterUserName);
         }
 
         public UserForAdminViewModel GetDeleteUsers(int pageId = 1, string filterEmail = "", string filterUserName = "")
         {
-            IQueryable<User> result = _context.Users.IgnoreQueryFilters().Where(u=>u.IsDelete);
-
-            if (!string.IsNullOrEmpty(filterEmail))
-            {
-                result = result.Where(u => u.Email.Contains(filterEmail));
-            }
-
-            if (!string.IsNullOrEmpty(filterUserName))
-            {
-                result = result.Where(u => u.UserName.Contains(filterUserName));
-            }
-
-            // Show Item In Page
-            int take = 20;
-            int skip = (pageId - 1) * take;
-
-
-            UserForAdminViewModel list = new UserForAdminViewModel();
-            list.CurrentPage = pageId;
-            list.PageCount = result.Count() / take;
-            list.Users = result.OrderBy(u => u.RegisterDate).Skip(skip).Take(take).ToList();
-
-            return list;
+            return _userRepository.GetDeleteUsers(pageId, filterEmail, filterUserName);
         }
 
         public int AddUserFromAdmin(CreateUserViewModel user)
         {
-            User addUser=new User();
+            User addUser = new User();
             addUser.Password = PasswordHelper.EncodePasswordMd5(user.Password);
             addUser.ActiveCode = NameGenerator.GenerateUniqCode();
             addUser.Email = user.Email;
             addUser.IsActive = true;
-            addUser.RegisterDate=DateTime.Now;
+            addUser.RegisterDate = DateTime.Now;
             addUser.UserName = user.UserName;
 
             #region Save Avatar
@@ -340,15 +247,7 @@ namespace MyCvProject.Core.Services
 
         public EditUserViewModel GetUserForShowInEditMode(int userId)
         {
-            return _context.Users.Where(u => u.UserId == userId)
-                .Select(u => new EditUserViewModel()
-                {
-                    UserId = u.UserId,
-                    AvatarName = u.UserAvatar,
-                    Email = u.Email,
-                    UserName = u.UserName,
-                    UserRoles = u.UserRoles.Select(r=>r.RoleId).ToList()
-                }).Single();
+            return _userRepository.GetUserForShowInEditMode(userId);
         }
 
         public void EditUserFromAdmin(EditUserViewModel editUser)
@@ -365,7 +264,7 @@ namespace MyCvProject.Core.Services
                 //Delete old Image
                 if (editUser.AvatarName != "Defult.jpg")
                 {
-                   string deletePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserAvatar", editUser.AvatarName);
+                    string deletePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserAvatar", editUser.AvatarName);
                     if (File.Exists(deletePath))
                     {
                         File.Delete(deletePath);
@@ -375,14 +274,11 @@ namespace MyCvProject.Core.Services
                 //Save New Image
                 user.UserAvatar = NameGenerator.GenerateUniqCode() + Path.GetExtension(editUser.UserAvatar.FileName);
                 string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserAvatar", user.UserAvatar);
-                using (var stream = new FileStream(imagePath, FileMode.Create))
-                {
-                    editUser.UserAvatar.CopyTo(stream);
-                }
+                using var stream = new FileStream(imagePath, FileMode.Create);
+                editUser.UserAvatar.CopyTo(stream);
             }
 
-            _context.Users.Update(user);
-            _context.SaveChanges();
+            _userRepository.EditUserFromAdmin(user);
         }
     }
 }
