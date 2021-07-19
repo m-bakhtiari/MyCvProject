@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MyCvProject.Core.Services.Interfaces;
+using MyCvProject.Core.Interfaces;
+using System;
+using System.Globalization;
 
-namespace MyCvProject.Web.Pages.Admin.Discount
+namespace MyCvProject.UI.Pages.Admin.Discount
 {
     public class CreateDiscountModel : PageModel
     {

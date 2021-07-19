@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using MyCvProject.Core.Services.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using MyCvProject.Core.Interfaces;
 using MyCvProject.Domain.Entities.Course;
+using System.Collections.Generic;
 
-namespace MyCvProject.Web.Pages.Admin.Courses
+namespace MyCvProject.UI.Pages.Admin.Courses
 {
     public class IndexEpisodeModel : PageModel
     {
-        private ICourseService _courseService;
+        private readonly ICourseService _courseService;
 
         public IndexEpisodeModel(ICourseService courseService)
         {

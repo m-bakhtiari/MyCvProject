@@ -1,15 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MyCvProject.Core.ViewModels.Course;
 using MyCvProject.Domain.Entities.Course;
-using MyCvProject.Domain.ViewModels.Course;
+using MyCvProject.Domain.Interfaces;
 using MyCvProject.Infra.Data.Context;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using MyCvProject.Core.ViewModels.Course;
-using MyCvProject.Domain.Interfaces;
 
 namespace MyCvProject.Infra.Data.Repositories
 {

@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MyCvProject.Core.ViewModels;
+using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Security;
-using MyCvProject.Core.Services.Interfaces;
+using MyCvProject.Core.ViewModels;
+using System.Collections.Generic;
 
-namespace MyCvProject.Web.Pages.Admin.Users
+namespace MyCvProject.UI.Pages.Admin.Users
 {
     [PermissionChecker(4)]
     public class EditUserModel : PageModel
     {
-        private IUserService _userService;
-        private IPermissionService _permissionService;
+        private readonly IUserService _userService;
+        private readonly IPermissionService _permissionService;
 
         public EditUserModel(IUserService userService, IPermissionService permissionService)
         {
@@ -22,9 +19,6 @@ namespace MyCvProject.Web.Pages.Admin.Users
             _permissionService = permissionService;
         }
 
-        
-
-        
         [BindProperty]
         public EditUserViewModel EditUserViewModel { get; set; }
         public void OnGet(int id)

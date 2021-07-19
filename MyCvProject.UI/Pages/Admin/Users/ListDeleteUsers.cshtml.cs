@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.ViewModels;
-using MyCvProject.Core.Services.Interfaces;
 
-namespace MyCvProject.Web.Pages.Admin.Users
+namespace MyCvProject.UI.Pages.Admin.Users
 {
     public class ListDeleteUsersModel : PageModel
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
 
         public ListDeleteUsersModel(IUserService userService)
         {

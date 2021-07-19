@@ -1,16 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using MyCvProject.Core.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using MyCvProject.Core.Services.Interfaces;
 
-namespace MyCvProject.Web.Pages.Admin.Discount
+namespace MyCvProject.UI.Pages.Admin.Discount
 {
     public class IndexModel : PageModel
     {
-        private IOrderService _orderService;
+        private readonly IOrderService _orderService;
 
         public IndexModel(IOrderService orderService)
         {

@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using MyCvProject.Core.ViewModels;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Security;
-using MyCvProject.Core.Services.Interfaces;
+using MyCvProject.Core.ViewModels;
 
-namespace MyCvProject.Web.Pages.Admin.Users
+namespace MyCvProject.UI.Pages.Admin.Users
 {
     [PermissionChecker(2)]
     public class IndexModel : PageModel
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
 
         public IndexModel(IUserService userService)
         {

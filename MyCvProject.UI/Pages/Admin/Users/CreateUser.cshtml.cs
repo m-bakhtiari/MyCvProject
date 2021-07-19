@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MyCvProject.Core.ViewModels;
+using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Security;
-using MyCvProject.Core.Services.Interfaces;
+using MyCvProject.Core.ViewModels;
+using System.Collections.Generic;
 
-namespace MyCvProject.Web.Pages.Admin.Users
+namespace MyCvProject.UI.Pages.Admin.Users
 {
     [PermissionChecker(3)]
     public class CreateUserModel : PageModel
     {
-        private IUserService _userService;
-        private IPermissionService _permissionService;
+        private readonly IUserService _userService;
+        private readonly IPermissionService _permissionService;
 
         public CreateUserModel(IUserService userService, IPermissionService permissionService)
         {

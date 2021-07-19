@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCvProject.UI", "MyCvProject.UI\MyCvProject.UI.csproj", "{2DF1AFD7-BB43-437F-B60A-BEB070A76A81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyCvProject.UI", "MyCvProject.UI\MyCvProject.UI.csproj", "{2DF1AFD7-BB43-437F-B60A-BEB070A76A81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCvProject.Core", "MyCvProject.Core\MyCvProject.Core.csproj", "{8D09C31A-1BAC-4E98-A868-95034E08EC05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyCvProject.Core", "MyCvProject.Core\MyCvProject.Core.csproj", "{8D09C31A-1BAC-4E98-A868-95034E08EC05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCvProject.Domain", "MyCvProject.Domain\MyCvProject.Domain.csproj", "{23982CEE-8BA6-4617-8F03-EC85C6DBF566}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyCvProject.Domain", "MyCvProject.Domain\MyCvProject.Domain.csproj", "{23982CEE-8BA6-4617-8F03-EC85C6DBF566}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCvProject.Infra.Data", "MyCvProject.Infra.Data\MyCvProject.Infra.Data.csproj", "{E5BEC137-D389-414E-BD96-F082AD1FB9ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyCvProject.Infra.Data", "MyCvProject.Infra.Data\MyCvProject.Infra.Data.csproj", "{E5BEC137-D389-414E-BD96-F082AD1FB9ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCvProject.Infra.IoC", "MyCvProject.Infra.IoC\MyCvProject.Infra.IoC.csproj", "{3FF16922-2C73-484D-A61D-7E85FFB52BB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyCvProject.Infra.IoC", "MyCvProject.Infra.IoC\MyCvProject.Infra.IoC.csproj", "{3FF16922-2C73-484D-A61D-7E85FFB52BB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyCvProject.Core.Convertors;
+using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Services;
-using MyCvProject.Core.Services.Interfaces;
-using MyCvProject.Domain.Context;
+using MyCvProject.Infra.Data.Context;
+using MyCvProject.Infra.IoC.DependencyInjections;
+using System;
 
-namespace MyCvProject.Web
+namespace MyCvProject.UI
 {
     public class Startup
     {
@@ -30,11 +27,15 @@ namespace MyCvProject.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc(x => x.EnableEndpointRouting = false);
 
             //services.Configure<FormOptions>(options => { options.MultipartBodyLengthLimit = 6000000; });
-        
 
+            #region Add IoC
+
+            RegisterServices(services);
+
+            #endregion
 
             #region Authentication
 
@@ -42,13 +43,13 @@ namespace MyCvProject.Web
             {
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme= CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
             }).AddCookie(options =>
             {
                 options.LoginPath = "/Login";
                 options.LogoutPath = "/Logout";
-                options.ExpireTimeSpan=TimeSpan.FromMinutes(43200);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(43200);
 
             });
 
@@ -85,13 +86,13 @@ namespace MyCvProject.Web
 
             app.UseStaticFiles();
             app.UseAuthentication();
-         
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "areas",
                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-                    
+
                 );
                 routes.MapRoute("Default", "{controller=Home}/{action=Index}/{id?}");
             });
@@ -100,6 +101,11 @@ namespace MyCvProject.Web
             {
                 await context.Response.WriteAsync("Hello World!");
             });
+        }
+
+        public static void RegisterServices(IServiceCollection service)
+        {
+            DependencyContainer.RegisterServices(service);
         }
     }
 }

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using MyCvProject.Core.Interfaces;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using MyCvProject.Core.Services.Interfaces;
 
-namespace MyCvProject.Web.ViewComponents
+namespace MyCvProject.UI.ViewComponents
 {
-    public class CourseGroupComponent:ViewComponent
+    public class CourseGroupComponent : ViewComponent
     {
-        private ICourseService _courseService;
+        private readonly ICourseService _courseService;
 
         public CourseGroupComponent(ICourseService courseService)
         {
@@ -19,7 +16,7 @@ namespace MyCvProject.Web.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            return await Task.FromResult((IViewComponentResult) View("CourseGroup",_courseService.GetAllGroup()));
+            return await Task.FromResult((IViewComponentResult)View("CourseGroup", _courseService.GetAllGroup()));
         }
     }
 }
