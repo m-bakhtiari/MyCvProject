@@ -19,13 +19,15 @@ namespace MyCvProject.Domain.Entities.Course
         [Display(Name = "گروه اصلی")]
         public int? ParentId { get; set; }
 
-        [ForeignKey("ParentId")]
+        [ForeignKey(nameof(ParentId))]
         public List<CourseGroup> CourseGroups { get; set; }
 
-        [InverseProperty("CourseGroup")]
+        [NotMapped]
+        [InverseProperty(nameof(Course.CourseGroup))]
         public List<Course> Courses { get; set; }
 
-        [InverseProperty("Group")]
+        [NotMapped]
+        [InverseProperty(nameof(Course.Group))]
         public List<Course> SubGroup { get; set; }
 
     }

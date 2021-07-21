@@ -16,7 +16,7 @@ namespace MyCvProject.Domain.Entities.Permissions
         public int? ParentID { get; set; }
 
 
-        [ForeignKey("ParentID")]
+        [ForeignKey(nameof(ParentID))]
         public List<Permission> Permissions { get; set; }
 
         public List<RolePermission> RolePermissions { get; set; }

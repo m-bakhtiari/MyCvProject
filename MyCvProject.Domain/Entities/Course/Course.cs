@@ -55,13 +55,15 @@ namespace MyCvProject.Domain.Entities.Course
 
         #region Relations
 
-        [ForeignKey("TeacherId")]
+        [ForeignKey(nameof(TeacherId))]
         public User.User User { get; set; }
 
-        [ForeignKey("GroupId")]
+        [NotMapped]
+        [ForeignKey(nameof(GroupId))]
         public CourseGroup CourseGroup { get; set; }
 
-        [ForeignKey("SubGroup")]
+        [NotMapped]
+        [ForeignKey(nameof(SubGroup))]
         public CourseGroup Group { get; set; }
 
         public CourseStatus CourseStatus { get; set; }

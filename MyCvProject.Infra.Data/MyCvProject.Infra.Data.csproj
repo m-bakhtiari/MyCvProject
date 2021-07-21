@@ -23,4 +23,8 @@
     <ProjectReference Include="..\MyCvProject.Domain\MyCvProject.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
