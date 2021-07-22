@@ -3,11 +3,13 @@ using MyCvProject.Domain.Entities.User;
 using MyCvProject.Infra.Data.Context;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using MyCvProject.Domain.Interfaces;
 
 namespace MyCvProject.Infra.Data.Repositories
 {
-    public class PermissionRepository: IPermissionRepository
+    public class PermissionRepository : IPermissionRepository
     {
         private readonly MyCvProjectContext _context;
 
@@ -15,108 +17,108 @@ namespace MyCvProject.Infra.Data.Repositories
         {
             _context = context;
         }
-        public List<Role> GetRoles()
+        public async Task<List<Role>> GetRoles()
         {
-            return _context.Roles.ToList();
+            return await _context.Roles.ToListAsync();
         }
 
-        public int AddRole(Role role)
+        public async Task<int> AddRole(Role role)
         {
-            _context.Roles.Add(role);
-            _context.SaveChanges();
+            await _context.Roles.AddAsync(role);
+            await _context.SaveChangesAsync();
             return role.RoleId;
         }
 
-        public Role GetRoleById(int roleId)
+        public async Task<Role> GetRoleById(int roleId)
         {
-            return _context.Roles.Find(roleId);
+            return await _context.Roles.FindAsync(roleId);
         }
 
-        public void UpdateRole(Role role)
+        public async Task UpdateRole(Role role)
         {
             _context.Roles.Update(role);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteRole(Role role)
+        public async Task DeleteRole(Role role)
         {
             role.IsDelete = true;
-            UpdateRole(role);
+            await UpdateRole(role);
         }
 
-        public void AddRolesToUser(List<int> roleIds, int userId)
+        public async Task AddRolesToUser(List<int> roleIds, int userId)
         {
             foreach (int roleId in roleIds)
             {
-                _context.UserRoles.Add(new UserRole()
+                await _context.UserRoles.AddAsync(new UserRole()
                 {
                     RoleId = roleId,
                     UserId = userId
                 });
             }
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void EditRolesUser(int userId, List<int> rolesId)
+        public async Task EditRolesUser(int userId, List<int> rolesId)
         {
             //Delete All Roles User
-            _context.UserRoles.Where(r => r.UserId == userId).ToList().ForEach(r => _context.UserRoles.Remove(r));
+            await _context.UserRoles.Where(r => r.UserId == userId).ForEachAsync(r => _context.UserRoles.Remove(r));
 
             //Add New Roles
-            AddRolesToUser(rolesId, userId);
+            await AddRolesToUser(rolesId, userId);
         }
 
-        public List<Permission> GetAllPermission()
+        public async Task<List<Permission>> GetAllPermission()
         {
-            return _context.Permission.ToList();
+            return await _context.Permission.ToListAsync();
         }
 
-        public void AddPermissionsToRole(int roleId, List<int> permission)
+        public async Task AddPermissionsToRole(int roleId, List<int> permission)
         {
             foreach (var p in permission)
             {
-                _context.RolePermission.Add(new RolePermission()
+                await _context.RolePermission.AddAsync(new RolePermission()
                 {
                     PermissionId = p,
                     RoleId = roleId
                 });
             }
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public List<int> PermissionsRole(int roleId)
+        public async Task<List<int>> PermissionsRole(int roleId)
         {
-            return _context.RolePermission
+            return await _context.RolePermission
                 .Where(r => r.RoleId == roleId)
-                .Select(r => r.PermissionId).ToList();
+                .Select(r => r.PermissionId).ToListAsync();
         }
 
-        public void UpdatePermissionsRole(int roleId, List<int> permissions)
+        public async Task UpdatePermissionsRole(int roleId, List<int> permissions)
         {
-            _context.RolePermission.Where(p => p.RoleId == roleId)
-                .ToList().ForEach(p => _context.RolePermission.Remove(p));
+            await _context.RolePermission.Where(p => p.RoleId == roleId)
+                 .ForEachAsync(p => _context.RolePermission.Remove(p));
 
-            AddPermissionsToRole(roleId, permissions);
+            await AddPermissionsToRole(roleId, permissions);
         }
 
-        public bool CheckPermission(int permissionId, string userName)
+        public async Task<bool> CheckPermission(int permissionId, string userName)
         {
-            int userId = _context.Users.Single(u => u.UserName == userName).UserId;
+            var user = await _context.Users.SingleAsync(u => u.UserName == userName);
+            int userId = user.UserId;
 
-            List<int> UserRoles = _context.UserRoles
-                .Where(r => r.UserId == userId).Select(r => r.RoleId).ToList();
+            List<int> UserRoles = await _context.UserRoles
+                .Where(r => r.UserId == userId).Select(r => r.RoleId).ToListAsync();
 
             if (!UserRoles.Any())
                 return false;
 
-            List<int> RolesPermission = _context.RolePermission
+            List<int> RolesPermission = await _context.RolePermission
                 .Where(p => p.PermissionId == permissionId)
-                .Select(p => p.RoleId).ToList();
+                .Select(p => p.RoleId).ToListAsync();
 
             return RolesPermission.Any(p => UserRoles.Contains(p));
-
 
         }
     }

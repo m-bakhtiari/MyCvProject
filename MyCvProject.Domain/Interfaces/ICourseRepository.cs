@@ -4,57 +4,58 @@ using MyCvProject.Core.ViewModels.Course;
 using MyCvProject.Domain.Entities.Course;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.Domain.Interfaces
 {
     public interface ICourseRepository
     {
-        List<CourseGroup> GetAllGroup();
+        Task<List<CourseGroup>> GetAllGroup();
 
-        List<SelectListItem> GetGroupForManageCourse();
+        Task<List<SelectListItem>> GetGroupForManageCourse();
 
-        List<SelectListItem> GetSubGroupForManageCourse(int groupId);
+        Task<List<SelectListItem>> GetSubGroupForManageCourse(int groupId);
 
-        List<SelectListItem> GetTeachers();
+        Task<List<SelectListItem>> GetTeachers();
 
-        List<SelectListItem> GetLevels();
+        Task<List<SelectListItem>> GetLevels();
 
-        List<SelectListItem> GetStatues();
+        Task<List<SelectListItem>> GetStatues();
 
-        CourseGroup GetById(int groupId);
+        Task<CourseGroup> GetById(int groupId);
 
-        void AddGroup(CourseGroup @group);
+        Task AddGroup(CourseGroup @group);
 
-        void UpdateGroup(CourseGroup @group);
-        List<ShowCourseForAdminViewModel> GetCoursesForAdmin();
-        int AddCourse(Course course);
-        Course GetCourseById(int courseId);
-        void UpdateCourse(Course course);
+        Task UpdateGroup(CourseGroup @group);
+        Task<List<ShowCourseForAdminViewModel>> GetCoursesForAdmin();
+        Task<int> AddCourse(Course course);
+        Task<Course> GetCourseById(int courseId);
+        Task UpdateCourse(Course course);
 
-        Tuple<List<ShowCourseListItemViewModel>, int> GetCourse(int pageId = 1, string filter = ""
+        Task<Tuple<List<ShowCourseListItemViewModel>, int>> GetCourse(int pageId = 1, string filter = ""
             , string getType = "all", string orderByType = "date",
             int startPrice = 0, int endPrice = 0, List<int> selectedGroups = null, int take = 0);
 
-        Course GetCourseForShow(int courseId);
+        Task<Course> GetCourseForShow(int courseId);
 
-        List<ShowCourseListItemViewModel> GetPopularCourse();
-
-
-        List<CourseEpisode> GetListEpisodeCorse(int courseId);
+        Task<List<ShowCourseListItemViewModel>> GetPopularCourse();
 
 
-        int AddEpisode(CourseEpisode episode);
+        Task<List<CourseEpisode>> GetListEpisodeCorse(int courseId);
 
 
-        CourseEpisode GetEpisodeById(int episodeId);
+        Task<int> AddEpisode(CourseEpisode episode);
 
 
-        void EditEpisode(CourseEpisode episode);
+        Task<CourseEpisode> GetEpisodeById(int episodeId);
 
 
-        void AddComment(CourseComment comment);
+        Task EditEpisode(CourseEpisode episode);
 
-        Tuple<List<CourseComment>, int> GetCourseComment(int courseId, int pageId = 1);
+
+        Task AddComment(CourseComment comment);
+
+        Task<Tuple<List<CourseComment>, int>> GetCourseComment(int courseId, int pageId = 1);
 
     }
 }

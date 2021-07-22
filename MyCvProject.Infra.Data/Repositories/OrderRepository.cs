@@ -6,12 +6,13 @@ using MyCvProject.Infra.Data.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using MyCvProject.Core.ViewModels.Order;
 using MyCvProject.Domain.Entities.Course;
 
 namespace MyCvProject.Infra.Data.Repositories
 {
-    public class OrderRepository: IOrderRepository
+    public class OrderRepository : IOrderRepository
     {
         private readonly MyCvProjectContext _context;
 
@@ -20,12 +21,12 @@ namespace MyCvProject.Infra.Data.Repositories
             _context = context;
         }
 
-        public int AddOrder(string userName, int courseId,int userId)
+        public async Task<int> AddOrder(string userName, int courseId, int userId)
         {
-            Order order = _context.Orders
-                .FirstOrDefault(o => o.UserId == userId && !o.IsFinaly);
+            Order order = await _context.Orders
+                .FirstOrDefaultAsync(o => o.UserId == userId && !o.IsFinaly);
 
-            var course = _context.Courses.Find(courseId);
+            var course = await _context.Courses.FindAsync(courseId);
 
             if (order == null)
             {
@@ -45,13 +46,13 @@ namespace MyCvProject.Infra.Data.Repositories
                         }
                     }
                 };
-                _context.Orders.Add(order);
-                _context.SaveChanges();
+                await _context.Orders.AddAsync(order);
+                await _context.SaveChangesAsync();
             }
             else
             {
-                OrderDetail detail = _context.OrderDetails
-                    .FirstOrDefault(d => d.OrderId == order.OrderId && d.CourseId == courseId);
+                OrderDetail detail = await _context.OrderDetails
+                    .FirstOrDefaultAsync(d => d.OrderId == order.OrderId && d.CourseId == courseId);
                 if (detail != null)
                 {
                     detail.Count += 1;
@@ -66,11 +67,11 @@ namespace MyCvProject.Infra.Data.Repositories
                         CourseId = courseId,
                         Price = course.CoursePrice,
                     };
-                    _context.OrderDetails.Add(detail);
+                    await _context.OrderDetails.AddAsync(detail);
                 }
 
-                _context.SaveChanges();
-                UpdatePriceOrder(order.OrderId);
+                await _context.SaveChangesAsync();
+                await UpdatePriceOrder(order.OrderId);
             }
 
 
@@ -78,45 +79,45 @@ namespace MyCvProject.Infra.Data.Repositories
 
         }
 
-        public void UpdatePriceOrder(int orderId)
+        public async Task UpdatePriceOrder(int orderId)
         {
-            var order = _context.Orders.Find(orderId);
-            order.OrderSum = _context.OrderDetails.Where(d => d.OrderId == orderId).Sum(d => d.Price);
+            var order = await _context.Orders.FindAsync(orderId);
+            order.OrderSum = await _context.OrderDetails.Where(d => d.OrderId == orderId).SumAsync(d => d.Price);
             _context.Orders.Update(order);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public Order GetOrderForUserPanel(int orderId,int userId)
+        public async Task<Order> GetOrderForUserPanel(int orderId, int userId)
         {
-            return _context.Orders.Include(o => o.OrderDetails).ThenInclude(od => od.Course)
-                .FirstOrDefault(o => o.UserId == userId && o.OrderId == orderId);
+            return await _context.Orders.Include(o => o.OrderDetails).ThenInclude(od => od.Course)
+                .FirstOrDefaultAsync(o => o.UserId == userId && o.OrderId == orderId);
         }
 
-        public Order GetOrderById(int orderId)
+        public async Task<Order> GetOrderById(int orderId)
         {
-            return _context.Orders.Find(orderId);
+            return await _context.Orders.FindAsync(orderId);
         }
 
 
-        public List<Order> GetUserOrders(string userName, int userId)
+        public async Task<List<Order>> GetUserOrders(string userName, int userId)
         {
-            return _context.Orders.Where(o => o.UserId == userId).ToList();
+            return await _context.Orders.Where(o => o.UserId == userId).ToListAsync();
         }
 
-        public void UpdateOrder(Order order)
+        public async Task UpdateOrder(Order order)
         {
             _context.Orders.Update(order);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public bool IsUserInCourse(string userName, int courseId, int userId)
+        public async Task<bool> IsUserInCourse(string userName, int courseId, int userId)
         {
-            return _context.UserCourses.Any(c => c.UserId == userId && c.CourseId == courseId);
+            return await _context.UserCourses.AnyAsync(c => c.UserId == userId && c.CourseId == courseId);
         }
 
-        public DiscountUseType UseDiscount(int orderId, string code)
+        public async Task<DiscountUseType> UseDiscount(int orderId, string code)
         {
-            var discount = _context.Discounts.SingleOrDefault(d => d.DiscountCode == code);
+            var discount = await _context.Discounts.SingleOrDefaultAsync(d => d.DiscountCode == code);
 
             if (discount == null)
                 return DiscountUseType.NotFound;
@@ -131,15 +132,15 @@ namespace MyCvProject.Infra.Data.Repositories
             if (discount.UsableCount != null && discount.UsableCount < 1)
                 return DiscountUseType.Finished;
 
-            var order = GetOrderById(orderId);
+            var order = await GetOrderById(orderId);
 
-            if (_context.UserDiscountCodes.Any(d => d.UserId == order.UserId && d.DiscountId == discount.DiscountId))
+            if (await _context.UserDiscountCodes.AnyAsync(d => d.UserId == order.UserId && d.DiscountId == discount.DiscountId))
                 return DiscountUseType.UserUsed;
 
             int percent = (order.OrderSum * discount.DiscountPercent) / 100;
             order.OrderSum = order.OrderSum - percent;
 
-            UpdateOrder(order);
+            await UpdateOrder(order);
 
             if (discount.UsableCount != null)
             {
@@ -147,49 +148,47 @@ namespace MyCvProject.Infra.Data.Repositories
             }
 
             _context.Discounts.Update(discount);
-            _context.UserDiscountCodes.Add(new UserDiscountCode()
+            await _context.UserDiscountCodes.AddAsync(new UserDiscountCode()
             {
                 UserId = order.UserId,
                 DiscountId = discount.DiscountId
             });
-            _context.SaveChanges();
-
-
+            await _context.SaveChangesAsync();
 
             return DiscountUseType.Success;
         }
 
-        public void AddDiscount(Discount discount)
+        public async Task AddDiscount(Discount discount)
         {
-            _context.Discounts.Add(discount);
-            _context.SaveChanges();
+            await _context.Discounts.AddAsync(discount);
+            await _context.SaveChangesAsync();
         }
 
-        public List<Discount> GetAllDiscounts()
+        public async Task<List<Discount>> GetAllDiscounts()
         {
-            return _context.Discounts.ToList();
+            return await _context.Discounts.ToListAsync();
         }
 
-        public Discount GetDiscountById(int discountId)
+        public async Task<Discount> GetDiscountById(int discountId)
         {
-            return _context.Discounts.Find(discountId);
+            return await _context.Discounts.FindAsync(discountId);
         }
 
-        public void UpdateDiscount(Discount discount)
+        public async Task UpdateDiscount(Discount discount)
         {
             _context.Discounts.Update(discount);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public bool IsExistCode(string code)
+        public async Task<bool> IsExistCode(string code)
         {
-            return _context.Discounts.Any(d => d.DiscountCode == code);
+            return await _context.Discounts.AnyAsync(d => d.DiscountCode == code);
         }
 
-        public void AddUserCourse(UserCourse userCourse)
+        public async Task AddUserCourse(UserCourse userCourse)
         {
-            _context.UserCourses.Add(userCourse);
-            _context.SaveChanges();
+            await _context.UserCourses.AddAsync(userCourse);
+            await _context.SaveChangesAsync();
         }
     }
 }

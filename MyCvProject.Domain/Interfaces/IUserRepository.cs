@@ -2,55 +2,56 @@
 using MyCvProject.Domain.Entities.User;
 using MyCvProject.Domain.Entities.Wallet;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.Domain.Interfaces
 {
     public interface IUserRepository
     {
-        bool IsExistUserName(string userName);
+        Task<bool> IsExistUserName(string userName);
 
-        bool IsExistEmail(string email);
+        Task<bool> IsExistEmail(string email);
 
-        int AddUser(User user);
+        Task<int> AddUser(User user);
 
-        User LoginUser(string email, string password);
+        Task<User> LoginUser(string email, string password);
 
-        User GetUserByEmail(string email);
+        Task<User> GetUserByEmail(string email);
 
-        User GetUserById(int userId);
+        Task<User> GetUserById(int userId);
 
-        User GetUserByActiveCode(string activeCode);
+        Task<User> GetUserByActiveCode(string activeCode);
 
-        User GetUserByUserName(string username);
+        Task<User> GetUserByUserName(string username);
 
-        void UpdateUser(User user);
+        Task UpdateUser(User user);
 
-        bool ActiveAccount(string activeCode);
+        Task<bool> ActiveAccount(string activeCode);
 
-        int GetUserIdByUserName(string userName);
+        Task<int> GetUserIdByUserName(string userName);
 
-        SideBarUserPanelViewModel GetSideBarUserPanelData(string username);
+        Task<SideBarUserPanelViewModel> GetSideBarUserPanelData(string username);
 
-        EditProfileViewModel GetDataForEditProfileUser(string username);
+        Task<EditProfileViewModel> GetDataForEditProfileUser(string username);
 
-        bool CompareOldPassword(string oldPassword, string username);
+        Task<bool> CompareOldPassword(string oldPassword, string username);
 
-        int BalanceUserWallet(string userName);
+        Task<int> BalanceUserWallet(string userName);
 
-        List<WalletViewModel> GetWalletUser(string userName);
+        Task<List<WalletViewModel>> GetWalletUser(string userName);
 
-        int AddWallet(Wallet wallet);
+        Task<int> AddWallet(Wallet wallet);
 
-        Wallet GetWalletByWalletId(int walletId);
+        Task<Wallet> GetWalletByWalletId(int walletId);
 
-        void UpdateWallet(Wallet wallet);
-        UserForAdminViewModel GetUsers(int pageId = 1, string filterEmail = "", string filterUserName = "");
+        Task UpdateWallet(Wallet wallet);
+        Task<UserForAdminViewModel> GetUsers(int pageId = 1, string filterEmail = "", string filterUserName = "");
 
-        UserForAdminViewModel GetDeleteUsers(int pageId = 1, string filterEmail = "", string filterUserName = "");
+        Task<UserForAdminViewModel> GetDeleteUsers(int pageId = 1, string filterEmail = "", string filterUserName = "");
 
-        EditUserViewModel GetUserForShowInEditMode(int userId);
+        Task<EditUserViewModel> GetUserForShowInEditMode(int userId);
 
-        void EditUserFromAdmin(User user);
+        Task EditUserFromAdmin(User user);
     }
 
 }

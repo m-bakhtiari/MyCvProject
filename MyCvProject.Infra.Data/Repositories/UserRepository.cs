@@ -1,19 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyCvProject.Core.Generator;
-using MyCvProject.Core.Security;
 using MyCvProject.Core.ViewModels;
 using MyCvProject.Domain.Entities.User;
 using MyCvProject.Domain.Entities.Wallet;
 using MyCvProject.Domain.Interfaces;
 using MyCvProject.Infra.Data.Context;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyCvProject.Infra.Data.Repositories
 {
-    public class UserRepository: IUserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly MyCvProjectContext _context;
 
@@ -23,119 +21,120 @@ namespace MyCvProject.Infra.Data.Repositories
         }
 
 
-        public bool IsExistUserName(string userName)
+        public async Task<bool> IsExistUserName(string userName)
         {
-            return _context.Users.Any(u => u.UserName == userName);
+            return await _context.Users.AnyAsync(u => u.UserName == userName);
         }
 
-        public bool IsExistEmail(string email)
+        public async Task<bool> IsExistEmail(string email)
         {
-            return _context.Users.Any(u => u.Email == email);
+            return await _context.Users.AnyAsync(u => u.Email == email);
         }
 
-        public int AddUser(User user)
+        public async Task<int> AddUser(User user)
         {
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
             return user.UserId;
         }
 
-        public User LoginUser(string email,string password)
+        public async Task<User> LoginUser(string email, string password)
         {
-            return _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
         }
 
-        public User GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            return _context.Users.SingleOrDefault(u => u.Email == email);
+            return await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
         }
 
-        public User GetUserById(int userId)
+        public async Task<User> GetUserById(int userId)
         {
-            return _context.Users.Find(userId);
+            return await _context.Users.FindAsync(userId);
         }
 
-        public User GetUserByActiveCode(string activeCode)
+        public async Task<User> GetUserByActiveCode(string activeCode)
         {
-            return _context.Users.SingleOrDefault(u => u.ActiveCode == activeCode);
+            return await _context.Users.SingleOrDefaultAsync(u => u.ActiveCode == activeCode);
         }
 
-        public User GetUserByUserName(string username)
+        public async Task<User> GetUserByUserName(string username)
         {
-            return _context.Users.SingleOrDefault(u => u.UserName == username);
+            return await _context.Users.SingleOrDefaultAsync(u => u.UserName == username);
         }
 
-        public void UpdateUser(User user)
+        public async Task UpdateUser(User user)
         {
             _context.Update(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public bool ActiveAccount(string activeCode)
+        public async Task<bool> ActiveAccount(string activeCode)
         {
-            var user = _context.Users.SingleOrDefault(u => u.ActiveCode == activeCode);
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.ActiveCode == activeCode);
             if (user == null || user.IsActive)
                 return false;
 
             user.IsActive = true;
             user.ActiveCode = NameGenerator.GenerateUniqCode();
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return true;
         }
 
-        public int GetUserIdByUserName(string userName)
+        public async Task<int> GetUserIdByUserName(string userName)
         {
-            return _context.Users.Single(u => u.UserName == userName).UserId;
+            var user = await _context.Users.SingleAsync(u => u.UserName == userName);
+            return user.UserId;
         }
 
-        public SideBarUserPanelViewModel GetSideBarUserPanelData(string username)
+        public async Task<SideBarUserPanelViewModel> GetSideBarUserPanelData(string username)
         {
-            return _context.Users.Where(u => u.UserName == username).Select(u => new SideBarUserPanelViewModel()
+            return await _context.Users.Where(u => u.UserName == username).Select(u => new SideBarUserPanelViewModel()
             {
                 UserName = u.UserName,
                 ImageName = u.UserAvatar,
                 RegisterDate = u.RegisterDate
-            }).Single();
+            }).SingleAsync();
         }
 
-        public EditProfileViewModel GetDataForEditProfileUser(string username)
+        public async Task<EditProfileViewModel> GetDataForEditProfileUser(string username)
         {
-            return _context.Users.Where(u => u.UserName == username).Select(u => new EditProfileViewModel()
+            return await _context.Users.Where(u => u.UserName == username).Select(u => new EditProfileViewModel()
             {
                 AvatarName = u.UserAvatar,
                 Email = u.Email,
                 UserName = u.UserName
 
-            }).Single();
+            }).SingleAsync();
         }
 
-        public bool CompareOldPassword(string oldPassword, string username)
+        public async Task<bool> CompareOldPassword(string oldPassword, string username)
         {
-            return _context.Users.Any(u => u.UserName == username && u.Password == oldPassword);
+            return await _context.Users.AnyAsync(u => u.UserName == username && u.Password == oldPassword);
         }
 
-        public int BalanceUserWallet(string userName)
+        public async Task<int> BalanceUserWallet(string userName)
         {
 
-            int userId = GetUserIdByUserName(userName);
+            int userId = await GetUserIdByUserName(userName);
 
-            var enter = _context.Wallets
+            var enter = await _context.Wallets
                 .Where(w => w.UserId == userId && w.TypeId == 1 && w.IsPay)
-                .Select(w => w.Amount).ToList();
+                .Select(w => w.Amount).ToListAsync();
 
-            var exit = _context.Wallets
+            var exit = await _context.Wallets
                 .Where(w => w.UserId == userId && w.TypeId == 2)
-                .Select(w => w.Amount).ToList();
+                .Select(w => w.Amount).ToListAsync();
 
             return (enter.Sum() - exit.Sum());
         }
 
-        public List<WalletViewModel> GetWalletUser(string userName)
+        public async Task<List<WalletViewModel>> GetWalletUser(string userName)
         {
-            int userId = GetUserIdByUserName(userName);
+            int userId = await GetUserIdByUserName(userName);
 
-            return _context.Wallets
+            return await _context.Wallets
                 .Where(w => w.IsPay && w.UserId == userId)
                 .Select(w => new WalletViewModel()
                 {
@@ -144,28 +143,28 @@ namespace MyCvProject.Infra.Data.Repositories
                     Description = w.Description,
                     Type = w.TypeId
                 })
-                .ToList();
+                .ToListAsync();
         }
 
-        public int AddWallet(Wallet wallet)
+        public async Task<int> AddWallet(Wallet wallet)
         {
-            _context.Wallets.Add(wallet);
-            _context.SaveChanges();
+            await _context.Wallets.AddAsync(wallet);
+            await _context.SaveChangesAsync();
             return wallet.WalletId;
         }
 
-        public Wallet GetWalletByWalletId(int walletId)
+        public async Task<Wallet> GetWalletByWalletId(int walletId)
         {
-            return _context.Wallets.Find(walletId);
+            return await _context.Wallets.FindAsync(walletId);
         }
 
-        public void UpdateWallet(Wallet wallet)
+        public async Task UpdateWallet(Wallet wallet)
         {
             _context.Wallets.Update(wallet);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public UserForAdminViewModel GetUsers(int pageId = 1, string filterEmail = "", string filterUserName = "")
+        public async Task<UserForAdminViewModel> GetUsers(int pageId = 1, string filterEmail = "", string filterUserName = "")
         {
             IQueryable<User> result = _context.Users;
 
@@ -186,13 +185,13 @@ namespace MyCvProject.Infra.Data.Repositories
 
             UserForAdminViewModel list = new UserForAdminViewModel();
             list.CurrentPage = pageId;
-            list.PageCount = result.Count() / take;
-            list.Users = result.OrderBy(u => u.RegisterDate).Skip(skip).Take(take).ToList();
+            list.PageCount = await result.CountAsync() / take;
+            list.Users = await result.OrderBy(u => u.RegisterDate).Skip(skip).Take(take).ToListAsync();
 
             return list;
         }
 
-        public UserForAdminViewModel GetDeleteUsers(int pageId = 1, string filterEmail = "", string filterUserName = "")
+        public async Task<UserForAdminViewModel> GetDeleteUsers(int pageId = 1, string filterEmail = "", string filterUserName = "")
         {
             IQueryable<User> result = _context.Users.IgnoreQueryFilters().Where(u => u.IsDelete);
 
@@ -211,17 +210,19 @@ namespace MyCvProject.Infra.Data.Repositories
             int skip = (pageId - 1) * take;
 
 
-            UserForAdminViewModel list = new UserForAdminViewModel();
-            list.CurrentPage = pageId;
-            list.PageCount = result.Count() / take;
-            list.Users = result.OrderBy(u => u.RegisterDate).Skip(skip).Take(take).ToList();
+            UserForAdminViewModel list = new UserForAdminViewModel
+            {
+                CurrentPage = pageId,
+                PageCount = await result.CountAsync() / take,
+                Users = await result.OrderBy(u => u.RegisterDate).Skip(skip).Take(take).ToListAsync()
+            };
 
             return list;
         }
 
-        public EditUserViewModel GetUserForShowInEditMode(int userId)
+        public async Task<EditUserViewModel> GetUserForShowInEditMode(int userId)
         {
-            return _context.Users.Where(u => u.UserId == userId)
+            return await _context.Users.Where(u => u.UserId == userId)
                 .Select(u => new EditUserViewModel()
                 {
                     UserId = u.UserId,
@@ -229,13 +230,13 @@ namespace MyCvProject.Infra.Data.Repositories
                     Email = u.Email,
                     UserName = u.UserName,
                     UserRoles = u.UserRoles.Select(r => r.RoleId).ToList()
-                }).Single();
+                }).SingleAsync();
         }
 
-        public void EditUserFromAdmin(User user)
+        public async Task EditUserFromAdmin(User user)
         {
             _context.Users.Update(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 
