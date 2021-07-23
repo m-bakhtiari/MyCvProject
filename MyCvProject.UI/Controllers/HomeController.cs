@@ -22,13 +22,11 @@ namespace MyCvProject.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var popular = _courseService.GetPopularCourse();
+            var popular =await _courseService.GetPopularCourse();
             ViewBag.PopularCourse = popular;
             var model = await _courseService.GetCourse();
             return View(model.Item1);
         }
-
-
 
         [Route("OnlinePayment/{id}")]
         public async Task<IActionResult> onlinePayment(int id)

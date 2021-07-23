@@ -5,9 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyCvProject.Core.Convertors;
-using MyCvProject.Core.Interfaces;
-using MyCvProject.Core.Services;
 using MyCvProject.Infra.Data.Context;
 using MyCvProject.Infra.IoC.DependencyInjections;
 using System;
@@ -60,7 +57,7 @@ namespace MyCvProject.UI
             services.AddDbContext<MyCvProjectContext>(options =>
                 {
                     options.UseSqlServer(Configuration.GetConnectionString("MyCvProjectConnection"));
-                }
+                },ServiceLifetime.Transient
             );
 
             #endregion

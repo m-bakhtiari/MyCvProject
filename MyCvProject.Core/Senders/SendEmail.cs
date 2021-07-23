@@ -8,7 +8,7 @@ namespace MyCvProject.Core.Senders
         {
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-            mail.From = new MailAddress("MyCvProject.com@gmail.com","تاپ لرن");
+            mail.From = new MailAddress("bakhi1446@gmail.com","کد فعالسازی");
             mail.To.Add(to);
             mail.Subject = subject;
             mail.Body = body;
@@ -19,7 +19,7 @@ namespace MyCvProject.Core.Senders
             // mail.Attachments.Add(attachment);
 
             SmtpServer.Port = 587;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("MyCvProject.com@gmail.com", "****");
+            SmtpServer.Credentials = new System.Net.NetworkCredential("bakhi1446@gmail.com", "mamali1013");
             SmtpServer.EnableSsl = true;
 
             SmtpServer.Send(mail);
