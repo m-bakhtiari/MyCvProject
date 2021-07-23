@@ -8,7 +8,7 @@ namespace MyCvProject.Core.Security
     public class PermissionCheckerAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
         private IPermissionService _permissionService;
-        private int _permissionId = 0;
+        private readonly int _permissionId = 0;
         public PermissionCheckerAttribute(int permissionId)
         {
             _permissionId = permissionId;
