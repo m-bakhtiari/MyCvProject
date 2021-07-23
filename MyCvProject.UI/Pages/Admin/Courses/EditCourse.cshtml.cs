@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Domain.Entities.Course;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.UI.Pages.Admin.Courses
 {
@@ -19,18 +20,18 @@ namespace MyCvProject.UI.Pages.Admin.Courses
 
         [BindProperty]
         public Course Course { get; set; }
-        public void OnGet(int id)
+        public async Task OnGet(int id)
         {
-            Course = _courseService.GetCourseById(id);
+            Course = await _courseService.GetCourseById(id);
 
-            var groups = _courseService.GetGroupForManageCourse();
-            ViewData["Groups"] = new SelectList(groups, "Value", "Text",Course.GroupId);
+            var groups = await _courseService.GetGroupForManageCourse();
+            ViewData["Groups"] = new SelectList(groups, "Value", "Text", Course.GroupId);
 
-            List<SelectListItem> subgroups=new List<SelectListItem>()
+            List<SelectListItem> subgroups = new List<SelectListItem>()
             {
                 new SelectListItem(){Text = "انتخاب کنید",Value = ""}
             };
-            subgroups.AddRange(_courseService.GetSubGroupForManageCourse(Course.GroupId));
+            subgroups.AddRange(await _courseService.GetSubGroupForManageCourse(Course.GroupId));
             string selectedSubGroup = null;
             if (Course.SubGroup != null)
             {
@@ -38,23 +39,23 @@ namespace MyCvProject.UI.Pages.Admin.Courses
             }
             ViewData["SubGroups"] = new SelectList(subgroups, "Value", "Text", selectedSubGroup);
 
-            var teachers = _courseService.GetTeachers();
-            ViewData["Teachers"] = new SelectList(teachers, "Value", "Text",Course.TeacherId);
+            var teachers = await _courseService.GetTeachers();
+            ViewData["Teachers"] = new SelectList(teachers, "Value", "Text", Course.TeacherId);
 
-            var levels = _courseService.GetLevels();
-            ViewData["Levels"] = new SelectList(levels, "Value", "Text",Course.LevelId);
+            var levels = await _courseService.GetLevels();
+            ViewData["Levels"] = new SelectList(levels, "Value", "Text", Course.LevelId);
 
-            var statues = _courseService.GetStatues();
-            ViewData["Statues"] = new SelectList(statues, "Value", "Text",Course.StatusId);
+            var statues = await _courseService.GetStatues();
+            ViewData["Statues"] = new SelectList(statues, "Value", "Text", Course.StatusId);
 
         }
 
-        public IActionResult OnPost(IFormFile imgCourseUp, IFormFile demoUp)
+        public async Task<IActionResult> OnPost(IFormFile imgCourseUp, IFormFile demoUp)
         {
             if (!ModelState.IsValid)
                 return Page();
 
-            _courseService.UpdateCourse(Course,imgCourseUp,demoUp);
+            await _courseService.UpdateCourse(Course, imgCourseUp, demoUp);
 
             return RedirectToPage("Index");
         }

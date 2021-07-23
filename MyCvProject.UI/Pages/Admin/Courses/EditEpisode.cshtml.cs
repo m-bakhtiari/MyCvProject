@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyCvProject.Core.Interfaces;
@@ -17,12 +18,12 @@ namespace MyCvProject.UI.Pages.Admin.Courses
 
         [BindProperty]
         public CourseEpisode CourseEpisode { get; set; }
-        public void OnGet(int id)
+        public async Task OnGet(int id)
         {
-            CourseEpisode = _courseService.GetEpisodeById(id);
+            CourseEpisode = await _courseService.GetEpisodeById(id);
         }
 
-        public IActionResult OnPost(IFormFile fileEpisode)
+        public async Task<IActionResult> OnPost(IFormFile fileEpisode)
         {
             if (!ModelState.IsValid)
                 return Page();
@@ -35,9 +36,7 @@ namespace MyCvProject.UI.Pages.Admin.Courses
                     return Page();
                 }
             }
-
-
-            _courseService.EditEpisode(CourseEpisode, fileEpisode);
+            await _courseService.EditEpisode(CourseEpisode, fileEpisode);
 
             return Redirect("/Admin/Courses/IndexEpisode/" + CourseEpisode.CourseId);
         }

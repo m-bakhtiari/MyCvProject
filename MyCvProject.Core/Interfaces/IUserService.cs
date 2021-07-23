@@ -2,56 +2,56 @@
 using MyCvProject.Domain.Entities.User;
 using MyCvProject.Domain.Entities.Wallet;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.Core.Interfaces
 {
     public interface IUserService
-   {
-       bool IsExistUserName(string userName);
-       bool IsExistEmail(string email);
-       int AddUser(User user);
-       User LoginUser(LoginViewModel login);
-       User GetUserByEmail(string email);
-       User GetUserById(int userId);
-       User GetUserByActiveCode(string activeCode);
-       User GetUserByUserName(string username);
-       void UpdateUser(User user);
-       bool ActiveAccount(string activeCode);
-       int GetUserIdByUserName(string userName);
-       void DeleteUser(int userId);
+    {
+        Task<bool> IsExistUserName(string userName);
+        Task<bool> IsExistEmail(string email);
+        Task<int> AddUser(User user);
+        Task<User> LoginUser(LoginViewModel login);
+        Task<User> GetUserByEmail(string email);
+        Task<User> GetUserById(int userId);
+        Task<User> GetUserByActiveCode(string activeCode);
+        Task<User> GetUserByUserName(string username);
+        Task UpdateUser(User user);
+        Task<bool> ActiveAccount(string activeCode);
+        Task<int> GetUserIdByUserName(string userName);
+        Task DeleteUser(int userId);
 
-       #region User Panel
+        #region User Panel
 
-       InformationUserViewModel GetUserInformation(string username);
-       InformationUserViewModel GetUserInformation(int userId);
-       SideBarUserPanelViewModel GetSideBarUserPanelData(string username);
-       EditProfileViewModel GetDataForEditProfileUser(string username);
-       void EditProfile(string username,EditProfileViewModel profile);
-       bool CompareOldPassword(string oldPassword, string username);
-
-       void ChangeUserPassword(string userName, string newPassword);
+        Task<InformationUserViewModel> GetUserInformation(string username);
+        Task<InformationUserViewModel> GetUserInformation(int userId);
+        Task<SideBarUserPanelViewModel> GetSideBarUserPanelData(string username);
+        Task<EditProfileViewModel> GetDataForEditProfileUser(string username);
+        Task EditProfile(string username, EditProfileViewModel profile);
+        Task<bool> CompareOldPassword(string oldPassword, string username);
+        Task ChangeUserPassword(string userName, string newPassword);
 
         #endregion
 
-       #region Wallet
+        #region Wallet
 
-       int BalanceUserWallet(string userName);
-       List<WalletViewModel> GetWalletUser(string userName);
-       int ChargeWallet(string userName, int amount,string description,bool isPay=false);
-       int AddWallet(Wallet wallet);
-       Wallet GetWalletByWalletId(int walletId);
-       void UpdateWallet(Wallet wallet);
+        Task<int> BalanceUserWallet(string userName);
+        Task<List<WalletViewModel>> GetWalletUser(string userName);
+        Task<int> ChargeWallet(string userName, int amount, string description, bool isPay = false);
+        Task<int> AddWallet(Wallet wallet);
+        Task<Wallet> GetWalletByWalletId(int walletId);
+        Task UpdateWallet(Wallet wallet);
 
         #endregion
 
         #region Admin Panel
 
-       UserForAdminViewModel GetUsers(int pageId = 1, string filterEmail = "", string filterUserName = "");
-       UserForAdminViewModel GetDeleteUsers(int pageId = 1, string filterEmail = "", string filterUserName = "");
-       int AddUserFromAdmin(CreateUserViewModel user);
-       EditUserViewModel GetUserForShowInEditMode(int userId);
-       void EditUserFromAdmin(EditUserViewModel editUser);
+        Task<UserForAdminViewModel> GetUsers(int pageId = 1, string filterEmail = "", string filterUserName = "");
+        Task<UserForAdminViewModel> GetDeleteUsers(int pageId = 1, string filterEmail = "", string filterUserName = "");
+        Task<int> AddUserFromAdmin(CreateUserViewModel user);
+        Task<EditUserViewModel> GetUserForShowInEditMode(int userId);
+        Task EditUserFromAdmin(EditUserViewModel editUser);
 
-       #endregion
-   }
+        #endregion
+    }
 }

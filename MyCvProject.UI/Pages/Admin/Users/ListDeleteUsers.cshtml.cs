@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.ViewModels;
 
@@ -15,9 +16,9 @@ namespace MyCvProject.UI.Pages.Admin.Users
 
         public UserForAdminViewModel UserForAdminViewModel { get; set; }
 
-        public void OnGet(int pageId = 1, string filterUserName = "", string filterEmail = "")
+        public async Task OnGet(int pageId = 1, string filterUserName = "", string filterEmail = "")
         {
-            UserForAdminViewModel = _userService.GetDeleteUsers(pageId, filterEmail, filterUserName);
+            UserForAdminViewModel = await _userService.GetDeleteUsers(pageId, filterEmail, filterUserName);
         }
 
     }

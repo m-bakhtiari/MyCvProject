@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.ViewModels;
@@ -9,47 +10,45 @@ namespace MyCvProject.UI.Areas.UserPanel.Controllers
     [Authorize]
     public class WalletController : Controller
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
 
         public WalletController(IUserService userService)
         {
             _userService = userService;
         }
 
-
-        
         [Route("UserPanel/Wallet")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ViewBag.ListWallet = _userService.GetWalletUser(User.Identity.Name);
+            ViewBag.ListWallet = await _userService.GetWalletUser(User.Identity.Name);
             return View();
         }
 
         [Route("UserPanel/Wallet")]
         [HttpPost]
-        public ActionResult Index(ChargeWalletViewModel charge)
+        public async Task<ActionResult> Index(ChargeWalletViewModel charge)
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.ListWallet = _userService.GetWalletUser(User.Identity.Name);
+                ViewBag.ListWallet = await _userService.GetWalletUser(User.Identity.Name);
                 return View(charge);
             }
 
-            int walletId = _userService.ChargeWallet(User.Identity.Name,charge.Amount,"شارژ حساب");
+            int walletId = await _userService.ChargeWallet(User.Identity.Name, charge.Amount, "شارژ حساب");
 
             #region Online Payment
 
             var payment = new ZarinpalSandbox.Payment(charge.Amount);
 
-            var res =  payment.PaymentRequest("شارژ کیف پول", "https://localhost:44349/OnlinePayment/" + walletId,"Info@MyCvProject.Com","09197070750");
+            var res = await payment.PaymentRequest("شارژ کیف پول", "https://localhost:44349/OnlinePayment/" + walletId,
+                "Info@MyCvProject.Com", "09197070750");
 
-            if (res.Result.Status == 100)
+            if (res.Status == 100)
             {
-                return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + res.Result.Authority);
+                return Redirect("https://sandbox.zarinpal.com/pg/StartPay/" + res.Authority);
             }
 
             #endregion
-
 
             return null;
         }

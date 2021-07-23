@@ -2,6 +2,7 @@
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.ViewModels.Course;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.UI.Pages.Admin.Courses
 {
@@ -16,9 +17,9 @@ namespace MyCvProject.UI.Pages.Admin.Courses
 
         public List<ShowCourseForAdminViewModel> ListCourse { get; set; }
 
-        public void OnGet()
+        public async Task OnGet()
         {
-            ListCourse = _courseService.GetCoursesForAdmin();
+            ListCourse = await _courseService.GetCoursesForAdmin();
         }
     }
 }

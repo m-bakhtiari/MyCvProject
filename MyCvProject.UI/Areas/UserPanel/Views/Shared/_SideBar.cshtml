@@ -4,7 +4,7 @@
 @inject IUserService _UserService
 
 @{
-    SideBarUserPanelViewModel user = _UserService.GetSideBarUserPanelData(User.Identity.Name);
+    SideBarUserPanelViewModel user =await _UserService.GetSideBarUserPanelData(User.Identity.Name);
 }
 
 <div class="col-md-3 col-sm-4 col-xs-12">

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,34 +12,34 @@ namespace MyCvProject.UI.Areas.UserPanel.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
 
         public HomeController(IUserService userService)
         {
             _userService = userService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_userService.GetUserInformation(User.Identity.Name));
+            return View(await _userService.GetUserInformation(User.Identity.Name));
         }
 
         [Route("UserPanel/EditProfile")]
-        public IActionResult EditProfile()
+        public async Task<IActionResult> EditProfile()
         {
-            return View(_userService.GetDataForEditProfileUser(User.Identity.Name));
+            return View(await _userService.GetDataForEditProfileUser(User.Identity.Name));
         }
 
         [Route("UserPanel/EditProfile")]
         [HttpPost]
-        public IActionResult EditProfile(EditProfileViewModel profile)
+        public async Task<IActionResult> EditProfile(EditProfileViewModel profile)
         {
             if (!ModelState.IsValid)
                 return View(profile);
 
-            _userService.EditProfile(User.Identity.Name,profile);
+            await _userService.EditProfile(User.Identity.Name, profile);
 
             //Log Out User
-            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return Redirect("/Login?EditProfile=true");
 
@@ -50,29 +51,25 @@ namespace MyCvProject.UI.Areas.UserPanel.Controllers
             return View();
         }
 
-
         [Route("UserPanel/ChangePassword")]
         [HttpPost]
-        public IActionResult ChangePassword(ChangePasswordViewModel change)
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel change)
         {
             string currentUserName = User.Identity.Name;
 
             if (!ModelState.IsValid)
                 return View(change);
 
-            if (!_userService.CompareOldPassword(change.OldPassword, currentUserName))
+            if (await _userService.CompareOldPassword(change.OldPassword, currentUserName) == false)
             {
-                ModelState.AddModelError("OldPassword","کلمه عبور فعلی صحیح نمیباشد");
+                ModelState.AddModelError("OldPassword", "کلمه عبور فعلی صحیح نمیباشد");
                 return View(change);
             }
 
-            _userService.ChangeUserPassword(currentUserName,change.Password);
+            await _userService.ChangeUserPassword(currentUserName, change.Password);
             ViewBag.IsSuccess = true;
 
             return View();
         }
-
-
-     
     }
 }

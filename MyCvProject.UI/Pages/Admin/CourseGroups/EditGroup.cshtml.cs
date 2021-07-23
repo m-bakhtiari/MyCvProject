@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Domain.Entities.Course;
@@ -17,18 +18,17 @@ namespace MyCvProject.UI.Pages.Admin.CourseGroups
         [BindProperty]
         public CourseGroup CourseGroups { get; set; }
 
-        public void OnGet(int id)
+        public async Task OnGet(int id)
         {
-            CourseGroups = _courseService.GetById(id);
+            CourseGroups = await _courseService.GetById(id);
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             if (!ModelState.IsValid)
                 return Page();
 
-            _courseService.UpdateGroup(CourseGroups);
-
+            await _courseService.UpdateGroup(CourseGroups);
             return RedirectToPage("Index");
         }
     }

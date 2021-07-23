@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using MyCvProject.Domain.Interfaces;
 
 namespace MyCvProject.Core.Services
@@ -23,57 +24,57 @@ namespace MyCvProject.Core.Services
             _courseRepository = courseRepository;
         }
 
-        public List<CourseGroup> GetAllGroup()
+        public async Task<List<CourseGroup>> GetAllGroup()
         {
-            return _courseRepository.GetAllGroup();
+            return await _courseRepository.GetAllGroup();
         }
 
-        public List<SelectListItem> GetGroupForManageCourse()
+        public async Task<List<SelectListItem>> GetGroupForManageCourse()
         {
-            return _courseRepository.GetGroupForManageCourse();
+            return await _courseRepository.GetGroupForManageCourse();
         }
 
-        public List<SelectListItem> GetSubGroupForManageCourse(int groupId)
+        public async Task<List<SelectListItem>> GetSubGroupForManageCourse(int groupId)
         {
-            return _courseRepository.GetSubGroupForManageCourse(groupId);
+            return await _courseRepository.GetSubGroupForManageCourse(groupId);
         }
 
-        public List<SelectListItem> GetTeachers()
+        public async Task<List<SelectListItem>> GetTeachers()
         {
-            return _courseRepository.GetTeachers();
+            return await _courseRepository.GetTeachers();
         }
 
-        public List<SelectListItem> GetLevels()
+        public async Task<List<SelectListItem>> GetLevels()
         {
-            return _courseRepository.GetLevels();
+            return await _courseRepository.GetLevels();
         }
 
-        public List<SelectListItem> GetStatues()
+        public async Task<List<SelectListItem>> GetStatues()
         {
-            return _courseRepository.GetStatues();
+            return await _courseRepository.GetStatues();
         }
 
-        public CourseGroup GetById(int groupId)
+        public async Task<CourseGroup> GetById(int groupId)
         {
-            return _courseRepository.GetById(groupId);
+            return await _courseRepository.GetById(groupId);
         }
 
-        public void AddGroup(CourseGroup group)
+        public async Task AddGroup(CourseGroup group)
         {
-            _courseRepository.AddGroup(group);
+            await _courseRepository.AddGroup(group);
         }
 
-        public void UpdateGroup(CourseGroup group)
+        public async Task UpdateGroup(CourseGroup group)
         {
-            _courseRepository.UpdateGroup(group);
+            await _courseRepository.UpdateGroup(group);
         }
 
-        public List<ShowCourseForAdminViewModel> GetCoursesForAdmin()
+        public async Task<List<ShowCourseForAdminViewModel>> GetCoursesForAdmin()
         {
-            return _courseRepository.GetCoursesForAdmin();
+            return await _courseRepository.GetCoursesForAdmin();
         }
 
-        public int AddCourse(Course course, IFormFile imgCourse, IFormFile courseDemo)
+        public async Task<int> AddCourse(Course course, IFormFile imgCourse, IFormFile courseDemo)
         {
             course.CreateDate = DateTime.Now;
             course.CourseImageName = "no-photo.jpg";
@@ -82,9 +83,9 @@ namespace MyCvProject.Core.Services
                 course.CourseImageName = NameGenerator.GenerateUniqCode() + Path.GetExtension(imgCourse.FileName);
                 string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/course/image", course.CourseImageName);
 
-                using (var stream = new FileStream(imagePath, FileMode.Create))
+                await using (var stream = new FileStream(imagePath, FileMode.Create))
                 {
-                    imgCourse.CopyTo(stream);
+                    await imgCourse.CopyToAsync(stream);
                 }
 
                 ImageConvertor imgResizer = new ImageConvertor();
@@ -97,19 +98,19 @@ namespace MyCvProject.Core.Services
             {
                 course.DemoFileName = NameGenerator.GenerateUniqCode() + Path.GetExtension(courseDemo.FileName);
                 var demoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/course/demoes", course.DemoFileName);
-                using var stream = new FileStream(demoPath, FileMode.Create);
-                courseDemo.CopyTo(stream);
+                await using var stream = new FileStream(demoPath, FileMode.Create);
+                await courseDemo.CopyToAsync(stream);
             }
 
-            return _courseRepository.AddCourse(course);
+            return await _courseRepository.AddCourse(course);
         }
 
-        public Course GetCourseById(int courseId)
+        public async Task<Course> GetCourseById(int courseId)
         {
-            return _courseRepository.GetCourseById(courseId);
+            return await _courseRepository.GetCourseById(courseId);
         }
 
-        public void UpdateCourse(Course course, IFormFile imgCourse, IFormFile courseDemo)
+        public async Task UpdateCourse(Course course, IFormFile imgCourse, IFormFile courseDemo)
         {
             course.UpdateDate = DateTime.Now;
 
@@ -132,9 +133,9 @@ namespace MyCvProject.Core.Services
                 course.CourseImageName = NameGenerator.GenerateUniqCode() + Path.GetExtension(imgCourse.FileName);
                 string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/course/image", course.CourseImageName);
 
-                using (var stream = new FileStream(imagePath, FileMode.Create))
+                await using (var stream = new FileStream(imagePath, FileMode.Create))
                 {
-                    imgCourse.CopyTo(stream);
+                    await imgCourse.CopyToAsync(stream);
                 }
 
                 ImageConvertor imgResizer = new ImageConvertor();
@@ -155,34 +156,34 @@ namespace MyCvProject.Core.Services
                 }
                 course.DemoFileName = NameGenerator.GenerateUniqCode() + Path.GetExtension(courseDemo.FileName);
                 string demoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/course/demoes", course.DemoFileName);
-                using var stream = new FileStream(demoPath, FileMode.Create);
-                courseDemo.CopyTo(stream);
+                await using var stream = new FileStream(demoPath, FileMode.Create);
+                await courseDemo.CopyToAsync(stream);
             }
-            _courseRepository.UpdateCourse(course);
+            await _courseRepository.UpdateCourse(course);
         }
 
-        public Tuple<List<ShowCourseListItemViewModel>, int> GetCourse(int pageId = 1, string filter = ""
+        public async Task<Tuple<List<ShowCourseListItemViewModel>, int>> GetCourse(int pageId = 1, string filter = ""
             , string getType = "all", string orderByType = "date",
             int startPrice = 0, int endPrice = 0, List<int> selectedGroups = null, int take = 0)
         {
 
-            return _courseRepository.GetCourse(pageId, filter, getType, orderByType, startPrice, endPrice, selectedGroups,
+            return await _courseRepository.GetCourse(pageId, filter, getType, orderByType, startPrice, endPrice, selectedGroups,
                  take);
         }
 
-        public Course GetCourseForShow(int courseId)
+        public async Task<Course> GetCourseForShow(int courseId)
         {
-            return _courseRepository.GetCourseForShow(courseId);
+            return await _courseRepository.GetCourseForShow(courseId);
         }
 
-        public List<ShowCourseListItemViewModel> GetPopularCourse()
+        public async Task<List<ShowCourseListItemViewModel>> GetPopularCourse()
         {
-            return _courseRepository.GetPopularCourse();
+            return await _courseRepository.GetPopularCourse();
         }
 
-        public List<CourseEpisode> GetListEpisodeCorse(int courseId)
+        public async Task<List<CourseEpisode>> GetListEpisodeCorse(int courseId)
         {
-            return _courseRepository.GetListEpisodeCorse(courseId);
+            return await _courseRepository.GetListEpisodeCorse(courseId);
         }
 
         public bool CheckExistFile(string fileName)
@@ -191,25 +192,25 @@ namespace MyCvProject.Core.Services
             return File.Exists(path);
         }
 
-        public int AddEpisode(CourseEpisode episode, IFormFile episodeFile)
+        public async Task<int> AddEpisode(CourseEpisode episode, IFormFile episodeFile)
         {
             episode.EpisodeFileName = episodeFile.FileName;
 
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/courseFiles", episode.EpisodeFileName);
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            await using (var stream = new FileStream(filePath, FileMode.Create))
             {
-                episodeFile.CopyTo(stream);
+                await episodeFile.CopyToAsync(stream);
             }
 
-            return _courseRepository.AddEpisode(episode);
+            return await _courseRepository.AddEpisode(episode);
         }
 
-        public CourseEpisode GetEpisodeById(int episodeId)
+        public async Task<CourseEpisode> GetEpisodeById(int episodeId)
         {
-            return _courseRepository.GetEpisodeById(episodeId);
+            return await _courseRepository.GetEpisodeById(episodeId);
         }
 
-        public void EditEpisode(CourseEpisode episode, IFormFile episodeFile)
+        public async Task EditEpisode(CourseEpisode episode, IFormFile episodeFile)
         {
             if (episodeFile != null)
             {
@@ -218,23 +219,21 @@ namespace MyCvProject.Core.Services
 
                 episode.EpisodeFileName = episodeFile.FileName;
                 string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/courseFiles", episode.EpisodeFileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    episodeFile.CopyTo(stream);
-                }
+                await using var stream = new FileStream(filePath, FileMode.Create);
+                await episodeFile.CopyToAsync(stream);
             }
 
-            _courseRepository.EditEpisode(episode);
+            await _courseRepository.EditEpisode(episode);
         }
 
-        public void AddComment(CourseComment comment)
+        public async Task AddComment(CourseComment comment)
         {
-            _courseRepository.AddComment(comment);
+            await _courseRepository.AddComment(comment);
         }
 
-        public Tuple<List<CourseComment>, int> GetCourseComment(int courseId, int pageId = 1)
+        public async Task<Tuple<List<CourseComment>, int>> GetCourseComment(int courseId, int pageId = 1)
         {
-            return _courseRepository.GetCourseComment(courseId, pageId);
+            return await _courseRepository.GetCourseComment(courseId, pageId);
         }
     }
 }

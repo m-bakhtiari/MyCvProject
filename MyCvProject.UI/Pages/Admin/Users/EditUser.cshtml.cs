@@ -4,6 +4,7 @@ using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Security;
 using MyCvProject.Core.ViewModels;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.UI.Pages.Admin.Users
 {
@@ -21,23 +22,23 @@ namespace MyCvProject.UI.Pages.Admin.Users
 
         [BindProperty]
         public EditUserViewModel EditUserViewModel { get; set; }
-        public void OnGet(int id)
+        public async Task OnGet(int id)
         {
-            EditUserViewModel = _userService.GetUserForShowInEditMode(id);
-            ViewData["Roles"] = _permissionService.GetRoles();
+            EditUserViewModel = await _userService.GetUserForShowInEditMode(id);
+            ViewData["Roles"] = await _permissionService.GetRoles();
         }
 
-        public IActionResult OnPost(List<int> SelectedRoles)
+        public async Task<IActionResult> OnPost(List<int> SelectedRoles)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _userService.EditUserFromAdmin(EditUserViewModel);
+            await _userService.EditUserFromAdmin(EditUserViewModel);
 
             //Edit Roles
-            _permissionService.EditRolesUser(EditUserViewModel.UserId,SelectedRoles);
+            await _permissionService.EditRolesUser(EditUserViewModel.UserId, SelectedRoles);
             return RedirectToPage("Index");
         }
     }

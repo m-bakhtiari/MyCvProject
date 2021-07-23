@@ -1,9 +1,9 @@
 ﻿using MyCvProject.Core.Interfaces;
 using MyCvProject.Domain.Entities.Permissions;
 using MyCvProject.Domain.Entities.User;
-using System.Collections.Generic;
-using System.Linq;
 using MyCvProject.Domain.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.Core.Services
 {
@@ -15,65 +15,65 @@ namespace MyCvProject.Core.Services
         {
             _permissionRepository = permissionRepository;
         }
-        public List<Role> GetRoles()
+        public async Task<List<Role>> GetRoles()
         {
-            return _permissionRepository.GetRoles();
+            return await _permissionRepository.GetRoles();
         }
 
-        public int AddRole(Role role)
+        public async Task<int> AddRole(Role role)
         {
-            return _permissionRepository.AddRole(role);
+            return await _permissionRepository.AddRole(role);
         }
 
-        public Role GetRoleById(int roleId)
+        public async Task<Role> GetRoleById(int roleId)
         {
-            return _permissionRepository.GetRoleById(roleId);
+            return await _permissionRepository.GetRoleById(roleId);
         }
 
-        public void UpdateRole(Role role)
+        public async Task UpdateRole(Role role)
         {
-            _permissionRepository.UpdateRole(role);
+            await _permissionRepository.UpdateRole(role);
         }
 
-        public void DeleteRole(Role role)
+        public async Task DeleteRole(Role role)
         {
             role.IsDelete = true;
-            UpdateRole(role);
+            await UpdateRole(role);
         }
 
-        public void AddRolesToUser(List<int> roleIds, int userId)
+        public async Task AddRolesToUser(List<int> roleIds, int userId)
         {
-            _permissionRepository.AddRolesToUser(roleIds, userId);
+            await _permissionRepository.AddRolesToUser(roleIds, userId);
         }
 
-        public void EditRolesUser(int userId, List<int> rolesId)
+        public async Task EditRolesUser(int userId, List<int> rolesId)
         {
-            _permissionRepository.EditRolesUser(userId, rolesId);
+            await _permissionRepository.EditRolesUser(userId, rolesId);
         }
 
-        public List<Permission> GetAllPermission()
+        public async Task<List<Permission>> GetAllPermission()
         {
-            return _permissionRepository.GetAllPermission();
+            return await _permissionRepository.GetAllPermission();
         }
 
-        public void AddPermissionsToRole(int roleId, List<int> permission)
+        public async Task AddPermissionsToRole(int roleId, List<int> permission)
         {
-            _permissionRepository.AddPermissionsToRole(roleId, permission);
+            await _permissionRepository.AddPermissionsToRole(roleId, permission);
         }
 
-        public List<int> PermissionsRole(int roleId)
+        public async Task<List<int>> PermissionsRole(int roleId)
         {
-            return _permissionRepository.PermissionsRole(roleId);
+            return await _permissionRepository.PermissionsRole(roleId);
         }
 
-        public void UpdatePermissionsRole(int roleId, List<int> permissions)
+        public async Task UpdatePermissionsRole(int roleId, List<int> permissions)
         {
-            _permissionRepository.UpdatePermissionsRole(roleId, permissions);
+            await _permissionRepository.UpdatePermissionsRole(roleId, permissions);
         }
 
-        public bool CheckPermission(int permissionId, string userName)
+        public async Task<bool> CheckPermission(int permissionId, string userName)
         {
-            return _permissionRepository.CheckPermission(permissionId, userName);
+            return await _permissionRepository.CheckPermission(permissionId, userName);
         }
     }
 }

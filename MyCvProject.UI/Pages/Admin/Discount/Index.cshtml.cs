@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyCvProject.Core.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.UI.Pages.Admin.Discount
 {
@@ -14,9 +15,9 @@ namespace MyCvProject.UI.Pages.Admin.Discount
         }
 
         public List<Domain.Entities.Order.Discount> Discounts { get; set; }
-        public void OnGet()
+        public async Task OnGet()
         {
-            Discounts = _orderService.GetAllDiscounts();
+            Discounts = await _orderService.GetAllDiscounts();
         }
     }
 }

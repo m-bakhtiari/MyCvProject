@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Security;
@@ -18,14 +19,14 @@ namespace MyCvProject.UI.Pages.Admin.Roles
 
         [BindProperty]
         public Role Role { get; set; }
-        public void OnGet(int id)
+        public async Task OnGet(int id)
         {
-            Role = _permissionService.GetRoleById(id);
+            Role = await _permissionService.GetRoleById(id);
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
-            _permissionService.DeleteRole(Role);
+            await _permissionService.DeleteRole(Role);
 
             return RedirectToPage("Index");
         }

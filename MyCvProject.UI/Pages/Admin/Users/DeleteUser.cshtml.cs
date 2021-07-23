@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Security;
@@ -17,15 +18,15 @@ namespace MyCvProject.UI.Pages.Admin.Users
         }
 
         public InformationUserViewModel InformationUserViewModel { get; set; }
-        public void OnGet(int id)
+        public async void OnGet(int id)
         {
             ViewData["UserId"] = id;
-            InformationUserViewModel = _userService.GetUserInformation(id);
+            InformationUserViewModel = await _userService.GetUserInformation(id);
         }
 
-        public IActionResult OnPost(int UserId)
+        public async Task<IActionResult> OnPost(int UserId)
         {
-            _userService.DeleteUser(UserId);
+            await _userService.DeleteUser(UserId);
             return RedirectToPage("Index");
         }
     }

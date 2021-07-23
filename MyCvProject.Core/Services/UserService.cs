@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyCvProject.Core.Services
 {
@@ -23,106 +24,110 @@ namespace MyCvProject.Core.Services
         }
 
 
-        public bool IsExistUserName(string userName)
+        public async Task<bool> IsExistUserName(string userName)
         {
-            return _userRepository.IsExistUserName(userName);
+            return await _userRepository.IsExistUserName(userName);
         }
 
-        public bool IsExistEmail(string email)
+        public async Task<bool> IsExistEmail(string email)
         {
-            return _userRepository.IsExistEmail(email);
+            return await _userRepository.IsExistEmail(email);
         }
 
-        public int AddUser(User user)
+        public async Task<int> AddUser(User user)
         {
-            return _userRepository.AddUser(user);
+            return await _userRepository.AddUser(user);
         }
 
-        public User LoginUser(LoginViewModel login)
+        public async Task<User> LoginUser(LoginViewModel login)
         {
             string hashPassword = PasswordHelper.EncodePasswordMd5(login.Password);
             string email = FixedText.FixEmail(login.Email);
-            return _userRepository.LoginUser(email, hashPassword);
+            return await _userRepository.LoginUser(email, hashPassword);
         }
 
-        public User GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            return _userRepository.GetUserByEmail(email);
+            return await _userRepository.GetUserByEmail(email);
         }
 
-        public User GetUserById(int userId)
+        public async Task<User> GetUserById(int userId)
         {
-            return _userRepository.GetUserById(userId);
+            return await _userRepository.GetUserById(userId);
         }
 
-        public User GetUserByActiveCode(string activeCode)
+        public async Task<User> GetUserByActiveCode(string activeCode)
         {
-            return _userRepository.GetUserByActiveCode(activeCode);
+            return await _userRepository.GetUserByActiveCode(activeCode);
         }
 
-        public User GetUserByUserName(string username)
+        public async Task<User> GetUserByUserName(string username)
         {
-            return _userRepository.GetUserByUserName(username);
+            return await _userRepository.GetUserByUserName(username);
         }
 
-        public void UpdateUser(User user)
+        public async Task UpdateUser(User user)
         {
-            _userRepository.UpdateUser(user);
+            await _userRepository.UpdateUser(user);
         }
 
-        public bool ActiveAccount(string activeCode)
+        public async Task<bool> ActiveAccount(string activeCode)
         {
-            return _userRepository.ActiveAccount(activeCode);
+            return await _userRepository.ActiveAccount(activeCode);
         }
 
-        public int GetUserIdByUserName(string userName)
+        public async Task<int> GetUserIdByUserName(string userName)
         {
-            return _userRepository.GetUserIdByUserName(userName);
+            return await _userRepository.GetUserIdByUserName(userName);
         }
 
-        public void DeleteUser(int userId)
+        public async Task DeleteUser(int userId)
         {
-            User user = GetUserById(userId);
+            User user = await GetUserById(userId);
             user.IsDelete = true;
-            UpdateUser(user);
+            await UpdateUser(user);
         }
 
-        public InformationUserViewModel GetUserInformation(string username)
+        public async Task<InformationUserViewModel> GetUserInformation(string username)
         {
-            var user = GetUserByUserName(username);
-            InformationUserViewModel information = new InformationUserViewModel();
-            information.UserName = user.UserName;
-            information.Email = user.Email;
-            information.RegisterDate = user.RegisterDate;
-            information.Wallet = BalanceUserWallet(username);
+            var user = await GetUserByUserName(username);
+            InformationUserViewModel information = new InformationUserViewModel
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                RegisterDate = user.RegisterDate,
+                Wallet = await BalanceUserWallet(username)
+            };
 
             return information;
 
         }
 
-        public InformationUserViewModel GetUserInformation(int userId)
+        public async Task<InformationUserViewModel> GetUserInformation(int userId)
         {
-            var user = GetUserById(userId);
-            InformationUserViewModel information = new InformationUserViewModel();
-            information.UserName = user.UserName;
-            information.Email = user.Email;
-            information.RegisterDate = user.RegisterDate;
-            information.Wallet = BalanceUserWallet(user.UserName);
+            var user = await GetUserById(userId);
+            InformationUserViewModel information = new InformationUserViewModel
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                RegisterDate = user.RegisterDate,
+                Wallet = await BalanceUserWallet(user.UserName)
+            };
 
             return information;
         }
 
-        public SideBarUserPanelViewModel GetSideBarUserPanelData(string username)
+        public async Task<SideBarUserPanelViewModel> GetSideBarUserPanelData(string username)
         {
-            return _userRepository.GetSideBarUserPanelData(username);
+            return await _userRepository.GetSideBarUserPanelData(username);
         }
 
-        public EditProfileViewModel GetDataForEditProfileUser(string username)
+        public async Task<EditProfileViewModel> GetDataForEditProfileUser(string username)
         {
-            return _userRepository.GetDataForEditProfileUser(username);
+            return await _userRepository.GetDataForEditProfileUser(username);
         }
 
-        public void EditProfile(string username, EditProfileViewModel profile)
+        public async Task EditProfile(string username, EditProfileViewModel profile)
         {
             if (profile.UserAvatar != null)
             {
@@ -138,46 +143,42 @@ namespace MyCvProject.Core.Services
 
                 profile.AvatarName = NameGenerator.GenerateUniqCode() + Path.GetExtension(profile.UserAvatar.FileName);
                 imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserAvatar", profile.AvatarName);
-                using (var stream = new FileStream(imagePath, FileMode.Create))
-                {
-                    profile.UserAvatar.CopyTo(stream);
-                }
-
+                await using var stream = new FileStream(imagePath, FileMode.Create);
+                await profile.UserAvatar.CopyToAsync(stream);
             }
 
-            var user = GetUserByUserName(username);
+            var user = await GetUserByUserName(username);
             user.UserName = profile.UserName;
             user.Email = profile.Email;
             user.UserAvatar = profile.AvatarName;
 
-            UpdateUser(user);
-
+            await UpdateUser(user);
         }
 
-        public bool CompareOldPassword(string oldPassword, string username)
+        public async Task<bool> CompareOldPassword(string oldPassword, string username)
         {
             string hashOldPassword = PasswordHelper.EncodePasswordMd5(oldPassword);
-            return _userRepository.CompareOldPassword(hashOldPassword, username);
+            return await _userRepository.CompareOldPassword(hashOldPassword, username);
         }
 
-        public void ChangeUserPassword(string userName, string newPassword)
+        public async Task ChangeUserPassword(string userName, string newPassword)
         {
-            var user = GetUserByUserName(userName);
+            var user = await GetUserByUserName(userName);
             user.Password = PasswordHelper.EncodePasswordMd5(newPassword);
-            UpdateUser(user);
+            await UpdateUser(user);
         }
 
-        public int BalanceUserWallet(string userName)
+        public async Task<int> BalanceUserWallet(string userName)
         {
-            return _userRepository.BalanceUserWallet(userName);
+            return await _userRepository.BalanceUserWallet(userName);
         }
 
-        public List<WalletViewModel> GetWalletUser(string userName)
+        public async Task<List<WalletViewModel>> GetWalletUser(string userName)
         {
-            return _userRepository.GetWalletUser(userName);
+            return await _userRepository.GetWalletUser(userName);
         }
 
-        public int ChargeWallet(string userName, int amount, string description, bool isPay = false)
+        public async Task<int> ChargeWallet(string userName, int amount, string description, bool isPay = false)
         {
             Wallet wallet = new Wallet()
             {
@@ -186,45 +187,47 @@ namespace MyCvProject.Core.Services
                 Description = description,
                 IsPay = isPay,
                 TypeId = 1,
-                UserId = GetUserIdByUserName(userName)
+                UserId = await GetUserIdByUserName(userName)
             };
-            return AddWallet(wallet);
+            return await AddWallet(wallet);
         }
 
-        public int AddWallet(Wallet wallet)
+        public async Task<int> AddWallet(Wallet wallet)
         {
-            return _userRepository.AddWallet(wallet);
+            return await _userRepository.AddWallet(wallet);
         }
 
-        public Wallet GetWalletByWalletId(int walletId)
+        public async Task<Wallet> GetWalletByWalletId(int walletId)
         {
-            return _userRepository.GetWalletByWalletId(walletId);
+            return await _userRepository.GetWalletByWalletId(walletId);
         }
 
-        public void UpdateWallet(Wallet wallet)
+        public async Task UpdateWallet(Wallet wallet)
         {
-            _userRepository.UpdateWallet(wallet);
+            await _userRepository.UpdateWallet(wallet);
         }
 
-        public UserForAdminViewModel GetUsers(int pageId = 1, string filterEmail = "", string filterUserName = "")
+        public async Task<UserForAdminViewModel> GetUsers(int pageId = 1, string filterEmail = "", string filterUserName = "")
         {
-            return _userRepository.GetUsers(pageId, filterEmail, filterUserName);
+            return await _userRepository.GetUsers(pageId, filterEmail, filterUserName);
         }
 
-        public UserForAdminViewModel GetDeleteUsers(int pageId = 1, string filterEmail = "", string filterUserName = "")
+        public async Task<UserForAdminViewModel> GetDeleteUsers(int pageId = 1, string filterEmail = "", string filterUserName = "")
         {
-            return _userRepository.GetDeleteUsers(pageId, filterEmail, filterUserName);
+            return await _userRepository.GetDeleteUsers(pageId, filterEmail, filterUserName);
         }
 
-        public int AddUserFromAdmin(CreateUserViewModel user)
+        public async Task<int> AddUserFromAdmin(CreateUserViewModel user)
         {
-            User addUser = new User();
-            addUser.Password = PasswordHelper.EncodePasswordMd5(user.Password);
-            addUser.ActiveCode = NameGenerator.GenerateUniqCode();
-            addUser.Email = user.Email;
-            addUser.IsActive = true;
-            addUser.RegisterDate = DateTime.Now;
-            addUser.UserName = user.UserName;
+            User addUser = new User
+            {
+                Password = PasswordHelper.EncodePasswordMd5(user.Password),
+                ActiveCode = NameGenerator.GenerateUniqCode(),
+                Email = user.Email,
+                IsActive = true,
+                RegisterDate = DateTime.Now,
+                UserName = user.UserName
+            };
 
             #region Save Avatar
 
@@ -233,26 +236,24 @@ namespace MyCvProject.Core.Services
                 string imagePath = "";
                 addUser.UserAvatar = NameGenerator.GenerateUniqCode() + Path.GetExtension(user.UserAvatar.FileName);
                 imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserAvatar", addUser.UserAvatar);
-                using (var stream = new FileStream(imagePath, FileMode.Create))
-                {
-                    user.UserAvatar.CopyTo(stream);
-                }
+                await using var stream = new FileStream(imagePath, FileMode.Create);
+                await user.UserAvatar.CopyToAsync(stream);
             }
 
             #endregion
 
-            return AddUser(addUser);
+            return await AddUser(addUser);
 
         }
 
-        public EditUserViewModel GetUserForShowInEditMode(int userId)
+        public async Task<EditUserViewModel> GetUserForShowInEditMode(int userId)
         {
-            return _userRepository.GetUserForShowInEditMode(userId);
+            return await _userRepository.GetUserForShowInEditMode(userId);
         }
 
-        public void EditUserFromAdmin(EditUserViewModel editUser)
+        public async Task EditUserFromAdmin(EditUserViewModel editUser)
         {
-            User user = GetUserById(editUser.UserId);
+            User user = await GetUserById(editUser.UserId);
             user.Email = editUser.Email;
             if (!string.IsNullOrEmpty(editUser.Password))
             {
@@ -274,11 +275,11 @@ namespace MyCvProject.Core.Services
                 //Save New Image
                 user.UserAvatar = NameGenerator.GenerateUniqCode() + Path.GetExtension(editUser.UserAvatar.FileName);
                 string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserAvatar", user.UserAvatar);
-                using var stream = new FileStream(imagePath, FileMode.Create);
-                editUser.UserAvatar.CopyTo(stream);
+                await using var stream = new FileStream(imagePath, FileMode.Create);
+                await editUser.UserAvatar.CopyToAsync(stream);
             }
 
-            _userRepository.EditUserFromAdmin(user);
+            await _userRepository.EditUserFromAdmin(user);
         }
     }
 }

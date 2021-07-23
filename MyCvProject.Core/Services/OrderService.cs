@@ -6,6 +6,7 @@ using MyCvProject.Domain.Entities.Wallet;
 using MyCvProject.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.Core.Services
 {
@@ -20,44 +21,44 @@ namespace MyCvProject.Core.Services
             _userService = userService;
         }
 
-        public int AddOrder(string userName, int courseId)
+        public async Task<int> AddOrder(string userName, int courseId)
         {
-            int userId = _userService.GetUserIdByUserName(userName);
+            int userId = await _userService.GetUserIdByUserName(userName);
 
-            return _orderRepository.AddOrder(userName, courseId, userId);
+            return await _orderRepository.AddOrder(userName, courseId, userId);
         }
 
-        public void UpdatePriceOrder(int orderId)
+        public async Task UpdatePriceOrder(int orderId)
         {
-            _orderRepository.UpdatePriceOrder(orderId);
+            await _orderRepository.UpdatePriceOrder(orderId);
         }
 
-        public Order GetOrderForUserPanel(string userName, int orderId)
+        public async Task<Order> GetOrderForUserPanel(string userName, int orderId)
         {
-            int userId = _userService.GetUserIdByUserName(userName);
+            int userId = await _userService.GetUserIdByUserName(userName);
 
-            return _orderRepository.GetOrderForUserPanel(orderId, userId);
+            return await _orderRepository.GetOrderForUserPanel(orderId, userId);
         }
 
-        public Order GetOrderById(int orderId)
+        public async Task<Order> GetOrderById(int orderId)
         {
-            return _orderRepository.GetOrderById(orderId);
+            return await _orderRepository.GetOrderById(orderId);
         }
 
-        public bool FinalyOrder(string userName, int orderId)
+        public async Task<bool> FinalyOrder(string userName, int orderId)
         {
-            int userId = _userService.GetUserIdByUserName(userName);
-            var order = _orderRepository.GetOrderForUserPanel(orderId, userId);
+            int userId = await _userService.GetUserIdByUserName(userName);
+            var order = await _orderRepository.GetOrderForUserPanel(orderId, userId);
 
             if (order == null || order.IsFinaly)
             {
                 return false;
             }
 
-            if (_userService.BalanceUserWallet(userName) >= order.OrderSum)
+            if (await _userService.BalanceUserWallet(userName) >= order.OrderSum)
             {
                 order.IsFinaly = true;
-                _userService.AddWallet(new Wallet()
+                await _userService.AddWallet(new Wallet()
                 {
                     Amount = order.OrderSum,
                     CreateDate = DateTime.Now,
@@ -66,11 +67,11 @@ namespace MyCvProject.Core.Services
                     UserId = userId,
                     TypeId = 2
                 });
-                _orderRepository.UpdateOrder(order);
+                await _orderRepository.UpdateOrder(order);
 
                 foreach (var detail in order.OrderDetails)
                 {
-                    _orderRepository.AddUserCourse(new UserCourse()
+                    await _orderRepository.AddUserCourse(new UserCourse()
                     {
                         CourseId = detail.CourseId,
                         UserId = userId
@@ -83,53 +84,53 @@ namespace MyCvProject.Core.Services
             return false;
         }
 
-        public List<Order> GetUserOrders(string userName)
+        public async Task<List<Order>> GetUserOrders(string userName)
         {
-            int userId = _userService.GetUserIdByUserName(userName);
+            int userId = await _userService.GetUserIdByUserName(userName);
 
-            return _orderRepository.GetUserOrders(userName, userId);
+            return await _orderRepository.GetUserOrders(userName, userId);
         }
 
-        public void UpdateOrder(Order order)
+        public async Task UpdateOrder(Order order)
         {
-            _orderRepository.UpdateOrder(order);
+            await _orderRepository.UpdateOrder(order);
         }
 
-        public bool IsUserInCourse(string userName, int courseId)
+        public async Task<bool> IsUserInCourse(string userName, int courseId)
         {
-            int userId = _userService.GetUserIdByUserName(userName);
+            int userId = await _userService.GetUserIdByUserName(userName);
 
-            return _orderRepository.IsUserInCourse(userName, courseId, userId);
+            return await _orderRepository.IsUserInCourse(userName, courseId, userId);
         }
 
-        public DiscountUseType UseDiscount(int orderId, string code)
+        public async Task<DiscountUseType> UseDiscount(int orderId, string code)
         {
-            return _orderRepository.UseDiscount(orderId, code);
+            return await _orderRepository.UseDiscount(orderId, code);
         }
 
-        public void AddDiscount(Discount discount)
+        public async Task AddDiscount(Discount discount)
         {
-            _orderRepository.AddDiscount(discount);
+            await _orderRepository.AddDiscount(discount);
         }
 
-        public List<Discount> GetAllDiscounts()
+        public async Task<List<Discount>> GetAllDiscounts()
         {
-            return _orderRepository.GetAllDiscounts();
+            return await _orderRepository.GetAllDiscounts();
         }
 
-        public Discount GetDiscountById(int discountId)
+        public async Task<Discount> GetDiscountById(int discountId)
         {
-            return _orderRepository.GetDiscountById(discountId);
+            return await _orderRepository.GetDiscountById(discountId);
         }
 
-        public void UpdateDiscount(Discount discount)
+        public async Task UpdateDiscount(Discount discount)
         {
-            _orderRepository.UpdateDiscount(discount);
+            await _orderRepository.UpdateDiscount(discount);
         }
 
-        public bool IsExistCode(string code)
+        public async Task<bool> IsExistCode(string code)
         {
-            return _orderRepository.IsExistCode(code);
+            return await _orderRepository.IsExistCode(code);
         }
     }
 }

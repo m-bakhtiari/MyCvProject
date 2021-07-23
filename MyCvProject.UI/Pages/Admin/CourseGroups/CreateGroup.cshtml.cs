@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Domain.Entities.Course;
@@ -19,18 +20,18 @@ namespace MyCvProject.UI.Pages.Admin.CourseGroups
 
         public void OnGet(int? id)
         {
-            CourseGroups=new CourseGroup()
+            CourseGroups = new CourseGroup()
             {
                 ParentId = id
             };
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             if (!ModelState.IsValid)
                 return Page();
 
-            _courseService.AddGroup(CourseGroups);
+            await _courseService.AddGroup(CourseGroups);
 
             return RedirectToPage("Index");
         }

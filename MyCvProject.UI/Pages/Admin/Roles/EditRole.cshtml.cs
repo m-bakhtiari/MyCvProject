@@ -4,6 +4,7 @@ using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Security;
 using MyCvProject.Domain.Entities.User;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.UI.Pages.Admin.Roles
 {
@@ -19,23 +20,20 @@ namespace MyCvProject.UI.Pages.Admin.Roles
 
         [BindProperty]
         public Role Role { get; set; }
-        public void OnGet(int id)
+        public async Task OnGet(int id)
         {
-            Role = _permissionService.GetRoleById(id);
-            ViewData["Permissions"] = _permissionService.GetAllPermission();
-            ViewData["SelectedPermissions"] = _permissionService.PermissionsRole(id);
+            Role = await _permissionService.GetRoleById(id);
+            ViewData["Permissions"] = await _permissionService.GetAllPermission();
+            ViewData["SelectedPermissions"] = await _permissionService.PermissionsRole(id);
         }
 
-        public IActionResult OnPost(List<int> SelectedPermission)
+        public async Task<IActionResult> OnPost(List<int> SelectedPermission)
         {
             if (!ModelState.IsValid)
                 return Page();
 
-
-            _permissionService.UpdateRole(Role);
-
-            _permissionService.UpdatePermissionsRole(Role.RoleId,SelectedPermission);
-
+            await _permissionService.UpdateRole(Role);
+            await _permissionService.UpdatePermissionsRole(Role.RoleId, SelectedPermission);
             return RedirectToPage("Index");
         }
     }

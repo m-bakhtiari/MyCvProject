@@ -4,6 +4,7 @@ using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Security;
 using MyCvProject.Core.ViewModels;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.UI.Pages.Admin.Users
 {
@@ -19,25 +20,24 @@ namespace MyCvProject.UI.Pages.Admin.Users
             _permissionService = permissionService;
         }
 
-        
+
         [BindProperty]
         public CreateUserViewModel CreateUserViewModel { get; set; }
 
-        public void OnGet()
+        public async Task OnGet()
         {
-            ViewData["Roles"] = _permissionService.GetRoles();
+            ViewData["Roles"] =await _permissionService.GetRoles();
         }
 
-        public IActionResult OnPost(List<int> SelectedRoles)
+        public async Task<IActionResult> OnPost(List<int> SelectedRoles)
         {
             if (!ModelState.IsValid)
                 return Page();
 
-            int userId = _userService.AddUserFromAdmin(CreateUserViewModel);
+            int userId = await _userService.AddUserFromAdmin(CreateUserViewModel);
 
             //Add Roles
-            _permissionService.AddRolesToUser(SelectedRoles,userId);
-
+            await _permissionService.AddRolesToUser(SelectedRoles, userId);
 
             return Redirect("/Admin/Users");
 

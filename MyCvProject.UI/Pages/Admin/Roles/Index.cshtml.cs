@@ -3,6 +3,7 @@ using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Security;
 using MyCvProject.Domain.Entities.User;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.UI.Pages.Admin.Roles
 {
@@ -19,11 +20,9 @@ namespace MyCvProject.UI.Pages.Admin.Roles
         public List<Role> RolesList { get; set; }
 
        
-        public void OnGet()
+        public async Task OnGet()
         {
-            RolesList = _permissionService.GetRoles();
+            RolesList =await _permissionService.GetRoles();
         }
-
-       
     }
 }

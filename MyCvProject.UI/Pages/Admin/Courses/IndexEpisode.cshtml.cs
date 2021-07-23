@@ -2,6 +2,7 @@
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Domain.Entities.Course;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.UI.Pages.Admin.Courses
 {
@@ -15,10 +16,10 @@ namespace MyCvProject.UI.Pages.Admin.Courses
         }
 
         public List<CourseEpisode> CourseEpisodes { get; set; }
-        public void OnGet(int id)
+        public async Task OnGet(int id)
         {
             ViewData["CourseId"] = id;
-            CourseEpisodes = _courseService.GetListEpisodeCorse(id);
+            CourseEpisodes = await _courseService.GetListEpisodeCorse(id);
         }
     }
 }

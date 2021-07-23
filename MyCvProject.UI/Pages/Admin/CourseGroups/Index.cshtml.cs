@@ -2,6 +2,7 @@
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Domain.Entities.Course;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.UI.Pages.Admin.CourseGroups
 {
@@ -15,9 +16,9 @@ namespace MyCvProject.UI.Pages.Admin.CourseGroups
         }
 
         public List<CourseGroup> CourseGroups { get; set; }
-        public void OnGet()
+        public async Task OnGet()
         {
-            CourseGroups = _courseService.GetAllGroup();
+            CourseGroups =await _courseService.GetAllGroup();
         }
     }
 }

@@ -1,37 +1,28 @@
 ﻿using MyCvProject.Core.ViewModels.Order;
 using MyCvProject.Domain.Entities.Order;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.Core.Interfaces
 {
     public interface IOrderService
-   {
-       int AddOrder(string userName, int courseId);
+    {
+        Task<int> AddOrder(string userName, int courseId);
+        Task UpdatePriceOrder(int orderId);
+        Task<Order> GetOrderForUserPanel(string userName, int orderId);
+        Task<Order> GetOrderById(int orderId);
+        Task<bool> FinalyOrder(string userName, int orderId);
+        Task<List<Order>> GetUserOrders(string userName);
+        Task UpdateOrder(Order order);
+        Task<bool> IsUserInCourse(string userName, int courseId);
+        #region DisCount
+        Task<DiscountUseType> UseDiscount(int orderId, string code);
+        Task AddDiscount(Discount discount);
+        Task<List<Discount>> GetAllDiscounts();
+        Task<Discount> GetDiscountById(int discountId);
+        Task UpdateDiscount(Discount discount);
+        Task<bool> IsExistCode(string code);
 
-       void UpdatePriceOrder(int orderId);
-
-       Order GetOrderForUserPanel(string userName, int orderId);
-       Order GetOrderById(int orderId);
-
-       bool FinalyOrder(string userName,int orderId);
-
-       List<Order> GetUserOrders(string userName);
-
-       void UpdateOrder(Order order);
-
-       bool IsUserInCourse(string userName, int courseId);
-
-       #region DisCount
-
-       DiscountUseType UseDiscount(int orderId, string code);
-       void AddDiscount(Discount discount);
-
-       List<Discount> GetAllDiscounts();
-       Discount GetDiscountById(int discountId);
-       void UpdateDiscount(Discount discount);
-
-       bool IsExistCode(string code);
-
-       #endregion
-   }
+        #endregion
+    }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.ViewModels.Order;
@@ -9,21 +10,21 @@ namespace MyCvProject.UI.Areas.UserPanel.Controllers
     [Authorize]
     public class MyOrdersController : Controller
     {
-        private IOrderService _orderService;
+        private readonly IOrderService _orderService;
 
         public MyOrdersController(IOrderService orderService)
         {
             _orderService = orderService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_orderService.GetUserOrders(User.Identity.Name));
+            return View(await _orderService.GetUserOrders(User.Identity.Name));
         }
 
-        public IActionResult ShowOrder(int id,bool finaly=false,string type="")
+        public async Task<IActionResult> ShowOrder(int id, bool finaly = false, string type = "")
         {
-            var order = _orderService.GetOrderForUserPanel(User.Identity.Name, id);
+            var order = await _orderService.GetOrderForUserPanel(User.Identity.Name, id);
 
             if (order == null)
             {
@@ -35,9 +36,9 @@ namespace MyCvProject.UI.Areas.UserPanel.Controllers
             return View(order);
         }
 
-        public IActionResult FinalyOrder(int id)
+        public async Task<IActionResult> FinalyOrder(int id)
         {
-            if (_orderService.FinalyOrder(User.Identity.Name,id))
+            if (await _orderService.FinalyOrder(User.Identity.Name, id))
             {
                 return Redirect("/UserPanel/MyOrders/ShowOrder/" + id + "?finaly=true");
             }
@@ -45,9 +46,9 @@ namespace MyCvProject.UI.Areas.UserPanel.Controllers
             return BadRequest();
         }
 
-        public IActionResult UseDiscount(int orderId, string code)
+        public async Task<IActionResult> UseDiscount(int orderId, string code)
         {
-            DiscountUseType type = _orderService.UseDiscount(orderId, code);
+            DiscountUseType type = await _orderService.UseDiscount(orderId, code);
             return Redirect("/UserPanel/MyOrders/ShowOrder/" + orderId + "?type=" + type.ToString());
         }
     }

@@ -16,7 +16,7 @@ namespace MyCvProject.UI.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            return await Task.FromResult((IViewComponentResult)View("CourseGroup", _courseService.GetAllGroup()));
+            return await Task.FromResult((IViewComponentResult)View("CourseGroup",await _courseService.GetAllGroup()));
         }
     }
 }
