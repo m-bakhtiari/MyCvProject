@@ -6,9 +6,12 @@ using MyCvProject.Core.Interfaces;
 using MyCvProject.Domain.Entities.Course;
 using System.Linq;
 using System.Threading.Tasks;
+using MyCvProject.Core.Security;
+using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Courses
 {
+    [PermissionChecker(Const.PermissionIdForAdmin)]
     public class CreateCourseModel : PageModel
     {
         private readonly ICourseService _courseService;

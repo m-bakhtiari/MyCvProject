@@ -3,9 +3,12 @@ using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.ViewModels.Course;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyCvProject.Core.Security;
+using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Courses
 {
+    [PermissionChecker(Const.PermissionIdForAdmin)]
     public class IndexModel : PageModel
     {
         private readonly ICourseService _courseService;

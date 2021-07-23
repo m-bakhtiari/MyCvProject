@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Security;
 using MyCvProject.Core.ViewModels;
+using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Users
 {
-    [PermissionChecker(2)]
+    [PermissionChecker(Const.PermissionIdForAdmin)]
+    [PermissionChecker(Const.PermissionIdForManageUser)]
     public class IndexModel : PageModel
     {
         private readonly IUserService _userService;

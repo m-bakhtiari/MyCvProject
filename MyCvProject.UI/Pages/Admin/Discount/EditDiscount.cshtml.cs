@@ -4,9 +4,12 @@ using MyCvProject.Core.Interfaces;
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using MyCvProject.Core.Security;
+using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Discount
 {
+    [PermissionChecker(Const.PermissionIdForAdmin)]
     public class EditDiscountModel : PageModel
     {
         private readonly IOrderService _orderService;

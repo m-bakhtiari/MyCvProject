@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyCvProject.Core.Interfaces;
+using MyCvProject.Core.Security;
+using MyCvProject.Domain.Consts;
 using MyCvProject.Domain.Entities.Course;
 
 namespace MyCvProject.UI.Pages.Admin.Courses
 {
+    [PermissionChecker(Const.PermissionIdForAdmin)]
     public class CreateEpisodeModel : PageModel
     {
         private readonly ICourseService _courseService;

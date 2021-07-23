@@ -4,10 +4,12 @@ using MyCvProject.Core.Security;
 using MyCvProject.Domain.Entities.User;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Roles
 {
-    [PermissionChecker(1002)]
+    [PermissionChecker(Const.PermissionIdForAdmin)]
+    [PermissionChecker(Const.PermissionIdForManageRole)]
     public class IndexModel : PageModel
     {
         private readonly IPermissionService _permissionService;

@@ -3,11 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Security;
+using MyCvProject.Domain.Consts;
 using MyCvProject.Domain.Entities.User;
 
 namespace MyCvProject.UI.Pages.Admin.Roles
 {
-    [PermissionChecker(1005)]
+    [PermissionChecker(Const.PermissionIdForAdmin)]
+    [PermissionChecker(Const.PermissionIdForDeleteRole)]
+    [PermissionChecker(Const.PermissionIdForManageRole)]
     public class DeleteRoleModel : PageModel
     {
         private readonly IPermissionService _permissionService;

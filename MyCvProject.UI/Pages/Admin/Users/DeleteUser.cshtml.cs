@@ -4,10 +4,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Security;
 using MyCvProject.Core.ViewModels;
+using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Users
 {
-    [PermissionChecker(5)]
+    [PermissionChecker(Const.PermissionIdForAdmin)]
+    [PermissionChecker(Const.PermissionIdForDeleteUser)]
+    [PermissionChecker(Const.PermissionIdForManageUser)]
     public class DeleteUserModel : PageModel
     {
         private readonly IUserService _userService;

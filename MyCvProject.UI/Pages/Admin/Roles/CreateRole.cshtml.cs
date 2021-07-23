@@ -5,10 +5,13 @@ using MyCvProject.Core.Security;
 using MyCvProject.Domain.Entities.User;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Roles
 {
-    [PermissionChecker(1003)]
+    [PermissionChecker(Const.PermissionIdForAdmin)]
+    [PermissionChecker(Const.PermissionIdForCreateRole)]
+    [PermissionChecker(Const.PermissionIdForManageRole)]
     public class CreateRoleModel : PageModel
     {
         private readonly IPermissionService _permissionService;

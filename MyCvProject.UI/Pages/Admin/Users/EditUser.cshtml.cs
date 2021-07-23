@@ -5,10 +5,13 @@ using MyCvProject.Core.Security;
 using MyCvProject.Core.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Users
 {
-    [PermissionChecker(4)]
+    [PermissionChecker(Const.PermissionIdForAdmin)]
+    [PermissionChecker(Const.PermissionIdForManageUser)]
+    [PermissionChecker(Const.PermissionIdForEditUser)]
     public class EditUserModel : PageModel
     {
         private readonly IUserService _userService;

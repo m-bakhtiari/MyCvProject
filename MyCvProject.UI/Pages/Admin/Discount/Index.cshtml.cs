@@ -2,9 +2,12 @@
 using MyCvProject.Core.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyCvProject.Core.Security;
+using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Discount
 {
+    [PermissionChecker(Const.PermissionIdForAdmin)]
     public class IndexModel : PageModel
     {
         private readonly IOrderService _orderService;

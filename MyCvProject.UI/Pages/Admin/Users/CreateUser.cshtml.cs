@@ -5,10 +5,13 @@ using MyCvProject.Core.Security;
 using MyCvProject.Core.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Users
 {
-    [PermissionChecker(3)]
+    [PermissionChecker(Const.PermissionIdForAdmin)]
+    [PermissionChecker(Const.PermissionIdForCreateUser)]
+    [PermissionChecker(Const.PermissionIdForManageUser)]
     public class CreateUserModel : PageModel
     {
         private readonly IUserService _userService;
@@ -26,7 +29,7 @@ namespace MyCvProject.UI.Pages.Admin.Users
 
         public async Task OnGet()
         {
-            ViewData["Roles"] =await _permissionService.GetRoles();
+            ViewData["Roles"] = await _permissionService.GetRoles();
         }
 
         public async Task<IActionResult> OnPost(List<int> SelectedRoles)
