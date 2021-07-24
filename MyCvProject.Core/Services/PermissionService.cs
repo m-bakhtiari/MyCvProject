@@ -4,6 +4,7 @@ using MyCvProject.Domain.Entities.User;
 using MyCvProject.Domain.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyCvProject.Domain.ViewModels;
 
 namespace MyCvProject.Core.Services
 {
@@ -20,9 +21,14 @@ namespace MyCvProject.Core.Services
             return await _permissionRepository.GetRoles();
         }
 
-        public async Task<int> AddRole(Role role)
+        public async Task<OpRes<int>> AddRole(Role role)
         {
-            return await _permissionRepository.AddRole(role);
+            if (string.IsNullOrWhiteSpace(role.RoleTitle))
+            {
+                return OpRes<int>.BuildError("عنوان نقش را وارد نمایید");
+            }
+
+            return OpRes<int>.BuildSuccess(await _permissionRepository.AddRole(role));
         }
 
         public async Task<Role> GetRoleById(int roleId)
@@ -30,13 +36,29 @@ namespace MyCvProject.Core.Services
             return await _permissionRepository.GetRoleById(roleId);
         }
 
-        public async Task UpdateRole(Role role)
+        public async Task<OpRes> UpdateRole(Role role)
         {
+            if (string.IsNullOrWhiteSpace(role.RoleTitle))
+            {
+                return OpRes.BuildError("عنوان نقش را وارد نمایید");
+            }
             await _permissionRepository.UpdateRole(role);
+            return OpRes.BuildSuccess();
         }
 
         public async Task DeleteRole(Role role)
         {
+            role.IsDelete = true;
+            await UpdateRole(role);
+        }
+
+        public async Task DeleteRole(int roleId)
+        {
+            var role = await _permissionRepository.GetRoleById(roleId);
+            if (role == null)
+            {
+                return;
+            }
             role.IsDelete = true;
             await UpdateRole(role);
         }

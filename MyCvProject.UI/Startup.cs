@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MyCvProject.Infra.Data.Context;
 using MyCvProject.Infra.IoC.DependencyInjections;
 using System;
+using MyCvProject.Core.Convertors;
 
 namespace MyCvProject.UI
 {
@@ -26,11 +27,10 @@ namespace MyCvProject.UI
         {
             services.AddMvc(x => x.EnableEndpointRouting = false);
 
-            //services.Configure<FormOptions>(options => { options.MultipartBodyLengthLimit = 6000000; });
-
             #region Add IoC
 
             RegisterServices(services);
+            services.AddTransient<IViewRenderService, RenderViewToString>();
 
             #endregion
 

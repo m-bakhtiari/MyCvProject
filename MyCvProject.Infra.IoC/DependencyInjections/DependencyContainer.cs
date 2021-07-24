@@ -14,7 +14,6 @@ namespace MyCvProject.Infra.IoC.DependencyInjections
             #region Core Layer
 
             service.AddTransient<IUserService, UserService>();
-            service.AddTransient<IViewRenderService, RenderViewToString>();
             service.AddTransient<IPermissionService, PermissionService>();
             service.AddTransient<ICourseService, CourseService>();
             service.AddTransient<IOrderService, OrderService>();

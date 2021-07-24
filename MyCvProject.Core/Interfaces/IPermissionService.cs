@@ -2,6 +2,7 @@
 using MyCvProject.Domain.Entities.User;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyCvProject.Domain.ViewModels;
 
 namespace MyCvProject.Core.Interfaces
 {
@@ -9,11 +10,46 @@ namespace MyCvProject.Core.Interfaces
     {
         #region Roles
 
+        /// <summary>
+        /// گرفتن لیست نقش ها
+        /// </summary>
+        /// <returns></returns>
         Task<List<Role>> GetRoles();
-        Task<int> AddRole(Role role);
+
+        /// <summary>
+        /// افزودن نقش جدید
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        Task<OpRes<int>> AddRole(Role role);
+
+        /// <summary>
+        /// گرفتن نقش با آیدی
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
         Task<Role> GetRoleById(int roleId);
-        Task UpdateRole(Role role);
+
+        /// <summary>
+        /// ویرایش نقش
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        Task<OpRes> UpdateRole(Role role);
+
+        /// <summary>
+        /// حذف نقش
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
         Task DeleteRole(Role role);
+
+        /// <summary>
+        /// حذف نقش با آیدی
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        Task DeleteRole(int roleId);
         Task AddRolesToUser(List<int> roleIds, int userId);
         Task EditRolesUser(int userId, List<int> rolesId);
 

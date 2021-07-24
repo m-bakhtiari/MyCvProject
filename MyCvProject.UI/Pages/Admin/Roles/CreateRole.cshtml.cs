@@ -36,9 +36,9 @@ namespace MyCvProject.UI.Pages.Admin.Roles
                 return Page();
 
             Role.IsDelete = false;
-            int roleId = await _permissionService.AddRole(Role);
+            var role = await _permissionService.AddRole(Role);
 
-            await _permissionService.AddPermissionsToRole(roleId, SelectedPermission);
+            await _permissionService.AddPermissionsToRole(role.Result, SelectedPermission);
 
             return RedirectToPage("Index");
         }
