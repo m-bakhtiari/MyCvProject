@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyCvProject.Infra.Data.Context;
 
 namespace MyCvProject.Infra.Data.Migrations
 {
     [DbContext(typeof(MyCvProjectContext))]
-    partial class MyCvProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20210725132639_IsDelete_Course")]
+    partial class IsDelete_Course
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -554,7 +556,7 @@ namespace MyCvProject.Infra.Data.Migrations
                             IsActive = true,
                             IsDelete = false,
                             Password = "20-2C-B9-62-AC-59-07-5B-96-4B-07-15-2D-23-4B-70",
-                            RegisterDate = new DateTime(2021, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RegisterDate = new DateTime(2021, 7, 25, 17, 56, 38, 861, DateTimeKind.Local).AddTicks(5332),
                             UserAvatar = "Defult.jpg",
                             UserName = "admin"
                         });

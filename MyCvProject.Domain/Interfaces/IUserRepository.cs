@@ -46,6 +46,7 @@ namespace MyCvProject.Domain.Interfaces
 
         Task UpdateWallet(Wallet wallet);
         Task<UserForAdminViewModel> GetUsers(int pageId = 1, string filterEmail = "", string filterUserName = "");
+        Task<List<User>> GetUsers();
 
         Task<UserForAdminViewModel> GetDeleteUsers(int pageId = 1, string filterEmail = "", string filterUserName = "");
 

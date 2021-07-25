@@ -5,6 +5,13 @@ namespace MyCvProject.Domain.Entities.Order
 {
     public class OrderDetail
     {
+        #region Constructor
+        public OrderDetail()
+        {
+
+        } 
+        #endregion
+
         [Key]
         public int DetailId { get; set; }
         [Required]
@@ -16,11 +23,13 @@ namespace MyCvProject.Domain.Entities.Order
         [Required]
         public int Price { get; set; }
 
+        #region Relations
         [ForeignKey(nameof(OrderId))]
         public virtual Order Order { get; set; }
 
         [ForeignKey(nameof(CourseId))]
-        public virtual Course.Course Course { get; set; }
+        public virtual Course.Course Course { get; set; } 
+        #endregion
 
     }
 }

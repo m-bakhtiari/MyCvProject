@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using MyCvProject.Domain.Interfaces;
+using MyCvProject.Domain.ViewModels;
 
 namespace MyCvProject.Core.Services
 {
@@ -234,6 +235,32 @@ namespace MyCvProject.Core.Services
         public async Task<Tuple<List<CourseComment>, int>> GetCourseComment(int courseId, int pageId = 1)
         {
             return await _courseRepository.GetCourseComment(courseId, pageId);
+        }
+
+        public async Task DeleteCourse(int courseId)
+        {
+            var course = await _courseRepository.GetCourseById(courseId);
+            if (course == null) return;
+            course.IsDelete = true;
+            await _courseRepository.UpdateCourse(course);
+        }
+
+        public async Task<OpRes<int>> AddCourse(Course course)
+        {
+            if (string.IsNullOrWhiteSpace(course.CourseTitle))
+                return OpRes<int>.BuildError("عنوان دوره را وارد نمایید");
+            course.CreateDate = DateTime.Now;
+            var courseId = await _courseRepository.AddCourse(course);
+            return OpRes<int>.BuildSuccess(courseId);
+        }
+
+        public async Task<OpRes> UpdateCourse(Course course)
+        {
+            if (string.IsNullOrWhiteSpace(course.CourseTitle))
+                return OpRes<int>.BuildError("عنوان دوره را وارد نمایید");
+            course.UpdateDate = DateTime.Now;
+            await _courseRepository.UpdateCourse(course);
+            return OpRes.BuildSuccess();
         }
     }
 }

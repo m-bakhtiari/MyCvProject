@@ -5,6 +5,7 @@ using MyCvProject.Domain.Entities.Course;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyCvProject.Domain.ViewModels;
 
 namespace MyCvProject.Core.Interfaces
 {
@@ -29,6 +30,8 @@ namespace MyCvProject.Core.Interfaces
         Task<List<ShowCourseForAdminViewModel>> GetCoursesForAdmin();
 
         Task<int> AddCourse(Course course, IFormFile imgCourse, IFormFile courseDemo);
+        Task<OpRes<int>> AddCourse(Course course);
+        Task<OpRes> UpdateCourse(Course course);
         Task<Course> GetCourseById(int courseId);
         Task UpdateCourse(Course course, IFormFile imgCourse, IFormFile courseDemo);
 
@@ -38,6 +41,8 @@ namespace MyCvProject.Core.Interfaces
         Task<Course> GetCourseForShow(int courseId);
 
         Task<List<ShowCourseListItemViewModel>> GetPopularCourse();
+
+        Task DeleteCourse(int courseId);
 
         #endregion
 

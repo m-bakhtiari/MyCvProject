@@ -179,14 +179,15 @@ namespace MyCvProject.Infra.Data.Repositories
             }
 
             // Show Item In Page
-            int take = 20;
-            int skip = (pageId - 1) * take;
+            var take = 20;
+            var skip = (pageId - 1) * take;
 
-
-            UserForAdminViewModel list = new UserForAdminViewModel();
-            list.CurrentPage = pageId;
-            list.PageCount = await result.CountAsync() / take;
-            list.Users = await result.OrderBy(u => u.RegisterDate).Skip(skip).Take(take).ToListAsync();
+            var list = new UserForAdminViewModel
+            {
+                CurrentPage = pageId,
+                PageCount = await result.CountAsync() / take,
+                Users = await result.OrderBy(u => u.RegisterDate).Skip(skip).Take(take).ToListAsync()
+            };
 
             return list;
         }
@@ -237,6 +238,11 @@ namespace MyCvProject.Infra.Data.Repositories
         {
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<User>> GetUsers()
+        {
+            return await _context.Users.ToListAsync();
         }
     }
 

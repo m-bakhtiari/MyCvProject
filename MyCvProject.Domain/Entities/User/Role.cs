@@ -9,10 +9,12 @@ namespace MyCvProject.Domain.Entities.User
     /// </summary>
     public class Role
     {
+        #region Constructor
         public Role()
         {
-            
-        }
+
+        } 
+        #endregion
 
         /// <summary>
         /// آیدی نقش
@@ -32,7 +34,6 @@ namespace MyCvProject.Domain.Entities.User
         /// آیا حذف شده است
         /// </summary>
         public bool IsDelete { get; set; }
-
 
         #region Relations
         /// <summary>

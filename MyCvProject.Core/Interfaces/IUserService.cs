@@ -3,6 +3,7 @@ using MyCvProject.Domain.Entities.User;
 using MyCvProject.Domain.Entities.Wallet;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyCvProject.Domain.ViewModels;
 
 namespace MyCvProject.Core.Interfaces
 {
@@ -10,13 +11,13 @@ namespace MyCvProject.Core.Interfaces
     {
         Task<bool> IsExistUserName(string userName);
         Task<bool> IsExistEmail(string email);
-        Task<int> AddUser(User user);
+        Task<OpRes<int>> AddUser(User user);
         Task<User> LoginUser(LoginViewModel login);
         Task<User> GetUserByEmail(string email);
         Task<User> GetUserById(int userId);
         Task<User> GetUserByActiveCode(string activeCode);
         Task<User> GetUserByUserName(string username);
-        Task UpdateUser(User user);
+        Task<OpRes> UpdateUser(User user);
         Task<bool> ActiveAccount(string activeCode);
         Task<int> GetUserIdByUserName(string userName);
         Task DeleteUser(int userId);
@@ -47,6 +48,7 @@ namespace MyCvProject.Core.Interfaces
         #region Admin Panel
 
         Task<UserForAdminViewModel> GetUsers(int pageId = 1, string filterEmail = "", string filterUserName = "");
+        Task<List<User>> GetUsers();
         Task<UserForAdminViewModel> GetDeleteUsers(int pageId = 1, string filterEmail = "", string filterUserName = "");
         Task<int> AddUserFromAdmin(CreateUserViewModel user);
         Task<EditUserViewModel> GetUserForShowInEditMode(int userId);

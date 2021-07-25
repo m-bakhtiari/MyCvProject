@@ -5,6 +5,13 @@ namespace MyCvProject.Domain.Entities.Course
 {
     public class CourseEpisode
     {
+        #region Constructor
+        public CourseEpisode()
+        {
+
+        } 
+        #endregion
+
         [Key]
         public int EpisodeId { get; set; }
 
@@ -26,7 +33,9 @@ namespace MyCvProject.Domain.Entities.Course
         public bool IsFree { get; set; }
 
 
+        #region Relations
         public Course Course { get; set; }
 
+        #endregion
     }
 }

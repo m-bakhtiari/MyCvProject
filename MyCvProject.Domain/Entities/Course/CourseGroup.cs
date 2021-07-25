@@ -6,6 +6,14 @@ namespace MyCvProject.Domain.Entities.Course
 {
     public class CourseGroup
     {
+        #region Constructor
+
+        public CourseGroup()
+        {
+            
+        }
+        #endregion
+
         [Key]
         public int GroupId { get; set; }
 
@@ -19,6 +27,7 @@ namespace MyCvProject.Domain.Entities.Course
         [Display(Name = "گروه اصلی")]
         public int? ParentId { get; set; }
 
+        #region Relations
         [ForeignKey(nameof(ParentId))]
         public List<CourseGroup> CourseGroups { get; set; }
 
@@ -28,7 +37,7 @@ namespace MyCvProject.Domain.Entities.Course
 
         [NotMapped]
         [InverseProperty(nameof(Course.Group))]
-        public List<Course> SubGroup { get; set; }
-
+        public List<Course> SubGroup { get; set; } 
+        #endregion
     }
 }

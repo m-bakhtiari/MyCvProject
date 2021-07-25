@@ -22,6 +22,12 @@ namespace MyCvProject.Domain.Consts
        public const int PermissionIdForEditRole = 1008;
        public const int PermissionIdForDeleteRole = 1009;
 
+       public const int WalletTypeIdForIncrease = 1;
+       public const int WalletTypeIdForDecrease = 2;
+
        public const string DefaultUserAvatar = "Defult.jpg";
-   }
+
+       public const string SiteUrl = "https://localhost:44380";
+       public const string VerifyCodeJwt = "this is my custom Secret key for authnetication";
+    }
 }

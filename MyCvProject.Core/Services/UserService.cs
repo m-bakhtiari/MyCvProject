@@ -6,10 +6,10 @@ using MyCvProject.Core.ViewModels;
 using MyCvProject.Domain.Entities.User;
 using MyCvProject.Domain.Entities.Wallet;
 using MyCvProject.Domain.Interfaces;
+using MyCvProject.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyCvProject.Core.Services
@@ -34,9 +34,31 @@ namespace MyCvProject.Core.Services
             return await _userRepository.IsExistEmail(email);
         }
 
-        public async Task<int> AddUser(User user)
+        public async Task<OpRes<int>> AddUser(User user)
         {
-            return await _userRepository.AddUser(user);
+            if (string.IsNullOrWhiteSpace(user.Password))
+            {
+                return OpRes<int>.BuildError("رمز عبور را وارد نمایید");
+            }
+            if (string.IsNullOrWhiteSpace(user.Email))
+            {
+                return OpRes<int>.BuildError("ایمیل را وارد نمایید");
+            }
+            if (string.IsNullOrWhiteSpace(user.UserName))
+            {
+                return OpRes<int>.BuildError("نام کاربری را وارد نمایید");
+            }
+            if (await _userRepository.IsExistEmail(user.Email))
+            {
+                return OpRes<int>.BuildError("ایمیل وارد شده تکراری می باشد");
+            }
+            if (await _userRepository.IsExistUserName(user.UserName))
+            {
+                return OpRes<int>.BuildError("نام کاربری وارد شده تکراری می باشد");
+            }
+            user.Password = PasswordHelper.EncodePasswordMd5(user.Password);
+            user.Email = FixedText.FixEmail(user.Email);
+            return OpRes<int>.BuildSuccess(await _userRepository.AddUser(user));
         }
 
         public async Task<User> LoginUser(LoginViewModel login)
@@ -66,9 +88,30 @@ namespace MyCvProject.Core.Services
             return await _userRepository.GetUserByUserName(username);
         }
 
-        public async Task UpdateUser(User user)
+        public async Task<OpRes> UpdateUser(User user)
         {
+            if (string.IsNullOrWhiteSpace(user.Password))
+            {
+                return OpRes<int>.BuildError("رمز عبور را وارد نمایید");
+            }
+            if (string.IsNullOrWhiteSpace(user.Email))
+            {
+                return OpRes<int>.BuildError("ایمیل را وارد نمایید");
+            }
+            if (string.IsNullOrWhiteSpace(user.UserName))
+            {
+                return OpRes<int>.BuildError("نام کاربری را وارد نمایید");
+            }
+            if (await _userRepository.IsExistEmail(user.Email))
+            {
+                return OpRes<int>.BuildError("ایمیل وارد شده تکراری می باشد");
+            }
+            if (await _userRepository.IsExistUserName(user.UserName))
+            {
+                return OpRes<int>.BuildError("نام کاربری وارد شده تکراری می باشد");
+            }
             await _userRepository.UpdateUser(user);
+            return OpRes.BuildSuccess();
         }
 
         public async Task<bool> ActiveAccount(string activeCode)
@@ -212,6 +255,11 @@ namespace MyCvProject.Core.Services
             return await _userRepository.GetUsers(pageId, filterEmail, filterUserName);
         }
 
+        public async Task<List<User>> GetUsers()
+        {
+            return await _userRepository.GetUsers();
+        }
+
         public async Task<UserForAdminViewModel> GetDeleteUsers(int pageId = 1, string filterEmail = "", string filterUserName = "")
         {
             return await _userRepository.GetDeleteUsers(pageId, filterEmail, filterUserName);
@@ -242,7 +290,8 @@ namespace MyCvProject.Core.Services
 
             #endregion
 
-            return await AddUser(addUser);
+            var result = await AddUser(addUser);
+            return result.Result;
 
         }
 

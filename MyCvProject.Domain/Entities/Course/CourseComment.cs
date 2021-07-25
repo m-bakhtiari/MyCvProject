@@ -5,6 +5,14 @@ namespace MyCvProject.Domain.Entities.Course
 {
     public class CourseComment
     {
+        #region Constructor
+
+        public CourseComment()
+        {
+            
+        }
+        #endregion
+
         [Key]
         public int CommentId { get; set; }
         public int CourseId { get; set; }
@@ -16,8 +24,9 @@ namespace MyCvProject.Domain.Entities.Course
         public bool IsDelete { get; set; }
         public bool IsAdminRead { get; set; }
 
-
+        #region Relations
         public Course Course { get; set; }
-        public User.User User { get; set; }
+        public User.User User { get; set; } 
+        #endregion
     }
 }

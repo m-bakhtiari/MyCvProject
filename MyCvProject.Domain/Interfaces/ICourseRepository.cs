@@ -5,6 +5,7 @@ using MyCvProject.Domain.Entities.Course;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyCvProject.Domain.ViewModels;
 
 namespace MyCvProject.Domain.Interfaces
 {

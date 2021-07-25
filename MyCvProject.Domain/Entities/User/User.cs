@@ -7,10 +7,12 @@ namespace MyCvProject.Domain.Entities.User
 {
     public class User
     {
+        #region Constructor
         public User()
         {
-            
-        }
+
+        } 
+        #endregion
 
         [Key]
         public int UserId { get; set; }
@@ -57,6 +59,5 @@ namespace MyCvProject.Domain.Entities.User
         public List<UserDiscountCode> UserDiscountCodes { get; set; }
         public List<CourseComment> CourseComments { get; set; }
         #endregion
-
     }
 }

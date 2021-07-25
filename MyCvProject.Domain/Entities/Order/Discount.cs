@@ -7,9 +7,16 @@ namespace MyCvProject.Domain.Entities.Order
 {
     public class Discount
     {
+        #region Constructor
+
+        public Discount()
+        {
+
+        }
+        #endregion
+
         [Key]
         public int DiscountId { get; set; }
-
 
         [Display(Name = "کد")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
@@ -23,9 +30,12 @@ namespace MyCvProject.Domain.Entities.Order
         public int? UsableCount { get; set; }
 
         public DateTime? StartDate { get; set; }
+
         public DateTime? EndDate { get; set; }
 
-
+        #region Relations
         public List<UserDiscountCode> UserDiscountCodes { get; set; }
+
+        #endregion   
     }
 }

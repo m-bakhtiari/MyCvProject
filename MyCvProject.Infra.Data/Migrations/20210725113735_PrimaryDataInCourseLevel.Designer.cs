@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyCvProject.Infra.Data.Context;
 
 namespace MyCvProject.Infra.Data.Migrations
 {
     [DbContext(typeof(MyCvProjectContext))]
-    partial class MyCvProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20210725113735_PrimaryDataInCourseLevel")]
+    partial class PrimaryDataInCourseLevel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,9 +59,6 @@ namespace MyCvProject.Infra.Data.Migrations
 
                     b.Property<int>("GroupId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
 
                     b.Property<int>("LevelId")
                         .HasColumnType("int");
@@ -549,12 +548,12 @@ namespace MyCvProject.Infra.Data.Migrations
                         new
                         {
                             UserId = 1,
-                            ActiveCode = "fea2f9e251d54dc8b572b7996abf9e87",
+                            ActiveCode = "d9193db80a314fa3b5ca4a40891c49cd",
                             Email = "admin@gmail.com",
                             IsActive = true,
                             IsDelete = false,
                             Password = "20-2C-B9-62-AC-59-07-5B-96-4B-07-15-2D-23-4B-70",
-                            RegisterDate = new DateTime(2021, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            RegisterDate = new DateTime(2021, 7, 25, 16, 7, 35, 120, DateTimeKind.Local).AddTicks(2901),
                             UserAvatar = "Defult.jpg",
                             UserName = "admin"
                         });

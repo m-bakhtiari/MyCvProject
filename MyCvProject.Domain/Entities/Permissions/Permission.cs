@@ -9,6 +9,14 @@ namespace MyCvProject.Domain.Entities.Permissions
     /// </summary>
     public class Permission
     {
+        #region Constructor
+
+        public Permission()
+        {
+            
+        }
+        #endregion
+
         /// <summary>
         /// آیدی نقش
         /// </summary>
@@ -28,6 +36,7 @@ namespace MyCvProject.Domain.Entities.Permissions
         /// </summary>
         public int? ParentID { get; set; }
 
+        #region Relations
         /// <summary>
         /// لیست نقش های زیر مجموعه
         /// </summary>
@@ -37,8 +46,7 @@ namespace MyCvProject.Domain.Entities.Permissions
         /// <summary>
         /// لیست ارتباط با سطح دسترسی ها
         /// </summary>
-        public List<RolePermission> RolePermissions { get; set; }
-
-
+        public List<RolePermission> RolePermissions { get; set; } 
+        #endregion
     }
 }

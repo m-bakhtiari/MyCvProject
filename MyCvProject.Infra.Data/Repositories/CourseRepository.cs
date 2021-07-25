@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MyCvProject.Domain.ViewModels;
 
 namespace MyCvProject.Infra.Data.Repositories
 {
@@ -279,5 +280,6 @@ namespace MyCvProject.Infra.Data.Repositories
                     .Skip(skip).Take(take)
                     .OrderByDescending(c => c.CreateDate).ToListAsync(), pageCount);
         }
+
     }
 }

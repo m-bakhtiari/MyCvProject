@@ -1,4 +1,5 @@
-﻿using MyCvProject.Domain.Entities.Permissions;
+﻿using System;
+using MyCvProject.Domain.Entities.Permissions;
 using MyCvProject.Domain.Entities.User;
 using MyCvProject.Infra.Data.Context;
 using System.Collections.Generic;
@@ -24,9 +25,17 @@ namespace MyCvProject.Infra.Data.Repositories
 
         public async Task<int> AddRole(Role role)
         {
-            await _context.Roles.AddAsync(role);
-            await _context.SaveChangesAsync();
-            return role.RoleId;
+            try
+            {
+                await _context.Roles.AddAsync(role);
+                await _context.SaveChangesAsync();
+                return role.RoleId;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task<Role> GetRoleById(int roleId)

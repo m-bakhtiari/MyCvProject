@@ -5,6 +5,15 @@ namespace MyCvProject.Domain.Entities.Course
 {
     public class CourseLevel
     {
+        #region Constructor
+
+        public CourseLevel()
+        {
+
+        }
+
+        #endregion
+
         [Key]
         public int LevelId { get; set; }
 
@@ -12,6 +21,9 @@ namespace MyCvProject.Domain.Entities.Course
         [Required]
         public string LevelTitle { get; set; }
 
+        #region Relations
         public List<Course> Courses { get; set; }
+
+        #endregion  
     }
 }

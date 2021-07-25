@@ -8,6 +8,14 @@ namespace MyCvProject.Domain.Entities.Course
 {
     public class Course
     {
+        #region Constructor
+
+        public Course()
+        {
+            
+        }
+        #endregion
+
         [Key]
         public int CourseId { get; set; }
 
@@ -52,6 +60,7 @@ namespace MyCvProject.Domain.Entities.Course
 
         public DateTime? UpdateDate { get; set; }
 
+        public bool IsDelete { get; set; }
 
         #region Relations
 

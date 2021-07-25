@@ -73,14 +73,13 @@ namespace MyCvProject.Infra.Data.Context
             foreach (var fk in cascadeFKs)
                 fk.DeleteBehavior = DeleteBehavior.Restrict;
 
-            modelBuilder.Entity<User>()
-                .HasQueryFilter(u => !u.IsDelete);
+            modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDelete);
 
-            modelBuilder.Entity<Role>()
-                .HasQueryFilter(r => !r.IsDelete);
+            modelBuilder.Entity<Role>().HasQueryFilter(r => !r.IsDelete);
 
-            modelBuilder.Entity<CourseGroup>()
-                .HasQueryFilter(g => !g.IsDelete);
+            modelBuilder.Entity<CourseGroup>().HasQueryFilter(g => !g.IsDelete);
+
+            modelBuilder.Entity<Course>().HasQueryFilter(c => !c.IsDelete);
 
             #region Add Primary Data For Role
 
@@ -164,9 +163,9 @@ namespace MyCvProject.Infra.Data.Context
                 IsDelete = false,
                 IsActive = true,
                 UserAvatar = Domain.Consts.Const.DefaultUserAvatar,
-                RegisterDate = DateTime.Now,
+                RegisterDate = new DateTime(2021,02,02),
                 Password = PasswordHelper.EncodePasswordMd5("123"),
-                ActiveCode = NameGenerator.GenerateUniqCode(),
+                ActiveCode = "fea2f9e251d54dc8b572b7996abf9e87",
             });
 
             modelBuilder.Entity<UserRole>().HasData(new UserRole()
@@ -181,6 +180,41 @@ namespace MyCvProject.Infra.Data.Context
                 RoleId = Domain.Consts.Const.RoleIdForAdmin,
                 PermissionId = Domain.Consts.Const.PermissionIdForAdmin,
                 RP_Id = 1
+            });
+
+            #endregion
+
+            #region Add Primary Data For Wallet Type
+
+            modelBuilder.Entity<WalletType>().HasData(new WalletType()
+            {
+                TypeId = Domain.Consts.Const.WalletTypeIdForIncrease,
+                TypeTitle = "واریز"
+            }, new WalletType()
+            {
+                TypeId = Domain.Consts.Const.WalletTypeIdForDecrease,
+                TypeTitle = "برداشت"
+            });
+
+            #endregion
+
+            #region Add Primary Data For Course Levels
+
+            modelBuilder.Entity<CourseLevel>().HasData(new List<CourseLevel>(){
+                new CourseLevel() {LevelId = 1, LevelTitle = "مقدماتی"},
+                new CourseLevel() {LevelId = 2, LevelTitle = "متوسط"},
+                new CourseLevel() {LevelId = 3, LevelTitle = "پیشرفته"},
+                new CourseLevel() {LevelId = 4, LevelTitle = "فوق پیشرفته"}
+            });
+
+            #endregion
+
+            #region Add DataFor Course Status
+
+            modelBuilder.Entity<CourseStatus>().HasData(new List<CourseStatus>()
+            {
+                new CourseStatus(){StatusId = 1,StatusTitle = "در حال برگزاری"},
+                new CourseStatus(){StatusId = 2,StatusTitle = "کامل شده"}
             });
 
             #endregion

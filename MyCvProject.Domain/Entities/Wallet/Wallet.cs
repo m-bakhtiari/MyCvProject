@@ -5,10 +5,13 @@ namespace MyCvProject.Domain.Entities.Wallet
 {
     public class Wallet
     {
+        #region Constructor
         public Wallet()
         {
-            
-        }
+
+        } 
+        #endregion
+
         [Key]
         public int WalletId { get; set; }
 
@@ -34,9 +37,10 @@ namespace MyCvProject.Domain.Entities.Wallet
         [Display(Name = "تاریخ و ساعت")]
         public DateTime CreateDate { get; set; }
 
-
+        #region Relations
         public virtual User.User User { get; set; }
-        public virtual WalletType WalletType { get; set; }
+        public virtual WalletType WalletType { get; set; } 
+        #endregion
 
 
     }

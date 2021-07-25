@@ -4,6 +4,8 @@ using MyCvProject.Domain.Entities.User;
 using MyCvProject.Domain.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyCvProject.Domain.ViewModels.User;
+using MyCvProject.Core.Mapper;
 
 namespace MyCvProject.Api.Controllers
 {
@@ -50,12 +52,13 @@ namespace MyCvProject.Api.Controllers
         /// <summary>
         /// افزودن نقش جدید
         /// </summary>
-        /// <param name="role">نقش</param>
+        /// <param name="roleViewModel">نقش</param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> AddRole(Role role)
+        public async Task<IActionResult> AddRole(RoleViewModel roleViewModel)
         {
+            var role = roleViewModel.ToRole();
             var result = await _permissionService.AddRole(role);
             if (result.IsSuccess == false)
             {
@@ -68,16 +71,17 @@ namespace MyCvProject.Api.Controllers
         /// ویرایش نقش یا آیدی
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="role"></param>
+        /// <param name="roleViewModel"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateRole(int id, Role role)
+        public async Task<IActionResult> UpdateRole(int id, RoleViewModel roleViewModel)
         {
-            if (role.RoleId != id)
+            if (roleViewModel.RoleId != id)
             {
                 return BadRequest();
             }
+            var role = roleViewModel.ToRole();
             var result = await _permissionService.UpdateRole(role);
             if (result.IsSuccess == false)
             {

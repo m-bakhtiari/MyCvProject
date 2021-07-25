@@ -1,3 +1,5 @@
+using System.IO;
+using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +9,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MyCvProject.Infra.Data.Context;
 using MyCvProject.Infra.IoC.DependencyInjections;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.Api
 {
@@ -36,11 +41,43 @@ namespace MyCvProject.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyCvProject.Api", Version = "v1" });
+                c.IncludeXmlComments(Path.Combine(Directory.GetCurrentDirectory(), "MyCvProject.Api.xml"));
             });
 
             #region Add IoC
 
             RegisterServices(services);
+
+            #endregion
+
+            #region JWT
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Const.SiteUrl,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Const.VerifyCodeJwt))
+                    };
+                });
+
+            services.AddCors(options =>
+            {
+
+                options.AddPolicy("EnableCors", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                    //.AllowCredentials()
+                    .Build();
+                });
+            });
 
             #endregion
         }
