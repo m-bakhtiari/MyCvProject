@@ -4,39 +4,18 @@
         <name>MyCvProject.Api</name>
     </assembly>
     <members>
-        <member name="M:MyCvProject.Api.Controllers.CourseCommentController.GetUsers">
+        <member name="M:MyCvProject.Api.Controllers.CourseCommentController.GetCourseCommentById(System.Int32)">
             <summary>
-            گرفتن تمام لیست کاربران
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:MyCvProject.Api.Controllers.CourseCommentController.GetUserById(System.Int32)">
-            <summary>
-            گرفتن کاربر با آیدی
+            گرفتن کامنت های یک دوره با آیدی
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:MyCvProject.Api.Controllers.CourseCommentController.DeleteUserById(System.Int32)">
+        <member name="M:MyCvProject.Api.Controllers.CourseCommentController.AddCourseComment(MyCvProject.Domain.ViewModels.Course.CourseCommentViewModel)">
             <summary>
-            حذف کاربر با آیدی
+            افزودن کامنت جدید
             </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MyCvProject.Api.Controllers.CourseCommentController.AddUser(MyCvProject.Domain.ViewModels.User.UserViewModel)">
-            <summary>
-            افزودن کاربر جدید
-            </summary>
-            <param name="userViewModel"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MyCvProject.Api.Controllers.CourseCommentController.UpdateUser(System.Int32,MyCvProject.Domain.ViewModels.User.UserViewModel)">
-            <summary>
-            ویرایش کاربر با آیدی
-            </summary>
-            <param name="id"></param>
-            <param name="userViewModel"></param>
+            <param name="courseCommentViewModel"></param>
             <returns></returns>
         </member>
         <member name="M:MyCvProject.Api.Controllers.CourseController.GetCourses">
@@ -74,74 +53,74 @@
             <param name="courseViewModel"></param>
             <returns></returns>
         </member>
-        <member name="M:MyCvProject.Api.Controllers.CourseEpisodeController.GetUsers">
+        <member name="M:MyCvProject.Api.Controllers.CourseEpisodeController.GetCourseEpisodes">
             <summary>
-            گرفتن تمام لیست کاربران
+            گرفتن تمام لیست قسمت ها
             </summary>
             <returns></returns>
         </member>
-        <member name="M:MyCvProject.Api.Controllers.CourseEpisodeController.GetUserById(System.Int32)">
+        <member name="M:MyCvProject.Api.Controllers.CourseEpisodeController.GetCourseEpisodeById(System.Int32)">
             <summary>
-            گرفتن کاربر با آیدی
+            گرفتن بخش با آیدی
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:MyCvProject.Api.Controllers.CourseEpisodeController.DeleteUserById(System.Int32)">
+        <member name="M:MyCvProject.Api.Controllers.CourseEpisodeController.DeleteCourseEpisodeById(System.Int32)">
             <summary>
-            حذف کاربر با آیدی
+            حذف بخش با آیدی
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:MyCvProject.Api.Controllers.CourseEpisodeController.AddUser(MyCvProject.Domain.ViewModels.User.UserViewModel)">
+        <member name="M:MyCvProject.Api.Controllers.CourseEpisodeController.AddCourseEpisode(MyCvProject.Domain.ViewModels.Course.CourseEpisodeViewModel)">
             <summary>
-            افزودن کاربر جدید
+            افزودن بخش جدید
             </summary>
-            <param name="userViewModel"></param>
+            <param name="courseEpisodeViewModel"></param>
             <returns></returns>
         </member>
-        <member name="M:MyCvProject.Api.Controllers.CourseEpisodeController.UpdateUser(System.Int32,MyCvProject.Domain.ViewModels.User.UserViewModel)">
+        <member name="M:MyCvProject.Api.Controllers.CourseEpisodeController.UpdateCourseEpisode(System.Int32,MyCvProject.Domain.ViewModels.Course.CourseEpisodeViewModel)">
             <summary>
-            ویرایش کاربر با آیدی
-            </summary>
-            <param name="id"></param>
-            <param name="userViewModel"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MyCvProject.Api.Controllers.CourseGroupController.GetUsers">
-            <summary>
-            گرفتن تمام لیست کاربران
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:MyCvProject.Api.Controllers.CourseGroupController.GetUserById(System.Int32)">
-            <summary>
-            گرفتن کاربر با آیدی
+            ویرایش بخش با آیدی
             </summary>
             <param name="id"></param>
+            <param name="courseEpisodeViewModel"></param>
             <returns></returns>
         </member>
-        <member name="M:MyCvProject.Api.Controllers.CourseGroupController.DeleteUserById(System.Int32)">
+        <member name="M:MyCvProject.Api.Controllers.CourseGroupController.GetCourseGroups">
             <summary>
-            حذف کاربر با آیدی
+            گرفتن تمام لیست دسته بندی های دوره
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MyCvProject.Api.Controllers.CourseGroupController.GetCourseGroupById(System.Int32)">
+            <summary>
+            گرفتن دسته بندی دوره با آیدی
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:MyCvProject.Api.Controllers.CourseGroupController.AddUser(MyCvProject.Domain.ViewModels.User.UserViewModel)">
+        <member name="M:MyCvProject.Api.Controllers.CourseGroupController.DeleteCourseGroupById(System.Int32)">
             <summary>
-            افزودن کاربر جدید
-            </summary>
-            <param name="userViewModel"></param>
-            <returns></returns>
-        </member>
-        <member name="M:MyCvProject.Api.Controllers.CourseGroupController.UpdateUser(System.Int32,MyCvProject.Domain.ViewModels.User.UserViewModel)">
-            <summary>
-            ویرایش کاربر با آیدی
+            حذف دسته بندی گروه با آیدی
             </summary>
             <param name="id"></param>
-            <param name="userViewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MyCvProject.Api.Controllers.CourseGroupController.AddCourseGroup(MyCvProject.Domain.ViewModels.Course.CourseGroupViewModel)">
+            <summary>
+            افزودن گروه بندی دوره جدید
+            </summary>
+            <param name="courseGroupViewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MyCvProject.Api.Controllers.CourseGroupController.UpdateCourseGroup(System.Int32,MyCvProject.Domain.ViewModels.Course.CourseGroupViewModel)">
+            <summary>
+            ویرایش گروه بندی دوره با آیدی
+            </summary>
+            <param name="id"></param>
+            <param name="courseGroupViewModel"></param>
             <returns></returns>
         </member>
         <member name="M:MyCvProject.Api.Controllers.RoleController.GetRoles">

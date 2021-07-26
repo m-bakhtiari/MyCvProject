@@ -87,7 +87,7 @@ namespace MyCvProject.Web.Controllers
             comment.UserId = await _userService.GetUserIdByUserName(User.Identity.Name);
             await _courseService.AddComment(comment);
 
-            return View("ShowComment", await _courseService.GetCourseComment(comment.CourseId));
+            return View("ShowComment", await _courseService.GetCourseComment(comment.CourseId, 1));
         }
 
         public async Task<IActionResult> ShowComment(int id, int pageId = 1)

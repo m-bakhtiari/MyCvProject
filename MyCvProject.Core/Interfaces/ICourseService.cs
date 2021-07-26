@@ -63,6 +63,7 @@ namespace MyCvProject.Core.Interfaces
         #region Comments
 
         Task<OpRes> AddComment(CourseComment comment, string username);
+        Task<OpRes> AddComment(CourseComment comment);
         Task<Tuple<List<CourseComment>, int>> GetCourseComment(int courseId, int pageId = 1);
         Task<List<CourseComment>> GetCourseComment(int courseId);
 

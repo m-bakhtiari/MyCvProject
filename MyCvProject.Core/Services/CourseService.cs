@@ -264,6 +264,12 @@ namespace MyCvProject.Core.Services
             return OpRes.BuildSuccess();
         }
 
+        public async Task<OpRes> AddComment(CourseComment comment)
+        {
+            await _courseRepository.AddComment(comment);
+            return OpRes.BuildSuccess();
+        }
+
         public async Task<Tuple<List<CourseComment>, int>> GetCourseComment(int courseId, int pageId = 1)
         {
             return await _courseRepository.GetCourseComment(courseId, pageId);
