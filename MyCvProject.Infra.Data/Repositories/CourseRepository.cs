@@ -75,7 +75,7 @@ namespace MyCvProject.Infra.Data.Repositories
             }).ToListAsync();
         }
 
-        public async Task<CourseGroup> GetById(int groupId)
+        public async Task<CourseGroup> GetCourseGroupById(int groupId)
         {
             return await _context.CourseGroups.FindAsync(groupId);
         }
@@ -281,5 +281,21 @@ namespace MyCvProject.Infra.Data.Repositories
                     .OrderByDescending(c => c.CreateDate).ToListAsync(), pageCount);
         }
 
+        public async Task<List<CourseComment>> GetCourseComment(int courseId)
+        {
+            return await _context.CourseComments.ToListAsync();
+        }
+
+        public async Task<List<CourseEpisode>> GetAllEpisode()
+        {
+            return await _context.CourseEpisodes.ToListAsync();
+        }
+
+        public async Task DeleteEpisode(int episodeId)
+        {
+            var episode = await _context.CourseEpisodes.FirstOrDefaultAsync(x => x.EpisodeId == episodeId);
+            _context.CourseEpisodes.Remove(episode);
+            await _context.SaveChangesAsync();
+        }
     }
 }

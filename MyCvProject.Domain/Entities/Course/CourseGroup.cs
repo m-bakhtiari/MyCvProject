@@ -21,6 +21,7 @@ namespace MyCvProject.Domain.Entities.Course
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(200, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد .")]
         public string GroupTitle { get; set; }
+
         [Display(Name = "حذف شده ؟")]
         public bool IsDelete { get; set; }
 

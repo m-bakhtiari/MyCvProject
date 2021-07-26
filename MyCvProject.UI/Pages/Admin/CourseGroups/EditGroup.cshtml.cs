@@ -23,7 +23,7 @@ namespace MyCvProject.UI.Pages.Admin.CourseGroups
 
         public async Task OnGet(int id)
         {
-            CourseGroups = await _courseService.GetById(id);
+            CourseGroups = await _courseService.GetCourseGroupById(id);
         }
 
         public async Task<IActionResult> OnPost()

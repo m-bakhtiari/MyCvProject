@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Mapper;
-using MyCvProject.Domain.Entities.User;
+using MyCvProject.Domain.Entities.Course;
 using MyCvProject.Domain.ViewModels;
-using MyCvProject.Domain.ViewModels.User;
+using MyCvProject.Domain.ViewModels.Course;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyCvProject.Api.Controllers
 {
@@ -18,87 +15,39 @@ namespace MyCvProject.Api.Controllers
     {
         #region Ctor
 
-        private readonly IUserService _userService;
+        private readonly ICourseService _courseService;
 
-        public CourseCommentController(IUserService userService)
+        public CourseCommentController(ICourseService courseService)
         {
-            _userService = userService;
+            _courseService = courseService;
         }
 
         #endregion
 
         /// <summary>
-        /// گرفتن تمام لیست کاربران
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [ProducesResponseType(200, Type = typeof(List<User>))]
-        public async Task<IActionResult> GetUsers()
-        {
-            var users = await _userService.GetUsers();
-            return Ok(users);
-        }
-
-        /// <summary>
-        /// گرفتن کاربر با آیدی
+        /// گرفتن کامنت های یک دوره با آیدی
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(200, Type = typeof(User))]
-        public async Task<IActionResult> GetUserById(int id)
+        [ProducesResponseType(200, Type = typeof(List<CourseComment>))]
+        public async Task<IActionResult> GetCourseCommentById(int id)
         {
-            var user = await _userService.GetUserById(id);
-            return Ok(user);
+            var comments = await _courseService.GetCourseComment(id);
+            return Ok(comments);
         }
 
         /// <summary>
-        /// حذف کاربر با آیدی
+        /// افزودن کامنت جدید
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpDelete]
-        [ProducesResponseType(200)]
-        public async Task<IActionResult> DeleteUserById(int id)
-        {
-            await _userService.DeleteUser(id);
-            return Ok();
-        }
-
-        /// <summary>
-        /// افزودن کاربر جدید
-        /// </summary>
-        /// <param name="userViewModel"></param>
+        /// <param name="courseCommentViewModel"></param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> AddUser(UserViewModel userViewModel)
+        public async Task<IActionResult> AddCourseComment(CourseCommentViewModel courseCommentViewModel)
         {
-            var user = userViewModel.ToUser();
-            var result = await _userService.AddUser(user);
-            if (result.IsSuccess == false)
-            {
-                return result.ToBadRequestError();
-            }
-            return Ok();
-        }
-
-        /// <summary>
-        /// ویرایش کاربر با آیدی
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="userViewModel"></param>
-        /// <returns></returns>
-        [HttpPut("{id}")]
-        [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateUser(int id, UserViewModel userViewModel)
-        {
-            if (userViewModel.UserId != id)
-            {
-                return BadRequest();
-            }
-            var user = userViewModel.ToUser();
-            var result = await _userService.AddUser(user);
+            var courseComment = courseCommentViewModel.ToCourseComment();
+            var result = await _courseService.AddComment(courseComment, User.Identity.Name);
             if (result.IsSuccess == false)
             {
                 return result.ToBadRequestError();

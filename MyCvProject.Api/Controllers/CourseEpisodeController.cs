@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using MyCvProject.Domain.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Mapper;
-using MyCvProject.Domain.Entities.User;
-using MyCvProject.Domain.ViewModels;
-using MyCvProject.Domain.ViewModels.User;
+using MyCvProject.Domain.Entities.Course;
+using MyCvProject.Domain.ViewModels.Course;
 
 namespace MyCvProject.Api.Controllers
 {
@@ -18,64 +15,64 @@ namespace MyCvProject.Api.Controllers
     {
         #region Ctor
 
-        private readonly IUserService _userService;
+        private readonly ICourseService _courseService;
 
-        public CourseEpisodeController(IUserService userService)
+        public CourseEpisodeController(ICourseService courseService)
         {
-            _userService = userService;
+            _courseService = courseService;
         }
 
         #endregion
 
         /// <summary>
-        /// گرفتن تمام لیست کاربران
+        /// گرفتن تمام لیست قسمت ها
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(List<User>))]
-        public async Task<IActionResult> GetUsers()
+        [ProducesResponseType(200, Type = typeof(List<CourseEpisode>))]
+        public async Task<IActionResult> GetCourseEpisodes()
         {
-            var users = await _userService.GetUsers();
-            return Ok(users);
+            var courseEpisodes = await _courseService.GetAllEpisode();
+            return Ok(courseEpisodes);
         }
 
         /// <summary>
-        /// گرفتن کاربر با آیدی
+        /// گرفتن بخش با آیدی
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(200, Type = typeof(User))]
-        public async Task<IActionResult> GetUserById(int id)
+        [ProducesResponseType(200, Type = typeof(CourseEpisode))]
+        public async Task<IActionResult> GetCourseEpisodeById(int id)
         {
-            var user = await _userService.GetUserById(id);
-            return Ok(user);
+            var courseEpisode = await _courseService.GetEpisodeById(id);
+            return Ok(courseEpisode);
         }
 
         /// <summary>
-        /// حذف کاربر با آیدی
+        /// حذف بخش با آیدی
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> DeleteUserById(int id)
+        public async Task<IActionResult> DeleteCourseEpisodeById(int id)
         {
-            await _userService.DeleteUser(id);
+            await _courseService.DeleteEpisode(id);
             return Ok();
         }
 
         /// <summary>
-        /// افزودن کاربر جدید
+        /// افزودن بخش جدید
         /// </summary>
-        /// <param name="userViewModel"></param>
+        /// <param name="courseEpisodeViewModel"></param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> AddUser(UserViewModel userViewModel)
+        public async Task<IActionResult> AddCourseEpisode(CourseEpisodeViewModel courseEpisodeViewModel)
         {
-            var user = userViewModel.ToUser();
-            var result = await _userService.AddUser(user);
+            var courseEpisode = courseEpisodeViewModel.ToCourseEpisode();
+            var result = await _courseService.AddEpisode(courseEpisode);
             if (result.IsSuccess == false)
             {
                 return result.ToBadRequestError();
@@ -84,21 +81,21 @@ namespace MyCvProject.Api.Controllers
         }
 
         /// <summary>
-        /// ویرایش کاربر با آیدی
+        /// ویرایش بخش با آیدی
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="userViewModel"></param>
+        /// <param name="courseEpisodeViewModel"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
         [ProducesResponseType(200)]
-        public async Task<IActionResult> UpdateUser(int id, UserViewModel userViewModel)
+        public async Task<IActionResult> UpdateCourseEpisode(int id, CourseEpisodeViewModel courseEpisodeViewModel)
         {
-            if (userViewModel.UserId != id)
+            if (courseEpisodeViewModel.EpisodeId != id)
             {
                 return BadRequest();
             }
-            var user = userViewModel.ToUser();
-            var result = await _userService.AddUser(user);
+            var courseEpisode = courseEpisodeViewModel.ToCourseEpisode();
+            var result = await _courseService.AddEpisode(courseEpisode);
             if (result.IsSuccess == false)
             {
                 return result.ToBadRequestError();

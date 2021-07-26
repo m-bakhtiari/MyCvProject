@@ -23,7 +23,7 @@ namespace MyCvProject.Domain.Interfaces
 
         Task<List<SelectListItem>> GetStatues();
 
-        Task<CourseGroup> GetById(int groupId);
+        Task<CourseGroup> GetCourseGroupById(int groupId);
 
         Task AddGroup(CourseGroup @group);
 
@@ -53,10 +53,13 @@ namespace MyCvProject.Domain.Interfaces
 
         Task EditEpisode(CourseEpisode episode);
 
+        Task<List<CourseEpisode>> GetAllEpisode();
+        Task DeleteEpisode(int episodeId);
 
         Task AddComment(CourseComment comment);
 
         Task<Tuple<List<CourseComment>, int>> GetCourseComment(int courseId, int pageId = 1);
+        Task<List<CourseComment>> GetCourseComment(int courseId);
 
     }
 }

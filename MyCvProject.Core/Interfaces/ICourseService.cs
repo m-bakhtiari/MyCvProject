@@ -19,9 +19,10 @@ namespace MyCvProject.Core.Interfaces
         Task<List<SelectListItem>> GetTeachers();
         Task<List<SelectListItem>> GetLevels();
         Task<List<SelectListItem>> GetStatues();
-        Task<CourseGroup> GetById(int groupId);
-        Task AddGroup(CourseGroup group);
-        Task UpdateGroup(CourseGroup group);
+        Task<CourseGroup> GetCourseGroupById(int groupId);
+        Task<OpRes> AddGroup(CourseGroup group);
+        Task<OpRes> UpdateGroup(CourseGroup group);
+        Task DeleteGroup(int groupId);
 
         #endregion
 
@@ -51,14 +52,19 @@ namespace MyCvProject.Core.Interfaces
         Task<List<CourseEpisode>> GetListEpisodeCorse(int courseId);
         bool CheckExistFile(string fileName);
         Task<int> AddEpisode(CourseEpisode episode, IFormFile episodeFile);
+        Task<OpRes<int>> AddEpisode(CourseEpisode episode);
         Task<CourseEpisode> GetEpisodeById(int episodeId);
         Task EditEpisode(CourseEpisode episode, IFormFile episodeFile);
+        Task<OpRes> EditEpisode(CourseEpisode episode);
+        Task<List<CourseEpisode>> GetAllEpisode();
+        Task DeleteEpisode(int episodeId);
         #endregion
 
         #region Comments
 
-        Task AddComment(CourseComment comment);
+        Task<OpRes> AddComment(CourseComment comment, string username);
         Task<Tuple<List<CourseComment>, int>> GetCourseComment(int courseId, int pageId = 1);
+        Task<List<CourseComment>> GetCourseComment(int courseId);
 
         #endregion
     }

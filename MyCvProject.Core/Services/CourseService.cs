@@ -19,10 +19,12 @@ namespace MyCvProject.Core.Services
     public class CourseService : ICourseService
     {
         private readonly ICourseRepository _courseRepository;
+        private readonly IUserService _userService;
 
-        public CourseService(ICourseRepository courseRepository)
+        public CourseService(ICourseRepository courseRepository, IUserService userService)
         {
             _courseRepository = courseRepository;
+            _userService = userService;
         }
 
         public async Task<List<CourseGroup>> GetAllGroup()
@@ -55,19 +57,25 @@ namespace MyCvProject.Core.Services
             return await _courseRepository.GetStatues();
         }
 
-        public async Task<CourseGroup> GetById(int groupId)
+        public async Task<CourseGroup> GetCourseGroupById(int groupId)
         {
-            return await _courseRepository.GetById(groupId);
+            return await _courseRepository.GetCourseGroupById(groupId);
         }
 
-        public async Task AddGroup(CourseGroup group)
+        public async Task<OpRes> AddGroup(CourseGroup group)
         {
+            if (string.IsNullOrWhiteSpace(group.GroupTitle))
+                return OpRes.BuildError("عنوان گروه را وارد نمایید");
             await _courseRepository.AddGroup(group);
+            return OpRes.BuildSuccess();
         }
 
-        public async Task UpdateGroup(CourseGroup group)
+        public async Task<OpRes> UpdateGroup(CourseGroup group)
         {
+            if (string.IsNullOrWhiteSpace(group.GroupTitle))
+                return OpRes.BuildError("عنوان گروه را وارد نمایید");
             await _courseRepository.UpdateGroup(group);
+            return OpRes.BuildSuccess();
         }
 
         public async Task<List<ShowCourseForAdminViewModel>> GetCoursesForAdmin()
@@ -202,8 +210,16 @@ namespace MyCvProject.Core.Services
             {
                 await episodeFile.CopyToAsync(stream);
             }
-
             return await _courseRepository.AddEpisode(episode);
+        }
+
+        public async Task<OpRes<int>> AddEpisode(CourseEpisode episode)
+        {
+            if (string.IsNullOrWhiteSpace(episode.EpisodeTitle))
+            {
+                return OpRes<int>.BuildError("عنوان را وارد نمایید");
+            }
+            return OpRes<int>.BuildSuccess(await _courseRepository.AddEpisode(episode));
         }
 
         public async Task<CourseEpisode> GetEpisodeById(int episodeId)
@@ -227,9 +243,25 @@ namespace MyCvProject.Core.Services
             await _courseRepository.EditEpisode(episode);
         }
 
-        public async Task AddComment(CourseComment comment)
+        public async Task<OpRes> EditEpisode(CourseEpisode episode)
         {
+            if (string.IsNullOrWhiteSpace(episode.EpisodeTitle))
+            {
+                return OpRes<int>.BuildError("عنوان را وارد نمایید");
+            }
+
+            await _courseRepository.EditEpisode(episode);
+            return OpRes.BuildSuccess();
+        }
+
+        public async Task<OpRes> AddComment(CourseComment comment, string username)
+        {
+            var user = await _userService.GetUserByUserName(username);
+            comment.UserId = user.UserId;
+            if (string.IsNullOrWhiteSpace(comment.Comment))
+                return OpRes.BuildError("متن کامنت را وارد نمایید");
             await _courseRepository.AddComment(comment);
+            return OpRes.BuildSuccess();
         }
 
         public async Task<Tuple<List<CourseComment>, int>> GetCourseComment(int courseId, int pageId = 1)
@@ -261,6 +293,29 @@ namespace MyCvProject.Core.Services
             course.UpdateDate = DateTime.Now;
             await _courseRepository.UpdateCourse(course);
             return OpRes.BuildSuccess();
+        }
+
+        public async Task DeleteGroup(int groupId)
+        {
+            var group = await _courseRepository.GetCourseGroupById(groupId);
+            if (group == null) return;
+            group.IsDelete = true;
+            await UpdateGroup(group);
+        }
+
+        public async Task<List<CourseComment>> GetCourseComment(int courseId)
+        {
+            return await _courseRepository.GetCourseComment(courseId);
+        }
+
+        public async Task<List<CourseEpisode>> GetAllEpisode()
+        {
+            return await _courseRepository.GetAllEpisode();
+        }
+
+        public async Task DeleteEpisode(int episodeId)
+        {
+            await _courseRepository.DeleteEpisode(episodeId);
         }
     }
 }
