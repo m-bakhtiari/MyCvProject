@@ -40,8 +40,7 @@ namespace MyCvProject.UI.Areas.UserPanel.Controllers
 
             var payment = new ZarinpalSandbox.Payment(charge.Amount);
 
-            var res = await payment.PaymentRequest("شارژ کیف پول", "https://localhost:44349/OnlinePayment/" + walletId,
-                "Info@MyCvProject.Com", "09197070750");
+            var res = await payment.PaymentRequest("شارژ کیف پول", $"https://localhost:{HttpContext.Connection.LocalPort}/OnlinePayment/" + walletId);
 
             if (res.Status == 100)
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace MyCvProject.Domain.Consts
 {
@@ -27,7 +28,6 @@ namespace MyCvProject.Domain.Consts
 
        public const string DefaultUserAvatar = "Defult.jpg";
 
-       public const string SiteUrl = "https://localhost:44380";
        public const string VerifyCodeJwt = "this is my custom Secret key for authnetication";
     }
 }

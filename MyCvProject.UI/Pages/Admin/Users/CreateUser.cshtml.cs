@@ -9,9 +9,7 @@ using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Users
 {
-    [PermissionChecker(Const.PermissionIdForAdmin)]
-    [PermissionChecker(Const.PermissionIdForCreateUser)]
-    [PermissionChecker(Const.PermissionIdForManageUser)]
+    [PermissionChecker(new int[] { Const.PermissionIdForAdmin, Const.PermissionIdForCreateUser, Const.PermissionIdForManageUser })]
     public class CreateUserModel : PageModel
     {
         private readonly IUserService _userService;

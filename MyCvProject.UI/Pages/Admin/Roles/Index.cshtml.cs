@@ -8,8 +8,7 @@ using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Roles
 {
-    [PermissionChecker(Const.PermissionIdForAdmin)]
-    [PermissionChecker(Const.PermissionIdForManageRole)]
+    [PermissionChecker(new[] { Const.PermissionIdForAdmin, Const.PermissionIdForManageRole })]
     public class IndexModel : PageModel
     {
         private readonly IPermissionService _permissionService;
@@ -21,10 +20,10 @@ namespace MyCvProject.UI.Pages.Admin.Roles
 
         public List<Role> RolesList { get; set; }
 
-       
+
         public async Task OnGet()
         {
-            RolesList =await _permissionService.GetRoles();
+            RolesList = await _permissionService.GetRoles();
         }
     }
 }

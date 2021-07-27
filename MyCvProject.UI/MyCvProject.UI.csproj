@@ -25,7 +25,6 @@
     <Folder Include="wwwroot\courseFiles\" />
     <Folder Include="wwwroot\course\demoes\" />
     <Folder Include="wwwroot\course\image\" />
-    <Folder Include="wwwroot\course\thumb\" />
   </ItemGroup>
 
 </Project>

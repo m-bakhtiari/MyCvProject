@@ -9,7 +9,7 @@ using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Discount
 {
-    [PermissionChecker(Const.PermissionIdForAdmin)]
+    [PermissionChecker(new[] { Const.PermissionIdForAdmin })]
     public class CreateDiscountModel : PageModel
     {
         private readonly IOrderService _orderService;

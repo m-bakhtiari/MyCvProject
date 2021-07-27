@@ -9,7 +9,7 @@ using MyCvProject.Domain.Entities.Course;
 
 namespace MyCvProject.UI.Pages.Admin.Courses
 {
-    [PermissionChecker(Const.PermissionIdForAdmin)]
+    [PermissionChecker(new[] { Const.PermissionIdForAdmin })]
     public class CreateEpisodeModel : PageModel
     {
         private readonly ICourseService _courseService;

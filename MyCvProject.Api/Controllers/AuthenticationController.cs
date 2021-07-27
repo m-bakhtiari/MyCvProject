@@ -45,7 +45,7 @@ namespace MyCms.Api.Controllers
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
             var tokenOption = new JwtSecurityToken(
-                issuer: Const.SiteUrl,
+                issuer: "https://localhost:" + HttpContext.Connection.LocalPort,
                 claims: new List<Claim>
                 {
                     new Claim(ClaimTypes.Name,login.Email),

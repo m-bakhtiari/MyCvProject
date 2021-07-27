@@ -8,8 +8,8 @@ namespace MyCvProject.Core.Security
     public class PermissionCheckerAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
         private IPermissionService _permissionService;
-        private readonly int _permissionId = 0;
-        public PermissionCheckerAttribute(int permissionId)
+        private readonly int[] _permissionId;
+        public PermissionCheckerAttribute(int[] permissionId)
         {
             _permissionId = permissionId;
         }
@@ -20,11 +20,14 @@ namespace MyCvProject.Core.Security
             if (context.HttpContext.User.Identity.IsAuthenticated)
             {
                 string userName = context.HttpContext.User.Identity.Name;
-
-                if (_permissionService.CheckPermission(_permissionId, userName).Result == false)
+                foreach (var id in _permissionId)
                 {
-                    context.Result = new RedirectResult("/Login?" + context.HttpContext.Request.Path);
+                    if (_permissionService.CheckPermission(id, userName).Result)
+                    {
+                        return;
+                    }
                 }
+                context.Result = new RedirectResult("/Login?" + context.HttpContext.Request.Path);
             }
             else
             {

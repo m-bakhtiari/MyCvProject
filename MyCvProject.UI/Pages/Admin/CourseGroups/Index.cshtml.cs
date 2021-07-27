@@ -8,7 +8,7 @@ using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.CourseGroups
 {
-    [PermissionChecker(Const.PermissionIdForAdmin)]
+    [PermissionChecker(new[] { Const.PermissionIdForAdmin })]
     public class IndexModel : PageModel
     {
         private readonly ICourseService _courseService;
@@ -21,7 +21,7 @@ namespace MyCvProject.UI.Pages.Admin.CourseGroups
         public List<CourseGroup> CourseGroups { get; set; }
         public async Task OnGet()
         {
-            CourseGroups =await _courseService.GetAllGroup();
+            CourseGroups = await _courseService.GetAllGroup();
         }
     }
 }

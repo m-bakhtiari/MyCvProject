@@ -9,9 +9,7 @@ using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Roles
 {
-    [PermissionChecker(Const.PermissionIdForAdmin)]
-    [PermissionChecker(Const.PermissionIdForEditRole)]
-    [PermissionChecker(Const.PermissionIdForManageRole)]
+    [PermissionChecker(new[] { Const.PermissionIdForAdmin, Const.PermissionIdForEditRole, Const.PermissionIdForManageRole })]
     public class EditRoleModel : PageModel
     {
         private readonly IPermissionService _permissionService;

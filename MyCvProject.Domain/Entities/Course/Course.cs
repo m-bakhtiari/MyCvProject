@@ -12,7 +12,7 @@ namespace MyCvProject.Domain.Entities.Course
 
         public Course()
         {
-            
+
         }
         #endregion
 
@@ -75,8 +75,10 @@ namespace MyCvProject.Domain.Entities.Course
         [ForeignKey(nameof(SubGroup))]
         public CourseGroup Group { get; set; }
 
+        [ForeignKey(nameof(StatusId))]
         public CourseStatus CourseStatus { get; set; }
 
+        [ForeignKey(nameof(LevelId))]
         public CourseLevel CourseLevel { get; set; }
 
         public List<CourseEpisode> CourseEpisodes { get; set; }

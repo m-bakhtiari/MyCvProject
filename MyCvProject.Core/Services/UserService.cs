@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.Core.Services
 {
@@ -274,16 +275,16 @@ namespace MyCvProject.Core.Services
                 Email = user.Email,
                 IsActive = true,
                 RegisterDate = DateTime.Now,
-                UserName = user.UserName
+                UserName = user.UserName,
+                UserAvatar = Const.DefaultUserAvatar
             };
 
             #region Save Avatar
 
             if (user.UserAvatar != null)
             {
-                string imagePath = "";
                 addUser.UserAvatar = NameGenerator.GenerateUniqCode() + Path.GetExtension(user.UserAvatar.FileName);
-                imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserAvatar", addUser.UserAvatar);
+                string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserAvatar", addUser.UserAvatar);
                 await using var stream = new FileStream(imagePath, FileMode.Create);
                 await user.UserAvatar.CopyToAsync(stream);
             }
@@ -312,7 +313,7 @@ namespace MyCvProject.Core.Services
             if (editUser.UserAvatar != null)
             {
                 //Delete old Image
-                if (editUser.AvatarName != "Defult.jpg")
+                if (editUser.AvatarName != Const.DefaultUserAvatar)
                 {
                     string deletePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserAvatar", editUser.AvatarName);
                     if (File.Exists(deletePath))

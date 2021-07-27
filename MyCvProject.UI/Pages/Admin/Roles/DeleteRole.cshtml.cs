@@ -8,9 +8,7 @@ using MyCvProject.Domain.Entities.User;
 
 namespace MyCvProject.UI.Pages.Admin.Roles
 {
-    [PermissionChecker(Const.PermissionIdForAdmin)]
-    [PermissionChecker(Const.PermissionIdForDeleteRole)]
-    [PermissionChecker(Const.PermissionIdForManageRole)]
+    [PermissionChecker(new[] { Const.PermissionIdForAdmin, Const.PermissionIdForDeleteRole, Const.PermissionIdForManageRole })]
     public class DeleteRoleModel : PageModel
     {
         private readonly IPermissionService _permissionService;

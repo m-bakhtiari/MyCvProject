@@ -11,7 +11,7 @@ using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Courses
 {
-    [PermissionChecker(Const.PermissionIdForAdmin)]
+    [PermissionChecker(new[] { Const.PermissionIdForAdmin })]
     public class CreateCourseModel : PageModel
     {
         private readonly ICourseService _courseService;
@@ -29,8 +29,8 @@ namespace MyCvProject.UI.Pages.Admin.Courses
             var groups = await _courseService.GetGroupForManageCourse();
             ViewData["Groups"] = new SelectList(groups, "Value", "Text");
 
-            var subGrous = await _courseService.GetSubGroupForManageCourse(int.Parse(groups.First().Value));
-            ViewData["SubGroups"] = new SelectList(subGrous, "Value", "Text");
+            var subGroups = await _courseService.GetSubGroupForManageCourse(int.Parse(groups.First().Value));
+            ViewData["SubGroups"] = new SelectList(subGroups, "Value", "Text");
 
             var teachers = await _courseService.GetTeachers();
             ViewData["Teachers"] = new SelectList(teachers, "Value", "Text");

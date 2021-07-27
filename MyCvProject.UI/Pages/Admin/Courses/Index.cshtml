@@ -20,11 +20,11 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="col-md-12" style="margin: 10px 0;">
-                          
+
                     <a asp-page="CreateCourse" class="btn btn-outline btn-success">افزودن دوره جدید</a>
-                           
+
                 </div>
-                
+
                 <table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-example" aria-describedby="dataTables-example_info">
                     <thead>
                         <tr>
@@ -35,28 +35,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach (var item in Model.ListCourse)
-                    {
-                        <tr>
-                            <td>
-                                <img src="/course/thumb/@item.ImageName" class="thumbnail"/>
-                            </td>
-                            <td>
-                                @item.Title
-                            </td>
-                            <td>
-                                @item.EpisodeCount
-                            </td>
-                            <td>
-                                <a href="/Admin/Courses/EditCourse/@item.CourseId" class="btn btn-warning btn-sm">
-                                    ویرایش
-                                </a>
-                                <a href="/Admin/Courses/IndexEpisode/@item.CourseId" class="btn btn-warning btn-sm">
-                                    افزودن بخش
-                                </a>
-                            </td>
-                        </tr>
-                    }
+                        @foreach (var item in Model.ListCourse)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="/course/thumb/@item.ImageName" class="thumbnail img-thumbnail img-responsive img-circle img-rounded" alt="" />
+                                </td>
+                                <td>
+                                    @item.Title
+                                </td>
+                                <td>
+                                    @item.EpisodeCount
+                                </td>
+                                <td>
+                                    <a href="/Admin/Courses/EditCourse/@item.CourseId" class="btn btn-warning btn-sm">
+                                        ویرایش
+                                    </a>
+                                    <a href="/Admin/Courses/IndexEpisode/@item.CourseId" class="btn btn-warning btn-sm">
+                                        افزودن بخش
+                                    </a>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
 

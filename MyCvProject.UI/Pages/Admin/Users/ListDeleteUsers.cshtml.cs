@@ -7,8 +7,7 @@ using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Pages.Admin.Users
 {
-    [PermissionChecker(Const.PermissionIdForAdmin)]
-    [PermissionChecker(Const.PermissionIdForManageUser)]
+    [PermissionChecker(new[] { Const.PermissionIdForAdmin, Const.PermissionIdForManageUser })]
     public class ListDeleteUsersModel : PageModel
     {
         private readonly IUserService _userService;

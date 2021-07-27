@@ -11,11 +11,22 @@ namespace MyCvProject.Domain.Interfaces
 {
     public interface ICourseRepository
     {
+        #region Course Group
+        /// <summary>
+        /// گرفتن تمام دسته بندی ها
+        /// </summary>
+        /// <returns></returns>
         Task<List<CourseGroup>> GetAllGroup();
-
         Task<List<SelectListItem>> GetGroupForManageCourse();
-
         Task<List<SelectListItem>> GetSubGroupForManageCourse(int groupId);
+        Task<CourseGroup> GetCourseGroupById(int groupId);
+        Task AddGroup(CourseGroup @group);
+        Task UpdateGroup(CourseGroup @group);
+
+        #endregion
+
+
+
 
         Task<List<SelectListItem>> GetTeachers();
 
@@ -23,11 +34,8 @@ namespace MyCvProject.Domain.Interfaces
 
         Task<List<SelectListItem>> GetStatues();
 
-        Task<CourseGroup> GetCourseGroupById(int groupId);
 
-        Task AddGroup(CourseGroup @group);
 
-        Task UpdateGroup(CourseGroup @group);
         Task<List<ShowCourseForAdminViewModel>> GetCoursesForAdmin();
         Task<int> AddCourse(Course course);
         Task<Course> GetCourseById(int courseId);

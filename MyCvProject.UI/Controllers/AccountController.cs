@@ -155,11 +155,11 @@ namespace MyCvProject.UI.Controllers
 
         #endregion
 
-
         #region Forgot Password
         [Route("ForgotPassword")]
         public ActionResult ForgotPassword()
         {
+            ViewBag.SireUrl = "https://localhost:" + HttpContext.Connection.LocalPort;
             return View();
         }
 
@@ -182,6 +182,7 @@ namespace MyCvProject.UI.Controllers
             string bodyEmail = await _viewRender.RenderToStringAsync("_ForgotPassword", user);
             SendEmail.Send(user.Email, "بازیابی حساب کاربری", bodyEmail);
             ViewBag.IsSuccess = true;
+            ViewBag.SireUrl = "https://localhost:" + HttpContext.Connection.LocalPort;
 
             return View();
         }

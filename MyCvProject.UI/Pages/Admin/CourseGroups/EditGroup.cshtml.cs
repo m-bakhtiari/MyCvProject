@@ -8,7 +8,7 @@ using MyCvProject.Domain.Entities.Course;
 
 namespace MyCvProject.UI.Pages.Admin.CourseGroups
 {
-    [PermissionChecker(Const.PermissionIdForAdmin)]
+    [PermissionChecker(new[] { Const.PermissionIdForAdmin })]
     public class EditGroupModel : PageModel
     {
         private readonly ICourseService _courseService;

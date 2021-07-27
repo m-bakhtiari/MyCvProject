@@ -21,6 +21,10 @@
                                 <a href=""> همکاری در فروش </a>
                                 <a href=""> درباره ما </a>
                                 <a href=""> تماس با ما </a>
+                                @if (User.Identity.Name == "admin")
+                                {
+                                    <a href="/Admin">قالب مدیریت سایت</a>
+                                }
                             </li>
                         </ul>
                     </div>

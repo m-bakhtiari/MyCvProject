@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyCvProject.Core.ViewModels.Course;
+using MyCvProject.Domain.Consts;
 using MyCvProject.Domain.Entities.Course;
 using MyCvProject.Domain.Interfaces;
 using MyCvProject.Infra.Data.Context;
@@ -8,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MyCvProject.Domain.ViewModels;
 
 namespace MyCvProject.Infra.Data.Repositories
 {
@@ -48,7 +48,7 @@ namespace MyCvProject.Infra.Data.Repositories
 
         public async Task<List<SelectListItem>> GetTeachers()
         {
-            return await _context.UserRoles.Where(r => r.RoleId == 2).Include(r => r.User)
+            return await _context.UserRoles.Where(r => r.RoleId == Const.RoleIdForTeacher).Include(r => r.User)
                 .Select(u => new SelectListItem()
                 {
                     Value = u.UserId.ToString(),

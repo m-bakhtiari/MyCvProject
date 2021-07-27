@@ -12,6 +12,7 @@ using MyCvProject.Infra.IoC.DependencyInjections;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using MyCvProject.Domain.Consts;
+using Microsoft.AspNetCore.Http;
 
 namespace MyCvProject.Api
 {
@@ -61,7 +62,7 @@ namespace MyCvProject.Api
                         ValidateAudience = false,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = Const.SiteUrl,
+                        ValidIssuer = "https://localhost:7734",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Const.VerifyCodeJwt))
                     };
                 });
