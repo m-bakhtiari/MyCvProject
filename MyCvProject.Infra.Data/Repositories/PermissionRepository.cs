@@ -25,17 +25,9 @@ namespace MyCvProject.Infra.Data.Repositories
 
         public async Task<int> AddRole(Role role)
         {
-            try
-            {
-                await _context.Roles.AddAsync(role);
-                await _context.SaveChangesAsync();
-                return role.RoleId;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            await _context.Roles.AddAsync(role);
+            await _context.SaveChangesAsync();
+            return role.RoleId;
         }
 
         public async Task<Role> GetRoleById(int roleId)
@@ -47,12 +39,6 @@ namespace MyCvProject.Infra.Data.Repositories
         {
             _context.Roles.Update(role);
             await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteRole(Role role)
-        {
-            role.IsDelete = true;
-            await UpdateRole(role);
         }
 
         public async Task AddRolesToUser(List<int> roleIds, int userId)

@@ -55,7 +55,10 @@ namespace MyCvProject.Domain.Interfaces
 
         #region Course
 
-        //گرفتن دوره ها برای صفحه ادمین
+        /// <summary>
+        /// گرفتن دوره ها برای صفحه ادمین
+        /// </summary>
+        /// <returns></returns>
         Task<List<ShowCourseForAdminViewModel>> GetCoursesForAdmin();
 
         /// <summary>
