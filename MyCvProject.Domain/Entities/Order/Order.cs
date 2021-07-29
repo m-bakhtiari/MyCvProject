@@ -14,13 +14,32 @@ namespace MyCvProject.Domain.Entities.Order
         }
         #endregion
 
+        /// <summary>
+        /// آیدی پرداخت
+        /// </summary>
         [Key]
         public int OrderId { get; set; }
+
+        /// <summary>
+        /// آیدی کاربر
+        /// </summary>
         [Required]
         public int UserId { get; set; }
+
+        /// <summary>
+        /// مجموع فاکتور
+        /// </summary>
         [Required]
         public int OrderSum { get; set; }
+
+        /// <summary>
+        /// نهایی شده است
+        /// </summary>
         public bool IsFinaly { get; set; }
+
+        /// <summary>
+        /// تاریخ ایجاد
+        /// </summary>
         [Required]
         public DateTime CreateDate { get; set; }
 

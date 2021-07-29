@@ -12,14 +12,33 @@ namespace MyCvProject.Domain.Entities.Order
         } 
         #endregion
 
+        /// <summary>
+        /// آیدی جزییات پرداخت
+        /// </summary>
         [Key]
         public int DetailId { get; set; }
+
+        /// <summary>
+        /// آیدی پرداخت
+        /// </summary>
         [Required]
         public int OrderId { get; set; }
+
+        /// <summary>
+        /// آیدی دوره
+        /// </summary>
         [Required]
         public int CourseId { get; set; }
+
+        /// <summary>
+        /// تعداد
+        /// </summary>
         [Required]
         public int Count { get; set; }
+
+        /// <summary>
+        /// قیمت
+        /// </summary>
         [Required]
         public int Price { get; set; }
 

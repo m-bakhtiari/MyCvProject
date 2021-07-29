@@ -16,50 +16,95 @@ namespace MyCvProject.Domain.Entities.Course
         }
         #endregion
 
+        /// <summary>
+        /// آیدی دوره
+        /// </summary>
         [Key]
         public int CourseId { get; set; }
 
+        /// <summary>
+        /// آیدی گروه
+        /// </summary>
         [Required]
         public int GroupId { get; set; }
 
+        /// <summary>
+        /// آیدی زیر گروه
+        /// </summary>
         public int? SubGroup { get; set; }
 
+        /// <summary>
+        /// آیدی مدرس 
+        /// </summary>
         [Required]
         public int TeacherId { get; set; }
 
+        /// <summary>
+        /// آیدی وضعیت دوره
+        /// </summary>
         [Required]
         public int StatusId { get; set; }
 
+        /// <summary>
+        /// آیدی سطح دوره
+        /// </summary>
         [Required]
         public int LevelId { get; set; }
 
+        /// <summary>
+        /// عنوان دوره
+        /// </summary>
         [Display(Name = "عنوان دوره")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(450, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد .")]
         public string CourseTitle { get; set; }
 
+        /// <summary>
+        /// شرح دوره
+        /// </summary>
         [Display(Name = "شرح دوره")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string CourseDescription { get; set; }
 
+        /// <summary>
+        /// قیمت دوره
+        /// </summary>
         [Display(Name = "قیمت دوره")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public int CoursePrice { get; set; }
 
+        /// <summary>
+        /// کلمات کلیدی
+        /// </summary>
         [MaxLength(600)]
         public string Tags { get; set; }
 
+        /// <summary>
+        /// نام عکس
+        /// </summary>
         [MaxLength(50)]
         public string CourseImageName { get; set; }
 
+        /// <summary>
+        /// نام فایل فیلم پیش نمایش دوره
+        /// </summary>
         [MaxLength(100)]
         public string DemoFileName { get; set; }
 
+        /// <summary>
+        /// تاریخ ایجاد
+        /// </summary>
         [Required]
         public DateTime CreateDate { get; set; }
 
+        /// <summary>
+        /// تاریخ به روز رسانی
+        /// </summary>
         public DateTime? UpdateDate { get; set; }
 
+        /// <summary>
+        /// حذف شده
+        /// </summary>
         public bool IsDelete { get; set; }
 
         #region Relations

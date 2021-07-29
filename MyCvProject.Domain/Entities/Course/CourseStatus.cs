@@ -13,9 +13,15 @@ namespace MyCvProject.Domain.Entities.Course
         }
         #endregion
 
+        /// <summary>
+        /// آیدی وضعین دوره
+        /// </summary>
         [Key]
         public int StatusId { get; set; }
 
+        /// <summary>
+        /// عنوان
+        /// </summary>
         [Required]
         [MaxLength(150)]
         public string StatusTitle { get; set; }

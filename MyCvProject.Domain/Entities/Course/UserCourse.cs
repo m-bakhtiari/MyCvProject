@@ -12,9 +12,20 @@ namespace MyCvProject.Domain.Entities.Course
         }
         #endregion
 
+        /// <summary>
+        /// آیدی دوره کاربر
+        /// </summary>
         [Key]
         public int UC_Id { get; set; }
+
+        /// <summary>
+        /// آیدی کاربر
+        /// </summary>
         public int UserId { get; set; }
+
+        /// <summary>
+        /// آیدی دوره
+        /// </summary>
         public int CourseId { get; set; }
 
         #region Relations
