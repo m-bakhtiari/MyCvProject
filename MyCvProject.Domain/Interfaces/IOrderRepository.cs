@@ -1,4 +1,5 @@
-﻿using MyCvProject.Core.ViewModels.Order;
+﻿using System;
+using MyCvProject.Core.ViewModels.Order;
 using MyCvProject.Domain.Entities.Order;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -6,7 +7,7 @@ using MyCvProject.Domain.Entities.Course;
 
 namespace MyCvProject.Domain.Interfaces
 {
-    public interface IOrderRepository
+    public interface IOrderRepository : IAsyncDisposable
     {
         #region Orders
 

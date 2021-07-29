@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyCvProject.Domain.Interfaces
 {
-    public interface ICourseRepository
+    public interface ICourseRepository : IAsyncDisposable
     {
         #region Course Group
 

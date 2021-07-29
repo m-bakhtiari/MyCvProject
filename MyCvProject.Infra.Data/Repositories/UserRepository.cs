@@ -244,6 +244,11 @@ namespace MyCvProject.Infra.Data.Repositories
         {
             return await _context.Users.ToListAsync();
         }
+
+        public async ValueTask DisposeAsync()
+        {
+            await _context.DisposeAsync();
+        }
     }
 
 }

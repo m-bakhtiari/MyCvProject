@@ -1,11 +1,12 @@
-﻿using MyCvProject.Domain.Entities.Permissions;
+﻿using System;
+using MyCvProject.Domain.Entities.Permissions;
 using MyCvProject.Domain.Entities.User;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MyCvProject.Domain.Interfaces
 {
-    public interface IPermissionRepository
+    public interface IPermissionRepository : IAsyncDisposable
     {
         #region Role
 
@@ -97,7 +98,7 @@ namespace MyCvProject.Domain.Interfaces
         /// <param name="permissionId"></param>
         /// <param name="userName"></param>
         /// <returns></returns>
-        Task<bool> CheckPermission(int permissionId, string userName);  
+        Task<bool> CheckPermission(int permissionId, string userName);
         #endregion
     }
 }

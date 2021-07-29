@@ -1,4 +1,5 @@
-﻿using MyCvProject.Core.ViewModels;
+﻿using System;
+using MyCvProject.Core.ViewModels;
 using MyCvProject.Domain.Entities.User;
 using MyCvProject.Domain.Entities.Wallet;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyCvProject.Domain.Interfaces
 {
-    public interface IUserRepository
+    public interface IUserRepository : IAsyncDisposable
     {
         #region User
 
@@ -184,7 +185,7 @@ namespace MyCvProject.Domain.Interfaces
         /// </summary>
         /// <param name="wallet"></param>
         /// <returns></returns>
-        Task UpdateWallet(Wallet wallet); 
+        Task UpdateWallet(Wallet wallet);
         #endregion
     }
 

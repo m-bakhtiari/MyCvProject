@@ -116,5 +116,10 @@ namespace MyCvProject.Infra.Data.Repositories
             return RolesPermission.Any(p => UserRoles.Contains(p));
 
         }
+
+        public async ValueTask DisposeAsync()
+        {
+            await _context.DisposeAsync();
+        }
     }
 }

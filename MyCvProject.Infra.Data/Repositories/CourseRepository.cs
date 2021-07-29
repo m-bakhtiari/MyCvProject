@@ -297,5 +297,10 @@ namespace MyCvProject.Infra.Data.Repositories
             _context.CourseEpisodes.Remove(episode);
             await _context.SaveChangesAsync();
         }
+
+        public async ValueTask DisposeAsync()
+        {
+            await _context.DisposeAsync();
+        }
     }
 }

@@ -190,5 +190,10 @@ namespace MyCvProject.Infra.Data.Repositories
             await _context.UserCourses.AddAsync(userCourse);
             await _context.SaveChangesAsync();
         }
+
+        public async ValueTask DisposeAsync()
+        {
+            await _context.DisposeAsync();
+        }
     }
 }
