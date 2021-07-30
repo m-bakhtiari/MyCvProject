@@ -10,6 +10,7 @@ using MyCvProject.Core.ViewModels;
 using MyCvProject.Domain.Entities.User;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -25,7 +26,6 @@ namespace MyCvProject.UI.Controllers
             _userService = userService;
             _viewRender = viewRender;
         }
-
         #region Register
 
         [Route("Register")]
@@ -103,12 +103,21 @@ namespace MyCvProject.UI.Controllers
             {
                 if (user.IsActive)
                 {
+                    var userRole = await _userService.GetUserRoleByUserId(user.UserId);
+                    var roleClaim = "";
+                    if (userRole.Any(x => x.Role.RoleTitle == "مدیر"))
+                    {
+                        roleClaim = "admin";
+                    }
+
                     var claims = new List<Claim>()
                     {
                         new Claim(ClaimTypes.NameIdentifier,user.UserId.ToString()),
-                        new Claim(ClaimTypes.Name,user.UserName)
+                        new Claim(ClaimTypes.Name,user.UserName),
+                        new Claim(ClaimTypes.Role,roleClaim)
                     };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    identity.AddClaim(new Claim("RoleTitle", roleClaim));
                     var principal = new ClaimsPrincipal(identity);
 
                     var properties = new AuthenticationProperties

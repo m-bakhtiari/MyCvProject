@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyCvProject.Infra.Data.Context;
 
 namespace MyCvProject.Infra.Data.Migrations
 {
     [DbContext(typeof(MyCvProjectContext))]
-    partial class MyCvProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20210730102713_CourseGroup_Course")]
+    partial class CourseGroup_Course
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

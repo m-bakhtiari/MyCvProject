@@ -27,7 +27,7 @@ namespace MyCvProject.Web.Controllers
             int startPrice = 0, int endPrice = 0, List<int> selectedGroups = null)
         {
             ViewBag.selectedGroups = selectedGroups;
-            ViewBag.Groups = _courseService.GetAllGroup();
+            ViewBag.Groups =await _courseService.GetAllGroup();
             ViewBag.pageId = pageId;
             return View(await _courseService.GetCourse(pageId, filter, getType, orderByType, startPrice, endPrice, selectedGroups, 9));
         }

@@ -1,9 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+<!DOCTYPE html>
 <html class="no-js" dir="rtl" lang="fa-IR">
 <head>
     <meta charset="UTF-8">
-    <title> تاپ لرن | @ViewData["Title"] </title>
-    @RenderSection("MetaTag",false)
+    <title> @ViewData["Title"] </title>
+    @RenderSection("MetaTag", false)
     <partial name="_MetaTags" />
     <partial name="_Styles" />
     <script src="/js/jquery.min.js"></script>
@@ -18,10 +19,7 @@
                     <div class="col-sm-6 col-xs-12">
                         <ul>
                             <li>
-                                <a href=""> همکاری در فروش </a>
-                                <a href=""> درباره ما </a>
-                                <a href=""> تماس با ما </a>
-                                @if (User.Identity.Name == "admin")
+                                @if (User.FindFirstValue("RoleTitle") == "admin")
                                 {
                                     <a href="/Admin">قالب مدیریت سایت</a>
                                 }
@@ -30,23 +28,23 @@
                     </div>
                     <div class="col-sm-6 col-xs-12">
                         <div class="clientarea">
-                          @if (User.Identity.IsAuthenticated)
-                          {
-                              <div class="loggein">
-                                  <i class="zmdi zmdi-account"></i><a href="/UserPanel"> @User.Identity.Name ، خوش آمدید </a>
-                                  /
-                                  <a href="/Logout"> خروج </a>
-                                  </div>
-                          }
-                          else
-                          {
-                              <div class="signin">
-                                  <i class="zmdi zmdi-account"></i>
-                                  <a href="/Login"> ورود </a> /
-                                  <a href="/Register"> عضویت </a>
-                              </div> 
-                          }
-                      
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="loggein">
+                                    <i class="zmdi zmdi-account"></i><a href="/UserPanel"> @User.Identity.Name ، خوش آمدید </a>
+                                    /
+                                    <a href="/Logout"> خروج </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="signin">
+                                    <i class="zmdi zmdi-account"></i>
+                                    <a href="/Login"> ورود </a> /
+                                    <a href="/Register"> عضویت </a>
+                                </div>
+                            }
+
                         </div>
                     </div>
                 </div>
@@ -56,8 +54,8 @@
     </div>
 
     <!-- main manu -->
-@await Component.InvokeAsync("CourseGroupComponent")
-<!-- /main manu -->
+    @await Component.InvokeAsync("CourseGroupComponent")
+    <!-- /main manu -->
     <!-- content -->
     @RenderBody()
     <!-- /content -->
@@ -68,8 +66,8 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/script.js"></script>
     <script src="/js/jquery.validate.min.js"></script>
-<script src="/js/jquery.validate.unobtrusive.js"></script>
-@RenderSection("Scripts",false)
+    <script src="/js/jquery.validate.unobtrusive.js"></script>
+    @RenderSection("Scripts", false)
 
 </body>
 </html>

@@ -53,6 +53,11 @@ namespace MyCvProject.Infra.Data.Repositories
             return await _context.Users.FindAsync(userId);
         }
 
+        public async Task<List<UserRole>> GetUserRoleByUserId(int userId)
+        {
+            return await _context.UserRoles.Include(x=>x.Role).Where(x=>x.UserId==userId).ToListAsync();
+        }
+
         public async Task<User> GetUserByActiveCode(string activeCode)
         {
             return await _context.Users.SingleOrDefaultAsync(u => u.ActiveCode == activeCode);

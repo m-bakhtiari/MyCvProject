@@ -54,6 +54,13 @@ namespace MyCvProject.Core.Interfaces
         Task<User> GetUserById(int userId);
 
         /// <summary>
+        /// گرفتن نقش های یک کاربر با آیدی
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<List<UserRole>> GetUserRoleByUserId(int userId);
+
+        /// <summary>
         /// گرفتن کاربر با کد فعالسازی
         /// </summary>
         /// <param name="activeCode"></param>

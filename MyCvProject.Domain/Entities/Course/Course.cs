@@ -112,11 +112,9 @@ namespace MyCvProject.Domain.Entities.Course
         [ForeignKey(nameof(TeacherId))]
         public User.User User { get; set; }
 
-        [NotMapped]
         [ForeignKey(nameof(GroupId))]
         public CourseGroup CourseGroup { get; set; }
 
-        [NotMapped]
         [ForeignKey(nameof(SubGroup))]
         public CourseGroup Group { get; set; }
 

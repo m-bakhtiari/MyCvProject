@@ -9,5 +9,6 @@ namespace MyCvProject.Core.ViewModels.Course
         public string ImageName { get; set; }
         public int Price { get; set; }
         public TimeSpan TotalTime { get; set; }
+        public string CourseGroup { get; set; }
     }
 }

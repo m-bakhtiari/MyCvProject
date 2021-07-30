@@ -1,4 +1,5 @@
-﻿<footer>
+﻿@using System.Security.Claims
+<footer>
     <div class="top-footer">
         <div class="container">
             <div class="row">
@@ -6,12 +7,11 @@
                     <section class="list">
                         <header><h4> دسترسی سریع</h4></header>
                         <ul>
-                            <li><a href="">مشاهده تمامی دوره ها</a></li>
-                            <li><a href="">قوانین خرید از سایت </a></li>
-                            <li><a href="">راهنمای خرید از سایت </a></li>
-                            <li><a href="">همکاری با تاپ لرن </a></li>
-                            <li><a href="">کسب درآمد از تاپ لرن </a></li>
-                            <li><a href="">ماهنامه طراحی وب</a></li>
+                            <li><a href="/Course">مشاهده تمامی دوره ها</a></li>
+                            @if (User.FindFirstValue("RoleTitle") == "admin")
+                            {
+                                <li><a href="/Admin">قالب مدیریت</a></li>
+                            }
                         </ul>
                     </section>
                 </div>
@@ -19,12 +19,7 @@
                     <section class="list">
                         <header><h4> دسترسی سریع</h4></header>
                         <ul>
-                            <li><a href="">مشاهده تمامی دوره ها</a></li>
-                            <li><a href="">قوانین خرید از سایت </a></li>
-                            <li><a href="">راهنمای خرید از سایت </a></li>
-                            <li><a href="">همکاری با تاپ لرن </a></li>
-                            <li><a href="">کسب درآمد از تاپ لرن </a></li>
-                            <li><a href="">ماهنامه طراحی وب</a></li>
+                            <li><a href="/Course">مشاهده تمامی دوره ها</a></li>
                         </ul>
                     </section>
                 </div>
@@ -32,12 +27,7 @@
                     <section class="list">
                         <header><h4> دسترسی سریع</h4></header>
                         <ul>
-                            <li><a href="">مشاهده تمامی دوره ها</a></li>
-                            <li><a href="">قوانین خرید از سایت </a></li>
-                            <li><a href="">راهنمای خرید از سایت </a></li>
-                            <li><a href="">همکاری با تاپ لرن </a></li>
-                            <li><a href="">کسب درآمد از تاپ لرن </a></li>
-                            <li><a href="">ماهنامه طراحی وب</a></li>
+                            <li><a href="/Course">مشاهده تمامی دوره ها</a></li>
                         </ul>
                     </section>
                 </div>
@@ -45,12 +35,7 @@
                     <section class="list">
                         <header><h4> دسترسی سریع</h4></header>
                         <ul>
-                            <li><a href="">مشاهده تمامی دوره ها</a></li>
-                            <li><a href="">قوانین خرید از سایت </a></li>
-                            <li><a href="">راهنمای خرید از سایت </a></li>
-                            <li><a href="">همکاری با تاپ لرن </a></li>
-                            <li><a href="">کسب درآمد از تاپ لرن </a></li>
-                            <li><a href="">ماهنامه طراحی وب</a></li>
+                            <li><a href="/Course">مشاهده تمامی دوره ها</a></li>
                         </ul>
                     </section>
                 </div>
@@ -60,7 +45,7 @@
     <div class="bottom-footer">
         <div class="container">
             <p>
-                تمامی حقوق مادی و معنوی این قالب متعلق به <a href=""> تاپ لرن </a> می باشد و هرگونه کپی برداری و انتشار غیر مجاز پیگرد قانونی دارد .
+                تمامی حقوق مادی و معنوی این قالب متعلق به <a href=""></a> می باشد و هرگونه کپی برداری و انتشار غیر مجاز پیگرد قانونی دارد .
             </p>
         </div>
     </div>

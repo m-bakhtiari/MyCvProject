@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using MyCvProject.Domain.Consts;
+using System.Linq;
 
 namespace MyCvProject.Core.Services
 {
@@ -192,7 +193,10 @@ namespace MyCvProject.Core.Services
             }
 
             var user = await GetUserByUserName(username);
-            user.UserName = profile.UserName;
+            if (user.UserRoles.Select(x => x.RoleId).Contains(Const.RoleIdForAdmin) == false)
+            {
+                user.UserName = profile.UserName;
+            }
             user.Email = profile.Email;
             user.UserAvatar = profile.AvatarName;
 
@@ -330,6 +334,11 @@ namespace MyCvProject.Core.Services
             }
 
             await _userRepository.EditUserFromAdmin(user);
+        }
+
+        public async Task<List<UserRole>> GetUserRoleByUserId(int userId)
+        {
+            return await _userRepository.GetUserRoleByUserId(userId);
         }
     }
 }

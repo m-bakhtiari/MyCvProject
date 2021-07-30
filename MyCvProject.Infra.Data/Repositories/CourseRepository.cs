@@ -189,23 +189,28 @@ namespace MyCvProject.Infra.Data.Repositories
 
             int skip = (pageId - 1) * take;
 
-            int pageCount = await result.Include(c => c.CourseEpisodes).Select(c => new ShowCourseListItemViewModel()
-            {
-                CourseId = c.CourseId,
-                ImageName = c.CourseImageName,
-                Price = c.CoursePrice,
-                Title = c.CourseTitle,
-                TotalTime = new TimeSpan(c.CourseEpisodes.Sum(e => e.EpisodeTime.Ticks))
-            }).CountAsync() / take;
+            int pageCount = await result.Include(c => c.CourseEpisodes).Include(c => c.CourseGroup)
+                .Select(c => new ShowCourseListItemViewModel()
+                {
+                    CourseId = c.CourseId,
+                    ImageName = c.CourseImageName,
+                    Price = c.CoursePrice,
+                    Title = c.CourseTitle,
+                    CourseGroup = c.CourseGroup.GroupTitle,
+                    TotalTime = new TimeSpan(c.CourseEpisodes.Sum(e => e.EpisodeTime.Ticks)),
+                }).CountAsync() / take;
 
-            var query = await result.Include(c => c.CourseEpisodes).Select(c => new ShowCourseListItemViewModel()
-            {
-                CourseId = c.CourseId,
-                ImageName = c.CourseImageName,
-                Price = c.CoursePrice,
-                Title = c.CourseTitle,
-                //TotalTime = new TimeSpan(c.CourseEpisodes.Sum(e => e.EpisodeTime.Ticks))
-            }).Skip(skip).Take(take).ToListAsync();
+            var query = await result.Include(c => c.CourseEpisodes).Include(c => c.CourseGroup)
+                .Select(c => new ShowCourseListItemViewModel()
+                {
+                    CourseId = c.CourseId,
+                    ImageName = c.CourseImageName,
+                    Price = c.CoursePrice,
+                    Title = c.CourseTitle,
+                    CourseGroup = c.CourseGroup.GroupTitle,
+                    //TotalTime = new TimeSpan(c.CourseEpisodes.Sum(e => e.EpisodeTime.Ticks))
+                }).Skip(skip).Take(take).ToListAsync();
+
 
             return Tuple.Create(query, pageCount);
         }
