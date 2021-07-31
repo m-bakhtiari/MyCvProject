@@ -177,7 +177,7 @@ namespace MyCvProject.Core.Services
             if (profile.UserAvatar != null)
             {
                 string imagePath = "";
-                if (profile.AvatarName != "Defult.jpg")
+                if (profile.AvatarName != Const.DefaultUserAvatar)
                 {
                     imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/UserAvatar", profile.AvatarName);
                     if (File.Exists(imagePath))
@@ -302,7 +302,7 @@ namespace MyCvProject.Core.Services
 
         public async Task<EditUserViewModel> GetUserForShowInEditMode(int userId)
         {
-            return await _userRepository.GetUserForShowInEditMode(userId);
+           return await _userRepository.GetUserForShowInEditMode(userId);
         }
 
         public async Task EditUserFromAdmin(EditUserViewModel editUser)

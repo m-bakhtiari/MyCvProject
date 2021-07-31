@@ -251,7 +251,7 @@ namespace MyCvProject.Core.Interfaces
         /// <summary>
         /// ویرایش کاربر
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="editUser"></param>
         /// <returns></returns>
         Task EditUserFromAdmin(EditUserViewModel editUser);
 

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using MyCvProject.Domain.Consts;
 
 namespace MyCvProject.UI.Controllers
 {
@@ -63,7 +64,7 @@ namespace MyCvProject.UI.Controllers
                 IsActive = false,
                 Password = PasswordHelper.EncodePasswordMd5(register.Password),
                 RegisterDate = DateTime.Now,
-                UserAvatar = "Defult.jpg",
+                UserAvatar = Const.DefaultUserAvatar,
                 UserName = register.UserName
             };
             await _userService.AddUser(user);
@@ -127,7 +128,7 @@ namespace MyCvProject.UI.Controllers
                     await HttpContext.SignInAsync(principal, properties);
 
                     ViewBag.IsSuccess = true;
-                    if (ReturnUrl != "/")
+                    if (string.IsNullOrWhiteSpace(ReturnUrl) == false)
                     {
                         return Redirect(ReturnUrl);
                     }

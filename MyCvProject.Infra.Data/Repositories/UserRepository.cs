@@ -55,7 +55,7 @@ namespace MyCvProject.Infra.Data.Repositories
 
         public async Task<List<UserRole>> GetUserRoleByUserId(int userId)
         {
-            return await _context.UserRoles.Include(x=>x.Role).Where(x=>x.UserId==userId).ToListAsync();
+            return await _context.UserRoles.Include(x => x.Role).Where(x => x.UserId == userId).ToListAsync();
         }
 
         public async Task<User> GetUserByActiveCode(string activeCode)
@@ -228,7 +228,7 @@ namespace MyCvProject.Infra.Data.Repositories
 
         public async Task<EditUserViewModel> GetUserForShowInEditMode(int userId)
         {
-            return await _context.Users.Where(u => u.UserId == userId)
+            return await _context.Users.Include(x => x.UserRoles).Where(u => u.UserId == userId)
                 .Select(u => new EditUserViewModel()
                 {
                     UserId = u.UserId,
