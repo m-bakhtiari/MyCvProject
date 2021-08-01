@@ -4,6 +4,7 @@ using MyCvProject.Domain.Entities.Wallet;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MyCvProject.Domain.ViewModels;
+using MyCvProject.Domain.ViewModels.User;
 
 namespace MyCvProject.Core.Interfaces
 {
@@ -254,6 +255,12 @@ namespace MyCvProject.Core.Interfaces
         /// <param name="editUser"></param>
         /// <returns></returns>
         Task EditUserFromAdmin(EditUserViewModel editUser);
+
+        /// <summary>
+        /// گرفتن آمار کلی برای صفحه اصلی قالب مدیریت
+        /// </summary>
+        /// <returns></returns>
+        Task<AdminStatisticsViewModel> GetAdminHomePageStatistics();
 
         #endregion
     }

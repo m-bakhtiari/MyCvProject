@@ -155,6 +155,12 @@ namespace MyCvProject.Domain.Interfaces
         /// <param name="user"></param>
         /// <returns></returns>
         Task EditUserFromAdmin(User user);
+
+        /// <summary>
+        /// تعداد کل کاربران
+        /// </summary>
+        /// <returns></returns>
+        Task<int> UserCount();
         #endregion
 
         #region Wallet

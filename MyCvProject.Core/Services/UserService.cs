@@ -13,16 +13,19 @@ using System.IO;
 using System.Threading.Tasks;
 using MyCvProject.Domain.Consts;
 using System.Linq;
+using MyCvProject.Domain.ViewModels.User;
 
 namespace MyCvProject.Core.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly ICourseRepository _courseRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, ICourseRepository courseRepository)
         {
             _userRepository = userRepository;
+            _courseRepository = courseRepository;
         }
 
 
@@ -302,7 +305,7 @@ namespace MyCvProject.Core.Services
 
         public async Task<EditUserViewModel> GetUserForShowInEditMode(int userId)
         {
-           return await _userRepository.GetUserForShowInEditMode(userId);
+            return await _userRepository.GetUserForShowInEditMode(userId);
         }
 
         public async Task EditUserFromAdmin(EditUserViewModel editUser)
@@ -339,6 +342,17 @@ namespace MyCvProject.Core.Services
         public async Task<List<UserRole>> GetUserRoleByUserId(int userId)
         {
             return await _userRepository.GetUserRoleByUserId(userId);
+        }
+
+        public async Task<AdminStatisticsViewModel> GetAdminHomePageStatistics()
+        {
+            return new AdminStatisticsViewModel()
+            {
+                UserCount = await _userRepository.UserCount(),
+                CommentCount = await _courseRepository.GetCourseCommentCount(),
+                CourseCount = await _courseRepository.GetCourseCount(),
+                CourseGroupCount = await _courseRepository.GetMainCourseGroupCount()
+            };
         }
     }
 }

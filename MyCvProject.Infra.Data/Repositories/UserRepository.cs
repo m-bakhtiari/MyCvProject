@@ -254,6 +254,11 @@ namespace MyCvProject.Infra.Data.Repositories
         {
             await _context.DisposeAsync();
         }
+
+        public async Task<int> UserCount()
+        {
+            return await _context.Users.CountAsync();
+        }
     }
 
 }

@@ -307,5 +307,20 @@ namespace MyCvProject.Infra.Data.Repositories
         {
             await _context.DisposeAsync();
         }
+
+        public async Task<int> GetMainCourseGroupCount()
+        {
+            return await _context.CourseGroups.CountAsync(x => x.ParentId == null);
+        }
+
+        public async Task<int> GetCourseCount()
+        {
+            return await _context.Courses.CountAsync();
+        }
+
+        public async Task<int> GetCourseCommentCount()
+        {
+            return await _context.CourseComments.CountAsync();
+        }
     }
 }

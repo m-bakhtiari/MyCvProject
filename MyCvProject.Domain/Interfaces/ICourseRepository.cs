@@ -51,6 +51,12 @@ namespace MyCvProject.Domain.Interfaces
         /// <returns></returns>
         Task UpdateGroup(CourseGroup @group);
 
+        /// <summary>
+        /// تعداد کل گروه ها
+        /// </summary>
+        /// <returns></returns>
+        Task<int> GetMainCourseGroupCount();
+
         #endregion
 
         #region Course
@@ -110,6 +116,12 @@ namespace MyCvProject.Domain.Interfaces
         /// </summary>
         /// <returns></returns>
         Task<List<ShowCourseListItemViewModel>> GetPopularCourse();
+
+        /// <summary>
+        /// تعداد کل دوره ها
+        /// </summary>
+        /// <returns></returns>
+        Task<int> GetCourseCount();
 
         #endregion
 
@@ -200,6 +212,12 @@ namespace MyCvProject.Domain.Interfaces
         /// <param name="courseId"></param>
         /// <returns></returns>
         Task<List<CourseComment>> GetCourseComment(int courseId);
+
+        /// <summary>
+        /// تعداد کل کامنت ها برای تمام دوره ها
+        /// </summary>
+        /// <returns></returns>
+        Task<int> GetCourseCommentCount();
         #endregion
 
         #region Teacher
