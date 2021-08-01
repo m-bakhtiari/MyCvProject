@@ -41,6 +41,13 @@ namespace MyCvProject.Core.Interfaces
         Task<Order> GetOrderById(int orderId);
 
         /// <summary>
+        /// گرفتن آیدی سفارش یا آیدی جزییات آن
+        /// </summary>
+        /// <param name="detailId"></param>
+        /// <returns></returns>
+        Task<int> GetOrderByDetailId(int detailId);
+
+        /// <summary>
         /// نهایی کردن بک خرید بعد از پرداخت
         /// </summary>
         /// <param name="userName"></param>
@@ -91,6 +98,13 @@ namespace MyCvProject.Core.Interfaces
         /// <param name="discount"></param>
         /// <returns></returns>
         Task AddDiscount(Discount discount);
+
+        /// <summary>
+        /// حذف بکی از اقلام موجود در فاکتور قبل از پرداخت
+        /// </summary>
+        /// <param name="orderDetailId"></param>
+        /// <returns></returns>
+        Task<int> DeleteOrderDetail(int orderDetailId);
 
         /// <summary>
         /// گرفتن تمام کد تخفیف های وارد شده

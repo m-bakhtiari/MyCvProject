@@ -2,6 +2,6 @@
 {
     public enum DiscountUseType
     {
-        Success , ExpierDate,NotFound,Finished,UserUsed
+        Success , ExpireDate,NotFound,Finished,UserUsed, NotStartYet
     }
 }

@@ -6,13 +6,12 @@ using MyCvProject.Core.Interfaces;
 using MyCvProject.Core.Security;
 using MyCvProject.Core.ViewModels.Course;
 using MyCvProject.Domain.Entities.Course;
+using MyCvProject.Domain.Interfaces;
+using MyCvProject.Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using MyCvProject.Domain.Interfaces;
-using MyCvProject.Domain.ViewModels;
 
 namespace MyCvProject.Core.Services
 {
@@ -86,6 +85,7 @@ namespace MyCvProject.Core.Services
         public async Task<int> AddCourse(Course course, IFormFile imgCourse, IFormFile courseDemo)
         {
             course.CreateDate = DateTime.Now;
+            course.UpdateDate = DateTime.Now;
             course.CourseImageName = "no-photo.jpg";
             if (imgCourse != null && imgCourse.IsImage())
             {

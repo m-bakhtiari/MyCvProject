@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MyCvProject.Domain.ViewModels.Course
+﻿namespace MyCvProject.Domain.ViewModels.Course
 {
     public class CourseViewModel
     {

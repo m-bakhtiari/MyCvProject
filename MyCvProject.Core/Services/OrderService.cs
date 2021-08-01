@@ -45,6 +45,12 @@ namespace MyCvProject.Core.Services
             return await _orderRepository.GetOrderById(orderId);
         }
 
+        public async Task<int> GetOrderByDetailId(int detailId)
+        {
+            var detail = await _orderRepository.GetOrderDetailById(detailId);
+            return detail.OrderId;
+        }
+
         public async Task<bool> FinalyOrder(string userName, int orderId)
         {
             int userId = await _userService.GetUserIdByUserName(userName);
@@ -96,6 +102,18 @@ namespace MyCvProject.Core.Services
             await _orderRepository.UpdateOrder(order);
         }
 
+        public async Task DeleteOrder(int orderId)
+        {
+            var orderDetail = await _orderRepository.GetOrderDetailByOrderId(orderId);
+            if (orderDetail == null)
+                return;
+            await _orderRepository.DeleteDetailOrder(orderDetail);
+            var order = await _orderRepository.GetOrderById(orderId);
+            if (order == null)
+                return;
+            await _orderRepository.DeleteOrder(order);
+        }
+
         public async Task<bool> IsUserInCourse(string userName, int courseId)
         {
             int userId = await _userService.GetUserIdByUserName(userName);
@@ -131,6 +149,20 @@ namespace MyCvProject.Core.Services
         public async Task<bool> IsExistCode(string code)
         {
             return await _orderRepository.IsExistCode(code);
+        }
+
+        public async Task<int> DeleteOrderDetail(int orderDetailId)
+        {
+            var detail = await _orderRepository.GetOrderDetailById(orderDetailId);
+            var orderId = detail.OrderId;
+            await _orderRepository.DeleteDetailOrder(detail);
+            await _orderRepository.UpdatePriceOrder(orderId);
+            if (await _orderRepository.HasOrderDetail(detail.OrderId) == false)
+            {
+                await _orderRepository.DeleteOrder(detail.Order);
+                return 0;
+            }
+            return orderId;
         }
     }
 }

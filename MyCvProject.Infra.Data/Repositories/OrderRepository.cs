@@ -122,11 +122,11 @@ namespace MyCvProject.Infra.Data.Repositories
             if (discount == null)
                 return DiscountUseType.NotFound;
 
-            if (discount.StartDate != null && discount.StartDate < DateTime.Now)
-                return DiscountUseType.ExpierDate;
+            if (discount.StartDate != null && discount.StartDate > DateTime.Now)
+                return DiscountUseType.NotStartYet;
 
-            if (discount.EndDate != null && discount.EndDate >= DateTime.Now)
-                return DiscountUseType.ExpierDate;
+            if (discount.EndDate != null && discount.EndDate <= DateTime.Now)
+                return DiscountUseType.ExpireDate;
 
 
             if (discount.UsableCount != null && discount.UsableCount < 1)
@@ -194,6 +194,40 @@ namespace MyCvProject.Infra.Data.Repositories
         public async ValueTask DisposeAsync()
         {
             await _context.DisposeAsync();
+        }
+
+        public async Task DeleteOrder(Order order)
+        {
+            _context.Orders.Remove(order);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteDetailOrder(List<OrderDetail> orderDetail)
+        {
+            _context.OrderDetails.RemoveRange(orderDetail);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteDetailOrder(OrderDetail orderDetail)
+        {
+            _context.OrderDetails.Remove(orderDetail);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> HasOrderDetail(int orderId)
+        {
+            var order = await _context.Orders.Include(x => x.OrderDetails).FirstOrDefaultAsync(x => x.OrderId == orderId);
+            return order.OrderDetails.Any();
+        }
+
+        public async Task<List<OrderDetail>> GetOrderDetailByOrderId(int orderId)
+        {
+            return await _context.OrderDetails.Where(x => x.OrderId == orderId).ToListAsync();
+        }
+
+        public async Task<OrderDetail> GetOrderDetailById(int orderDetailId)
+        {
+            return await _context.OrderDetails.Include(x => x.Order).FirstOrDefaultAsync(x => x.DetailId == orderDetailId);
         }
     }
 }

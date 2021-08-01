@@ -51,11 +51,53 @@ namespace MyCvProject.Domain.Interfaces
         Task<Order> GetOrderById(int orderId);
 
         /// <summary>
+        /// گرفتن جزییات یک سفارش یا آیدی
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        Task<List<OrderDetail>> GetOrderDetailByOrderId(int orderId);
+
+        /// <summary>
+        /// گرفتن یک موزد از جزییات فاکترو
+        /// </summary>
+        /// <param name="orderDetailId"></param>
+        /// <returns></returns>
+        Task<OrderDetail> GetOrderDetailById(int orderDetailId);
+
+        /// <summary>
         /// ویرایش یک سفارش
         /// </summary>
         /// <param name="order"></param>
         /// <returns></returns>
         Task UpdateOrder(Order order);
+
+        /// <summary>
+        /// حذف یک مورد از فاکتور قبل از پرداخت
+        /// </summary>
+        /// <param name="orderDetail"></param>
+        /// <returns></returns>
+        Task DeleteDetailOrder(OrderDetail orderDetail);
+
+        /// <summary>
+        /// حذف سفارش قبل از پرداخت
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        Task DeleteOrder(Order order);
+
+        /// <summary>
+        /// حذف  جزییات سفارش قبل از پرداخت
+        /// </summary>
+        /// <param name="orderDetail"></param>
+        /// <returns></returns>
+        Task DeleteDetailOrder(List<OrderDetail> orderDetail);
+
+        /// <summary>
+        /// آیا فاکتور جزییات دارد
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        Task<bool> HasOrderDetail(int orderId);
 
         #endregion
 

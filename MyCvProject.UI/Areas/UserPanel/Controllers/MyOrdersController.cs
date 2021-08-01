@@ -51,5 +51,15 @@ namespace MyCvProject.UI.Areas.UserPanel.Controllers
             DiscountUseType type = await _orderService.UseDiscount(orderId, code);
             return Redirect("/UserPanel/MyOrders/ShowOrder/" + orderId + "?type=" + type.ToString());
         }
+
+        public async Task<IActionResult> DeleteUserOrderDetail(int id)
+        {
+            var orderId = await _orderService.DeleteOrderDetail(id);
+            if (orderId == 0)
+            {
+                return Redirect("/");
+            }
+            return Redirect("/UserPanel/MyOrders/ShowOrder/" + orderId);
+        }
     }
 }
