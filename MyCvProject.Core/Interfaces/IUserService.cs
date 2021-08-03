@@ -36,8 +36,7 @@ namespace MyCvProject.Core.Interfaces
         /// <summary>
         /// لاگین کردن کاربر
         /// </summary>
-        /// <param name="email"></param>
-        /// <param name="password"></param>
+        /// <param name="login"></param>
         Task<User> LoginUser(LoginViewModel login);
 
         /// <summary>

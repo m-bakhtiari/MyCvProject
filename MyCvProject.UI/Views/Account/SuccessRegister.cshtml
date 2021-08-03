@@ -10,9 +10,10 @@
     </ul>
 </nav>
 
-<div class="alert alert-success">
+<div class="alert alert-success container">
     <h2>@Model.UserName عزیز !</h2>
-    <p>ثبت نام شما انجام شد ، ایمیلی حاوی لینک فعالسازی به ایمیمل "@Model.Email" ارسال شد .</p>
-    <p>جهت ادامه ثبت نام وارد ایمیل خود شوید و روی لینک کلیک کنید .</p>
+    <p>سرویس ارسال ایمیل هنوز فعالسازی نشده است . از طریق دکمه زیر به مرحله بعدی بروید</p>
+    <a href="/Account/ActiveAccount/@Model.ActiveCode" class="btn btn-primary btn-block">رفتن به مرحله بعد</a>
+    @*<p>ثبت نام شما انجام شد ، ایمیلی حاوی لینک فعالسازی به ایمیمل "@Model.Email" ارسال شد .</p>
+        <p>جهت ادامه ثبت نام وارد ایمیل خود شوید و روی لینک کلیک کنید .</p>*@
 </div>
-

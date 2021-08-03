@@ -1,14 +1,15 @@
 ﻿using System.Net.Mail;
+using System.Threading.Tasks;
 
 namespace MyCvProject.Core.Senders
 {
     public class SendEmail
     {
-        public static void Send(string to,string subject,string body)
+        public static void Send(string to, string subject, string body)
         {
             MailMessage mail = new MailMessage();
-            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-            mail.From = new MailAddress("bakhi1446@gmail.com","کد فعالسازی");
+            SmtpClient client = new SmtpClient("smtp.gmail.com");
+            mail.From = new MailAddress("customEmail@gmail.com", "کد فعالسازی");
             mail.To.Add(to);
             mail.Subject = subject;
             mail.Body = body;
@@ -18,12 +19,12 @@ namespace MyCvProject.Core.Senders
             // attachment = new System.Net.Mail.Attachment("c:/textfile.txt");
             // mail.Attachments.Add(attachment);
 
-            SmtpServer.Port = 587;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("bakhi1446@gmail.com", "mamali1013");
-            SmtpServer.EnableSsl = true;
+            client.UseDefaultCredentials = true;
+            client.Port = 587;
+            client.Credentials = new System.Net.NetworkCredential("customEmail@gmail.com", "******");
+            client.EnableSsl = true;
 
-            SmtpServer.Send(mail);
-
+            client.Send(mail);
         }
     }
 }

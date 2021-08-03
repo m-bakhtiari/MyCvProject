@@ -49,14 +49,8 @@ namespace MyCvProject.Core.Convertors
                 Model = model
             };
 
-            var viewContext = new ViewContext(
-                actionContext,
-                viewResult.View,
-                viewDictionary,
-                new TempDataDictionary(actionContext.HttpContext, _tempDataProvider),
-                sw,
-                new HtmlHelperOptions()
-            );
+            var viewContext = new ViewContext(actionContext, viewResult.View, viewDictionary,
+                new TempDataDictionary(actionContext.HttpContext, _tempDataProvider), sw, new HtmlHelperOptions());
 
             await viewResult.View.RenderAsync(viewContext);
             return sw.ToString();

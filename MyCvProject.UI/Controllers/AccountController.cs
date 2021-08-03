@@ -71,8 +71,8 @@ namespace MyCvProject.UI.Controllers
 
             #region Send Activation Email
 
-            string body = await _viewRender.RenderToStringAsync("_ActiveEmail", user);
-            SendEmail.Send(user.Email, "فعالسازی", body);
+            //string body = await _viewRender.RenderToStringAsync("_ActiveEmail", user);
+            //SendEmail.Send(user.Email, "فعالسازی", body);
 
             #endregion
 
@@ -92,7 +92,7 @@ namespace MyCvProject.UI.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public async Task<ActionResult> Login(LoginViewModel login, string ReturnUrl = "/")
+        public async Task<ActionResult> Login(LoginViewModel login, string returnUrl = "/")
         {
             if (!ModelState.IsValid)
             {
@@ -128,9 +128,9 @@ namespace MyCvProject.UI.Controllers
                     await HttpContext.SignInAsync(principal, properties);
 
                     ViewBag.IsSuccess = true;
-                    if (string.IsNullOrWhiteSpace(ReturnUrl) == false)
+                    if (string.IsNullOrWhiteSpace(returnUrl) == false)
                     {
-                        return Redirect(ReturnUrl);
+                        return Redirect(returnUrl);
                     }
                     return View();
                 }
@@ -146,6 +146,7 @@ namespace MyCvProject.UI.Controllers
         #endregion
 
         #region Active Account
+
 
         public async Task<IActionResult> ActiveAccount(string id)
         {

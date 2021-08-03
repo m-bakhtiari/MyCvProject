@@ -107,11 +107,15 @@ namespace MyCvProject.Core.Services
             {
                 return OpRes<int>.BuildError("نام کاربری را وارد نمایید");
             }
-            if (await _userRepository.IsExistEmail(user.Email))
+
+            var userInfo = await _userRepository.GetUserByEmail(user.Email);
+            if (userInfo != null && userInfo.UserId != user.UserId)
             {
                 return OpRes<int>.BuildError("ایمیل وارد شده تکراری می باشد");
             }
-            if (await _userRepository.IsExistUserName(user.UserName))
+
+            var username = await _userRepository.GetUserByUserName(user.UserName);
+            if (username != null && username.UserId != user.UserId)
             {
                 return OpRes<int>.BuildError("نام کاربری وارد شده تکراری می باشد");
             }
@@ -196,10 +200,6 @@ namespace MyCvProject.Core.Services
             }
 
             var user = await GetUserByUserName(username);
-            if (user.UserRoles.Select(x => x.RoleId).Contains(Const.RoleIdForAdmin) == false)
-            {
-                user.UserName = profile.UserName;
-            }
             user.Email = profile.Email;
             user.UserAvatar = profile.AvatarName;
 
