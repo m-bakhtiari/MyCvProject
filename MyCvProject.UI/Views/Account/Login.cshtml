@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http
-@model MyCvProject.Core.ViewModels.LoginViewModel
+﻿@model MyCvProject.Core.ViewModels.LoginViewModel
 @{
     ViewData["Title"] = "ورود به سایت";
 }
@@ -25,6 +24,9 @@
                 setTimeout(function () { window.location = +"@ViewBag.SiteUrl/UserPanel"; }, delay);
             </script>
         }
+        <div class="alert alert-success">
+            <span> برای دسترسی به قالب مدیریت در با ایمیل admin@gmail.com و پسورد  123 لاگین نمایید</span>
+        </div>
 
         @if (ViewBag.EditProfile == true)
         {
